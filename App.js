@@ -10,6 +10,7 @@ import CreatePin from './src/screens/auth/create_pin/CreatePin';
 import PinSuccess from './src/screens/auth/create_pin/PinSuccess';
 import ConfirmOtp from './src/screens/auth/confirm_otp/ConfirmOtp';
 
+import ChangePin from './src/screens/change_pin/ChangePin';
 import PinConfirmation from './src/screens/pin_confirmation/PinConfirmation';
 
 const Stack = createStackNavigator();
@@ -29,6 +30,7 @@ const App = () => {
           <Stack.Screen name="PinSuccess" component={PinSuccess} />
           <Stack.Screen name="ConfirmOtp" component={ConfirmOtp} />
           <Stack.Screen name="PinConfirmation" component={PinConfirmation} />
+          <Stack.Screen name="ChangePin" component={ChangePin} />
         </>
       </Stack.Navigator>
     </NavigationContainer>
