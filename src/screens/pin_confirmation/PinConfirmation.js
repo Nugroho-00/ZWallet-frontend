@@ -1,13 +1,10 @@
-/* eslint-disable react-native/no-inline-styles */
-import React, {useState, useRef, useEffect} from 'react';
+import React, {useEffect, useState, useRef} from 'react';
 import {View, Text, TextInput, Keyboard} from 'react-native';
 import {Button} from 'native-base';
-import Backdrop from '../../../components/backdrop/Backdrop';
 import styles from './Styles';
-import {API_URL} from '@env';
-import axios from 'axios';
+import Header from '../../components/header/Header';
 
-const CreatePin = props => {
+function PinConfirmation(props) {
   const {navigation} = props;
   const [isFilled, setIsFilled] = useState(false);
   const [isEdit, setIsEdit] = useState(false);
@@ -54,38 +51,20 @@ const CreatePin = props => {
       keyboardDidShowListener.remove();
     };
   }, [num1, num2, num3, num4, num5, num6]);
-  //   error Handling
-  const verificationHandler = e => {
-    e.preventDefault();
-    axios
-      .post(`${API_URL}/data/auth/verify-otp`, {
-        id: props.idUser,
-        otp: [num1, num2, num3, num4, num5, num6].join(''),
-      })
-      .then(res => {
-        console.log('sukses');
-        props.codeOTP([num1, num2, num3, num4, num5, num6].join(''));
-        props.navigation.navigate('CreateNewPassword');
-      })
-      .catch(err => {
-        console.log('failed', err);
-        setErrorMessage('Oops. You entered the wrong OTP code');
-      });
-  };
+
   const isValidPin = pin => {
     return !!pin.match(/^[0-9]*$/);
   };
+
   return (
     <>
-      <Backdrop />
+      <Header isBack={true} title="Enter Your PIN" navigation={navigation} />
       <View style={styles.container}>
-        <Text style={styles.title}>Create Security PIN</Text>
+        <Text style={styles.title}>Enter PIN to Transfer</Text>
         <Text style={styles.content}>
-          Create a PIN that’s contain 6 digits number for security purpose in
-          Zwallet.
+          Enter your 6 digits PIN for confirmation to continue transferring
+          money.
         </Text>
-
-        {/* INPUT PIN SECTION */}
 
         <View style={styles.pinGroup}>
           <TextInput
@@ -227,13 +206,14 @@ const CreatePin = props => {
               ? {...styles.buttonOn}
               : {...styles.buttonOff}
           }
-          disabled={isFilled ? false : true}
-          onPress={() => navigation.navigate('PinSuccess')}>
-          <Text style={isFilled ? styles.textOn : styles.textOff}>Confirm</Text>
+          disabled={isFilled ? false : true}>
+          <Text style={isFilled ? styles.textOn : styles.textOff}>
+            Transfer Now
+          </Text>
         </Button>
       </View>
     </>
   );
-};
+}
 
-export default CreatePin;
+export default PinConfirmation;
