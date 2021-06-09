@@ -72,7 +72,9 @@ const CreatePin = props => {
         setErrorMessage('Oops. You entered the wrong OTP code');
       });
   };
-
+  const isValidPin = pin => {
+    return !!pin.match(/^[0-9]*$/);
+  };
   return (
     <>
       <Backdrop />
@@ -94,9 +96,9 @@ const CreatePin = props => {
             maxLength={1}
             onChangeText={code => {
               if (code.length === 1) {
-                ref2.current.focus();
+                isValidPin(code) && ref2.current.focus();
               }
-              setNum1(code);
+              isValidPin(code) && setNum1(code);
             }}
             onPressIn={() => {
               setErrorMessage('');
@@ -113,11 +115,11 @@ const CreatePin = props => {
             maxLength={1}
             onChangeText={code => {
               if (code.length === 1) {
-                ref3.current.focus();
+                isValidPin(code) && ref3.current.focus();
               } else if (code.length < 1) {
                 ref.current.focus();
               }
-              setNum2(code);
+              isValidPin(code) && setNum2(code);
             }}
             onPressIn={() => {
               setErrorMessage('');
@@ -134,11 +136,11 @@ const CreatePin = props => {
             maxLength={1}
             onChangeText={code => {
               if (code.length === 1) {
-                ref4.current.focus();
+                isValidPin(code) && ref4.current.focus();
               } else if (code.length < 1) {
                 ref2.current.focus();
               }
-              setNum3(code);
+              isValidPin(code) && setNum3(code);
             }}
             onPressIn={() => {
               setErrorMessage('');
@@ -155,11 +157,11 @@ const CreatePin = props => {
             maxLength={1}
             onChangeText={code => {
               if (code.length === 1) {
-                ref5.current.focus();
+                isValidPin(code) && ref5.current.focus();
               } else if (code.length < 1) {
                 ref3.current.focus();
               }
-              setNum4(code);
+              isValidPin(code) && setNum4(code);
             }}
             onPressIn={() => {
               setErrorMessage('');
@@ -176,11 +178,11 @@ const CreatePin = props => {
             maxLength={1}
             onChangeText={code => {
               if (code.length === 1) {
-                ref6.current.focus();
+                isValidPin(code) && ref6.current.focus();
               } else if (code.length < 1) {
                 ref4.current.focus();
               }
-              setNum5(code);
+              isValidPin(code) && setNum5(code);
             }}
             onPressIn={() => {
               setErrorMessage('');
@@ -199,7 +201,7 @@ const CreatePin = props => {
               if (code.length < 1) {
                 ref5.current.focus();
               }
-              setNum6(code);
+              isValidPin(code) && setNum6(code);
             }}
             onPressIn={() => {
               setErrorMessage('');
@@ -225,12 +227,9 @@ const CreatePin = props => {
               ? {...styles.buttonOn}
               : {...styles.buttonOff}
           }
-          disabled={isFilled ? false : true}>
-          <Text
-            style={isFilled ? styles.textOn : styles.textOff}
-            onPress={() => navigation.navigate('PinSuccess')}>
-            Confirm
-          </Text>
+          disabled={isFilled ? false : true}
+          onPress={() => navigation.navigate('PinSuccess')}>
+          <Text style={isFilled ? styles.textOn : styles.textOff}>Confirm</Text>
         </Button>
       </View>
     </>
