@@ -6,13 +6,15 @@ import {createStackNavigator} from '@react-navigation/stack';
 import {createBottomTabNavigator} from '@react-navigation/bottom-tabs';
 
 import Login from './src/screens/auth/login/Login.js';
-import Home from './src/screens/dashboard/home/Home';
 import CreatePin from './src/screens/auth/create_pin/CreatePin';
 import PinSuccess from './src/screens/auth/create_pin/PinSuccess';
 import ConfirmOtp from './src/screens/auth/confirm_otp/ConfirmOtp';
 
 import ChangePin from './src/screens/change_pin/ChangePin';
 import PinConfirmation from './src/screens/pin_confirmation/PinConfirmation';
+
+import Home from './src/screens/dashboard/home/Home';
+import TransactionDetail from './src/screens/dashboard/transaction_detail/TransactionDetail';
 
 const Stack = createStackNavigator();
 const Tab = createBottomTabNavigator();
@@ -25,7 +27,7 @@ const App = () => {
         screenOptions={{
           cardStyle: {backgroundColor: '#FAFCFF'},
         }}
-        initialRouteName="Home">
+        initialRouteName="TransactionDetail">
         <>
           <Stack.Screen name="Login" component={Login} />
           <Stack.Screen name="CreatePin" component={CreatePin} />
@@ -34,6 +36,10 @@ const App = () => {
           <Stack.Screen name="PinConfirmation" component={PinConfirmation} />
           <Stack.Screen name="ChangePin" component={ChangePin} />
           <Stack.Screen name="Home" component={Home} />
+          <Stack.Screen
+            name="TransactionDetail"
+            component={TransactionDetail}
+          />
         </>
       </Stack.Navigator>
     </NavigationContainer>
