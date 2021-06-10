@@ -15,6 +15,7 @@ import PinSuccess from './src/screens/auth/create_pin/PinSuccess';
 import ConfirmOtp from './src/screens/auth/confirm_otp/ConfirmOtp';
 import ChangePin from './src/screens/change_pin/ChangePin';
 import PinConfirmation from './src/screens/pin_confirmation/PinConfirmation';
+import {connect} from 'react-redux';
 
 const Stack = createStackNavigator();
 const Tab = createBottomTabNavigator();
@@ -27,7 +28,9 @@ function HomeNavigation() {
   );
 }
 
-const App = () => {
+const App = props => {
+  // console.log(props);
+
   return (
     <NavigationContainer onReady={() => RNBootSplash.hide({fade: true})}>
       <Stack.Navigator
@@ -36,21 +39,32 @@ const App = () => {
           cardStyle: {backgroundColor: '#FAFCFF'},
         }}
         initialRouteName="Login">
-        <>
-          <Stack.Screen name="Login" component={Login} />
-          <Stack.Screen name="SignUp" component={Signup} />
-          <Stack.Screen name="SendEmail" component={SendEmail} />
-          <Stack.Screen name="ResetPassword" component={ResetPassword} />
-          <Stack.Screen name="CreatePin" component={CreatePin} />
-          <Stack.Screen name="PinSuccess" component={PinSuccess} />
-          <Stack.Screen name="ConfirmOtp" component={ConfirmOtp} />
-          <Stack.Screen name="PinConfirmation" component={PinConfirmation} />
-          <Stack.Screen name="ChangePin" component={ChangePin} />
+        {!props.loginReducers.isLogin ? (
+          <>
+            <Stack.Screen name="Login" component={Login} />
+            <Stack.Screen name="SignUp" component={Signup} />
+            <Stack.Screen name="SendEmail" component={SendEmail} />
+            <Stack.Screen name="ResetPassword" component={ResetPassword} />
+            <Stack.Screen name="CreatePin" component={CreatePin} />
+            <Stack.Screen name="PinSuccess" component={PinSuccess} />
+            <Stack.Screen name="ConfirmOtp" component={ConfirmOtp} />
+            <Stack.Screen name="PinConfirmation" component={PinConfirmation} />
+            <Stack.Screen name="ChangePin" component={ChangePin} />
+          </>
+        ) : (
           <Stack.Screen name="Home" component={HomeNavigation} />
-        </>
+        )}
       </Stack.Navigator>
     </NavigationContainer>
   );
 };
 
-export default App;
+const mapStatetoProps = state => {
+  return {
+    loginReducers: state.loginReducers,
+  };
+};
+
+const connectedApp = connect(mapStatetoProps)(App);
+
+export default connectedApp;
