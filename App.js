@@ -24,7 +24,8 @@ const App = () => {
         headerMode={'none'}
         screenOptions={{
           cardStyle: {backgroundColor: '#FAFCFF'},
-        }}>
+        }}
+        initialRouteName="Home">
         <>
           <Stack.Screen name="Login" component={Login} />
           <Stack.Screen name="CreatePin" component={CreatePin} />
