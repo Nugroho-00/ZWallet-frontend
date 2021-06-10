@@ -1,3 +1,9 @@
+<<<<<<< HEAD
+/* eslint-disable prettier/prettier */
+import React from 'react';
+import {View, Text} from 'react-native';
+import styles from './Styles';
+=======
 import React, {useState} from 'react';
 import {
   View,
@@ -11,6 +17,7 @@ import {Toast} from 'native-base';
 import classes from './Styles';
 import Ionicons from 'react-native-vector-icons/Ionicons';
 // import Material from 'react-native-vector-icons/MaterialIcons';
+>>>>>>> 64c1767d5420667dd6646799762087af1980c5d6
 
 const Login = () => {
   const [login, setLogin] = useState({
