@@ -105,30 +105,30 @@ const classes = StyleSheet.create({
     fontSize: 14,
     color: 'rgba(58, 61, 66, 0.8)',
   },
-  signupbtn: {
+  loginbtn: {
     justifyContent: 'center',
     width: '100%',
     height: 55,
     backgroundColor: 'rgba(99, 121, 244, 1)',
     borderRadius: 12,
   },
-  signupbtntext: {
+  loginbtntext: {
     textAlign: 'center',
     fontFamily: 'NunitoSans-Bold',
     fontSize: 20,
     color: 'white',
   },
-  login: {
+  signup: {
     marginVertical: '5%',
     flexDirection: 'row',
     alignItems: 'center',
   },
-  logindesc: {
+  signupdesc: {
     fontFamily: 'NunitoSans-Regular',
     fontSize: 14,
     color: 'rgba(58, 61, 66, 0.8)',
   },
-  loginbtntext: {
+  signupbtntext: {
     fontFamily: 'NunitoSans-Bold',
     fontSize: 16,
     color: 'rgba(99, 121, 244, 1)',
