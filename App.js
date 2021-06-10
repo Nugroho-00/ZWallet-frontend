@@ -7,6 +7,8 @@ import {createBottomTabNavigator} from '@react-navigation/bottom-tabs';
 
 import Login from './src/screens/auth/login/Login';
 import Signup from './src/screens/auth/signup/Signup';
+import SendEmail from './src/screens/auth/reset/send_email/SendEmail';
+import ResetPassword from './src/screens/auth/reset/reset/ResetPassword';
 import Home from './src/screens/dashboard/home/Home';
 import CreatePin from './src/screens/auth/create_pin/CreatePin';
 import PinSuccess from './src/screens/auth/create_pin/PinSuccess';
@@ -29,6 +31,8 @@ const App = () => {
         <>
           <Stack.Screen name="Login" component={Login} />
           <Stack.Screen name="SignUp" component={Signup} />
+          <Stack.Screen name="SendEmail" component={SendEmail} />
+          <Stack.Screen name="ResetPassword" component={ResetPassword} />
           <Stack.Screen name="CreatePin" component={CreatePin} />
           <Stack.Screen name="PinSuccess" component={PinSuccess} />
           <Stack.Screen name="ConfirmOtp" component={ConfirmOtp} />
