@@ -10,28 +10,19 @@ import {
 import {Toast} from 'native-base';
 import classes from './Styles';
 import Ionicons from 'react-native-vector-icons/Ionicons';
-// import Material from 'react-native-vector-icons/MaterialIcons';
 
-const Login = props => {
-  const [login, setLogin] = useState({
-    email: '',
+const ResetPassword = props => {
+  const [reset, setReset] = useState({
     password: '',
+    repeat: '',
   });
   const [eye, setEye] = useState(true);
 
   const validation = () => {
-    let reg = /^\w+([.-]?\w+)*@\w+([.-]?\w+)*(\.\w\w+)+$/;
-    if (login.email && !reg.test(login.email)) {
-      return (
-        <View>
-          <Text
-            style={{...classes.inputwarning, color: 'rgba(255, 91, 55, 1)'}}>
-            Incorrect Email
-          </Text>
-        </View>
-      );
-    }
-    if (login.password && login.password.length < 8) {
+    if (
+      (reset.password && reset.password.length < 8) ||
+      (reset.repeat && reset.repeat.length < 8)
+    ) {
       return (
         <View>
           <Text
@@ -45,8 +36,8 @@ const Login = props => {
     }
   };
 
-  const loginHandler = () => {
-    if (!login.email || !login.password) {
+  const resetHandler = () => {
+    if (!reset.password || !reset.repeat) {
       return Toast.show({
         text: 'Fill in your details!',
         type: 'warning',
@@ -54,8 +45,9 @@ const Login = props => {
         duration: 3000,
       });
     }
+    props.navigation.navigate('Login');
   };
-  console.log(login);
+  console.log(reset);
   return (
     <ScrollView contentContainerStyle={classes.maincontainer}>
       <StatusBar
@@ -67,23 +59,35 @@ const Login = props => {
         <Text style={classes.headertext}>Zwallet</Text>
       </View>
       <View style={classes.bottomcontent}>
-        <Text style={classes.loginheader}>Login</Text>
-        <Text style={classes.logindesc}>
-          Login to your existing account to access all the features in Zwallet.
+        <Text style={classes.header}>Reset Password</Text>
+        <Text style={classes.desc}>
+          Create and confirm your new password so you can login to Zwallet.
         </Text>
-        <View style={classes.inputgroup}>
+        <View>
           <View style={classes.input}>
             <View style={classes.lefticon}>
-              <Ionicons name="mail-outline" size={24} color="#A9A9A9" />
+              <Ionicons name="lock-closed-outline" size={24} color="#A9A9A9" />
             </View>
             <TextInput
               style={classes.inputbox}
-              placeholder="Enter your e-mail"
+              placeholder="Enter your password"
               placeholderTextColor="rgba(169, 169, 169, 0.8)"
+              secureTextEntry={eye}
               onChangeText={value => {
-                setLogin({...login, email: value});
+                setReset({...reset, password: value});
               }}
             />
+            <TouchableOpacity
+              style={classes.righticon}
+              onPress={() => {
+                setEye(!eye);
+              }}>
+              <Ionicons
+                name={eye ? 'eye-off-outline' : 'eye-outline'}
+                size={24}
+                color="#A9A9A9"
+              />
+            </TouchableOpacity>
           </View>
           <View style={classes.input}>
             <View style={classes.lefticon}>
@@ -95,7 +99,7 @@ const Login = props => {
               placeholderTextColor="rgba(169, 169, 169, 0.8)"
               secureTextEntry={eye}
               onChangeText={value => {
-                setLogin({...login, password: value});
+                setReset({...reset, repeat: value});
               }}
             />
             <TouchableOpacity
@@ -111,34 +115,17 @@ const Login = props => {
             </TouchableOpacity>
           </View>
         </View>
-        <TouchableOpacity
-          style={classes.forgotpassword}
-          onPress={() => {
-            props.navigation.navigate('SendEmail');
-          }}>
-          <Text style={classes.forgottext}>Forgot Password?</Text>
-        </TouchableOpacity>
         {validation()}
         <TouchableOpacity
-          style={classes.loginbtn}
+          style={classes.btn}
           onPress={() => {
-            loginHandler();
+            resetHandler();
           }}>
-          <Text style={classes.loginbtntext}>Login</Text>
+          <Text style={classes.btntext}>Reset Password</Text>
         </TouchableOpacity>
-        <View style={classes.signup}>
-          <Text style={classes.signupdesc}>Don’t have an account? Let’s</Text>
-          <TouchableOpacity
-            style={classes.signupbtn}
-            onPress={() => {
-              props.navigation.navigate('SignUp');
-            }}>
-            <Text style={classes.signupbtntext}> Sign Up</Text>
-          </TouchableOpacity>
-        </View>
       </View>
     </ScrollView>
   );
 };
 
-export default Login;
+export default ResetPassword;
