@@ -23,7 +23,6 @@ const classes = StyleSheet.create({
     flex: 1,
     width: '100%',
     height: '100%',
-    justifyContent: 'space-between',
     alignItems: 'center',
     paddingVertical: '10%',
     paddingHorizontal: '3%',
@@ -137,7 +136,7 @@ const classes = StyleSheet.create({
     paddingLeft: '2%',
     fontFamily: 'NunitoSans-SemiBold',
     fontSize: 16,
-    marginBottom: '10%',
+    marginBottom: '7%',
   },
 });
 
