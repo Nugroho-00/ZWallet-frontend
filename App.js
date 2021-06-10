@@ -9,20 +9,23 @@ import Login from './src/screens/auth/login/Login';
 import Signup from './src/screens/auth/signup/Signup';
 import SendEmail from './src/screens/auth/reset/send_email/SendEmail';
 import ResetPassword from './src/screens/auth/reset/reset/ResetPassword';
-import Home from './src/screens/dashboard/home/Home';
 import CreatePin from './src/screens/auth/create_pin/CreatePin';
 import PinSuccess from './src/screens/auth/create_pin/PinSuccess';
 import ConfirmOtp from './src/screens/auth/confirm_otp/ConfirmOtp';
 import ChangePin from './src/screens/change_pin/ChangePin';
 import PinConfirmation from './src/screens/pin_confirmation/PinConfirmation';
 
+import Home from './src/screens/dashboard/home/Home';
+import TransactionDetail from './src/screens/dashboard/transaction_detail/TransactionDetail';
+
 const Stack = createStackNavigator();
 const Tab = createBottomTabNavigator();
 
 function HomeNavigation() {
   return (
-    <Stack.Navigator>
+    <Stack.Navigator headerMode={'none'} initialRouteName="TransactionDetail">
       <Stack.Screen name="HomeScreen" component={Home} />
+      <Stack.Screen name="TransactionDetail" component={TransactionDetail} />
     </Stack.Navigator>
   );
 }
@@ -35,7 +38,7 @@ const App = () => {
         screenOptions={{
           cardStyle: {backgroundColor: '#FAFCFF'},
         }}
-        initialRouteName="Login">
+        initialRouteName="Home">
         <>
           <Stack.Screen name="Login" component={Login} />
           <Stack.Screen name="SignUp" component={Signup} />
