@@ -50,10 +50,13 @@ const classes = StyleSheet.create({
     flexDirection: 'column',
   },
   input: {
+    flexDirection: 'column',
+    marginBottom: '10%',
+  },
+  upperinput: {
     flexDirection: 'row',
     alignItems: 'center',
-    marginHorizontal: '4%',
-    marginBottom: '10%',
+    marginHorizontal: '2%',
   },
   lefticon: {
     position: 'absolute',
@@ -136,8 +139,8 @@ const classes = StyleSheet.create({
   inputwarning: {
     paddingLeft: '2%',
     fontFamily: 'NunitoSans-SemiBold',
-    fontSize: 16,
-    marginBottom: '10%',
+    fontSize: 12,
+    marginTop: 5,
   },
 });
 

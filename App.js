@@ -19,6 +19,14 @@ import PinConfirmation from './src/screens/pin_confirmation/PinConfirmation';
 const Stack = createStackNavigator();
 const Tab = createBottomTabNavigator();
 
+function HomeNavigation() {
+  return (
+    <Stack.Navigator>
+      <Stack.Screen name="HomeScreen" component={Home} />
+    </Stack.Navigator>
+  );
+}
+
 const App = () => {
   return (
     <NavigationContainer onReady={() => RNBootSplash.hide({fade: true})}>
@@ -38,7 +46,7 @@ const App = () => {
           <Stack.Screen name="ConfirmOtp" component={ConfirmOtp} />
           <Stack.Screen name="PinConfirmation" component={PinConfirmation} />
           <Stack.Screen name="ChangePin" component={ChangePin} />
-          <Stack.Screen name="Home" component={Home} />
+          <Stack.Screen name="Home" component={HomeNavigation} />
         </>
       </Stack.Navigator>
     </NavigationContainer>
