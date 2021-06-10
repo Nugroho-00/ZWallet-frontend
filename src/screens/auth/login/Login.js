@@ -12,7 +12,7 @@ import classes from './Styles';
 import Ionicons from 'react-native-vector-icons/Ionicons';
 // import Material from 'react-native-vector-icons/MaterialIcons';
 
-const Login = () => {
+const Login = props => {
   const [login, setLogin] = useState({
     email: '',
     password: '',
@@ -54,79 +54,95 @@ const Login = () => {
         duration: 3000,
       });
     }
+    props.navigation.navigate('Home');
   };
   console.log(login);
   return (
-    <ScrollView contentContainerStyle={classes.maincontainer}>
-      <StatusBar
-        translucent
-        backgroundColor="transparent"
-        barStyle="light-content"
-      />
-      <View style={classes.uppercontent}>
-        <Text style={classes.headertext}>Zwallet</Text>
-      </View>
-      <View style={classes.bottomcontent}>
-        <Text style={classes.loginheader}>Login</Text>
-        <Text style={classes.logindesc}>
-          Login to your existing account to access all the features in Zwallet.
-        </Text>
-        <View style={classes.inputgroup}>
-          <View style={classes.input}>
-            <View style={classes.lefticon}>
-              <Ionicons name="mail-outline" size={24} color="#A9A9A9" />
-            </View>
-            <TextInput
-              style={classes.inputbox}
-              placeholder="Enter your e-mail"
-              placeholderTextColor="rgba(169, 169, 169, 0.8)"
-              onChangeText={value => {
-                setLogin({...login, email: value});
-              }}
-            />
-          </View>
-          <View style={classes.input}>
-            <View style={classes.lefticon}>
-              <Ionicons name="lock-closed-outline" size={24} color="#A9A9A9" />
-            </View>
-            <TextInput
-              style={classes.inputbox}
-              placeholder="Enter your password"
-              placeholderTextColor="rgba(169, 169, 169, 0.8)"
-              secureTextEntry={eye}
-              onChangeText={value => {
-                setLogin({...login, password: value});
-              }}
-            />
-            <TouchableOpacity
-              style={classes.righticon}
-              onPress={() => {
-                setEye(!eye);
-              }}>
-              <Ionicons
-                name={eye ? 'eye-off-outline' : 'eye-outline'}
-                size={24}
-                color="#A9A9A9"
+    <ScrollView>
+      <View style={classes.maincontainer}>
+        <StatusBar
+          translucent
+          backgroundColor="transparent"
+          barStyle="light-content"
+        />
+        <View style={classes.uppercontent}>
+          <Text style={classes.headertext}>Zwallet</Text>
+        </View>
+        <View style={classes.bottomcontent}>
+          <Text style={classes.loginheader}>Login</Text>
+          <Text style={classes.logindesc}>
+            Login to your existing account to access all the features in
+            Zwallet.
+          </Text>
+          <View style={classes.inputgroup}>
+            <View style={classes.input}>
+              <View style={classes.lefticon}>
+                <Ionicons name="mail-outline" size={24} color="#A9A9A9" />
+              </View>
+              <TextInput
+                style={classes.inputbox}
+                placeholder="Enter your e-mail"
+                placeholderTextColor="rgba(169, 169, 169, 0.8)"
+                onChangeText={value => {
+                  setLogin({...login, email: value});
+                }}
               />
+            </View>
+            <View style={classes.input}>
+              <View style={classes.lefticon}>
+                <Ionicons
+                  name="lock-closed-outline"
+                  size={24}
+                  color="#A9A9A9"
+                />
+              </View>
+              <TextInput
+                style={classes.inputbox}
+                placeholder="Enter your password"
+                placeholderTextColor="rgba(169, 169, 169, 0.8)"
+                secureTextEntry={eye}
+                onChangeText={value => {
+                  setLogin({...login, password: value});
+                }}
+              />
+              <TouchableOpacity
+                style={classes.righticon}
+                onPress={() => {
+                  setEye(!eye);
+                }}>
+                <Ionicons
+                  name={eye ? 'eye-off-outline' : 'eye-outline'}
+                  size={24}
+                  color="#A9A9A9"
+                />
+              </TouchableOpacity>
+            </View>
+          </View>
+          <TouchableOpacity
+            style={classes.forgotpassword}
+            onPress={() => {
+              props.navigation.navigate('SendEmail');
+            }}>
+            <Text style={classes.forgottext}>Forgot Password?</Text>
+          </TouchableOpacity>
+          {validation()}
+          <TouchableOpacity
+            style={classes.loginbtn}
+            onPress={() => {
+              loginHandler();
+            }}>
+            <Text style={classes.loginbtntext}>Login</Text>
+          </TouchableOpacity>
+          <View style={classes.signup}>
+            <Text style={classes.signupdesc}>Don’t have an account? Let’s</Text>
+            <TouchableOpacity
+              style={classes.signupbtn}
+              onPress={() => {
+                props.navigation.navigate('SignUp');
+              }}>
+              <Text style={classes.signupbtntext}> Sign Up</Text>
             </TouchableOpacity>
           </View>
-        </View>
-        <TouchableOpacity style={classes.forgotpassword}>
-          <Text style={classes.forgottext}>Forgot Password?</Text>
-        </TouchableOpacity>
-        {validation()}
-        <TouchableOpacity
-          style={classes.loginbtn}
-          onPress={() => {
-            loginHandler();
-          }}>
-          <Text style={classes.loginbtntext}>Login</Text>
-        </TouchableOpacity>
-        <View style={classes.signup}>
-          <Text style={classes.signupdesc}>Don’t have an account? Let’s</Text>
-          <TouchableOpacity style={classes.signupbtn}>
-            <Text style={classes.signupbtntext}> Sign Up</Text>
-          </TouchableOpacity>
         </View>
       </View>
     </ScrollView>

@@ -30,10 +30,10 @@ const Chart = () => {
               width={Dimensions.get('window').width - 32} // from react-native
               height={220}
               chartConfig={{
-                backgroundColor: '#E5E5E5',
-                backgroundGradientFrom: '#FFF',
-                backgroundGradientTo: '#FFF',
-                color: (opacity = 1) => `#6379F4`,
+                backgroundColor: '#6379F4',
+                backgroundGradientFrom: '#6379F4',
+                backgroundGradientTo: '#6379F4',
+                color: (opacity = 1) => `rgba(255, 255, 255, ${opacity})`,
                 style: {
                   borderRadius: 16,
                 },

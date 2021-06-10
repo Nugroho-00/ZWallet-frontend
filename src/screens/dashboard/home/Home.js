@@ -1,5 +1,11 @@
 import React from 'react';
-import {View, Text, TouchableOpacity, StatusBar} from 'react-native';
+import {
+  View,
+  Text,
+  ScrollView,
+  TouchableOpacity,
+  StatusBar,
+} from 'react-native';
 
 import Icon from 'react-native-vector-icons/Ionicons';
 
@@ -21,6 +27,11 @@ const Home = () => {
       user: 'Netflix',
       type: 'Subcription',
       amount: '80.000',
+    },
+    {
+      user: 'Bobby',
+      type: 'Transfer',
+      amount: '100.000',
     },
     {
       user: 'Bobby',
@@ -56,55 +67,59 @@ const Home = () => {
         </View>
       </View>
 
-      <View style={styles.btnTransactionWrapper}>
-        <TouchableOpacity style={styles.btnTransaction}>
-          <Icon name="arrow-up" size={28} color="#608DE2" />
-          <Text style={{...styles.btnTransactionText, ...styles.font}}>
-            Transfer
+      <ScrollView>
+        <View style={styles.btnTransactionWrapper}>
+          <TouchableOpacity style={styles.btnTransaction}>
+            <Icon name="arrow-up" size={28} color="#608DE2" />
+            <Text style={{...styles.btnTransactionText, ...styles.font}}>
+              Transfer
+            </Text>
+          </TouchableOpacity>
+
+          <TouchableOpacity style={styles.btnTransaction}>
+            <Icon name="add" size={28} color="#608DE2" />
+            <Text style={{...styles.btnTransactionText, ...styles.font}}>
+              Top Up
+            </Text>
+          </TouchableOpacity>
+        </View>
+
+        <View style={styles.historyTitleWrapper}>
+          <Text style={{...styles.font, fontSize: 18}}>
+            Transaction History
           </Text>
-        </TouchableOpacity>
+          <TouchableOpacity>
+            <Text style={{...styles.font, color: '#6379F4'}}>See all</Text>
+          </TouchableOpacity>
+        </View>
 
-        <TouchableOpacity style={styles.btnTransaction}>
-          <Icon name="add" size={28} color="#608DE2" />
-          <Text style={{...styles.btnTransactionText, ...styles.font}}>
-            Top Up
-          </Text>
-        </TouchableOpacity>
-      </View>
-
-      <View style={styles.historyTitleWrapper}>
-        <Text style={{...styles.font, fontSize: 18}}>Transaction History</Text>
-        <TouchableOpacity>
-          <Text style={{...styles.font, color: '#6379F4'}}>See all</Text>
-        </TouchableOpacity>
-      </View>
-
-      <View>
-        {dataHistory.map((history, index) => (
-          <View key={index} style={styles.historyListWrapper}>
-            <View style={{flex: 2}}>
-              <Icon name="person-outline" size={56} />
+        <View>
+          {dataHistory.map((history, index) => (
+            <View key={index} style={styles.historyListWrapper}>
+              <View style={{flex: 2}}>
+                <Icon name="person-outline" size={56} />
+              </View>
+              <View style={{flex: 4}}>
+                <Text style={{fontSize: 16, marginBottom: 9}}>
+                  {history.user}
+                </Text>
+                <Text style={{color: '#7A7886'}}>{history.type}</Text>
+              </View>
+              <View style={{flex: 3}}>
+                <Text
+                  style={{
+                    fontSize: 18,
+                    color: history.type === 'Transfer' ? '#1EC15F' : '#FF5B37',
+                  }}>
+                  {history.type === 'Transfer'
+                    ? `+Rp${history.amount}`
+                    : `-Rp${history.amount}`}
+                </Text>
+              </View>
             </View>
-            <View style={{flex: 4}}>
-              <Text style={{fontSize: 16, marginBottom: 9}}>
-                {history.user}
-              </Text>
-              <Text style={{color: '#7A7886'}}>{history.type}</Text>
-            </View>
-            <View style={{flex: 2}}>
-              <Text
-                style={{
-                  fontSize: 18,
-                  color: history.type === 'Transfer' ? '#1EC15F' : '#FF5B37',
-                }}>
-                {history.type === 'Transfer'
-                  ? `+Rp${history.amount}`
-                  : `-Rp${history.amount}`}
-              </Text>
-            </View>
-          </View>
-        ))}
-      </View>
+          ))}
+        </View>
+      </ScrollView>
     </View>
   );
 };

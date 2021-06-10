@@ -49,7 +49,7 @@ const TransactionHistory = () => {
               </Text>
               <Text style={{color: '#7A7886'}}>{history.type}</Text>
             </View>
-            <View style={{flex: 2}}>
+            <View style={{flex: 3}}>
               <Text
                 style={{
                   fontSize: 18,

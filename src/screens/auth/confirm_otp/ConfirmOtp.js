@@ -216,7 +216,10 @@ const ConfirmOtp = props => {
               ? {...styles.buttonOn}
               : {...styles.buttonOff}
           }
-          disabled={isFilled ? false : true}>
+          disabled={isFilled ? false : true}
+          onPress={() => {
+            props.navigation.navigate('ResetPassword');
+          }}>
           <Text style={isFilled ? styles.textOn : styles.textOff}>Confirm</Text>
         </Button>
       </View>
