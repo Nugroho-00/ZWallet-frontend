@@ -5,12 +5,12 @@ import {NavigationContainer} from '@react-navigation/native';
 import {createStackNavigator} from '@react-navigation/stack';
 import {createBottomTabNavigator} from '@react-navigation/bottom-tabs';
 
-import Login from './src/screens/auth/login/Login.js';
+import Login from './src/screens/auth/login/Login';
+import Signup from './src/screens/auth/signup/Signup';
 import Home from './src/screens/dashboard/home/Home';
 import CreatePin from './src/screens/auth/create_pin/CreatePin';
 import PinSuccess from './src/screens/auth/create_pin/PinSuccess';
 import ConfirmOtp from './src/screens/auth/confirm_otp/ConfirmOtp';
-
 import ChangePin from './src/screens/change_pin/ChangePin';
 import PinConfirmation from './src/screens/pin_confirmation/PinConfirmation';
 
@@ -25,9 +25,10 @@ const App = () => {
         screenOptions={{
           cardStyle: {backgroundColor: '#FAFCFF'},
         }}
-        initialRouteName="Home">
+        initialRouteName="Login">
         <>
           <Stack.Screen name="Login" component={Login} />
+          <Stack.Screen name="SignUp" component={Signup} />
           <Stack.Screen name="CreatePin" component={CreatePin} />
           <Stack.Screen name="PinSuccess" component={PinSuccess} />
           <Stack.Screen name="ConfirmOtp" component={ConfirmOtp} />

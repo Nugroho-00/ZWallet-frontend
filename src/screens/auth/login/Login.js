@@ -12,7 +12,7 @@ import classes from './Styles';
 import Ionicons from 'react-native-vector-icons/Ionicons';
 // import Material from 'react-native-vector-icons/MaterialIcons';
 
-const Login = () => {
+const Login = props => {
   const [login, setLogin] = useState({
     email: '',
     password: '',
@@ -124,7 +124,11 @@ const Login = () => {
         </TouchableOpacity>
         <View style={classes.signup}>
           <Text style={classes.signupdesc}>Don’t have an account? Let’s</Text>
-          <TouchableOpacity style={classes.signupbtn}>
+          <TouchableOpacity
+            style={classes.signupbtn}
+            onPress={() => {
+              props.navigation.navigate('SignUp');
+            }}>
             <Text style={classes.signupbtntext}> Sign Up</Text>
           </TouchableOpacity>
         </View>
