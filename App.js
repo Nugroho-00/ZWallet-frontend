@@ -18,14 +18,27 @@ import PinConfirmation from './src/screens/pin_confirmation/PinConfirmation';
 import Home from './src/screens/dashboard/home/Home';
 import TransactionDetail from './src/screens/dashboard/transaction_detail/TransactionDetail';
 
+import SearchReceiver from './src/screens/dashboard/transfer/search_reciever/SearchReciever';
+import AmountInput from './src/screens/dashboard/transfer/amount_input/Amount';
+
 const Stack = createStackNavigator();
 const Tab = createBottomTabNavigator();
 
+function TransferNavigation() {
+  return (
+    <Stack.Navigator headerMode={'none'} initialRouteName="SearchReceiver">
+      <Stack.Screen name="SearchReceiver" component={SearchReceiver} />
+      <Stack.Screen name="AmountInput" component={AmountInput} />
+    </Stack.Navigator>
+  );
+}
+
 function HomeNavigation() {
   return (
-    <Stack.Navigator headerMode={'none'} initialRouteName="TransactionDetail">
+    <Stack.Navigator headerMode={'none'} initialRouteName="Transfer">
       <Stack.Screen name="HomeScreen" component={Home} />
       <Stack.Screen name="TransactionDetail" component={TransactionDetail} />
+      <Stack.Screen name="Transfer" component={TransferNavigation} />
     </Stack.Navigator>
   );
 }
@@ -38,7 +51,7 @@ const App = () => {
         screenOptions={{
           cardStyle: {backgroundColor: '#FAFCFF'},
         }}
-        initialRouteName="Home">
+        initialRouteName="Login">
         <>
           <Stack.Screen name="Login" component={Login} />
           <Stack.Screen name="SignUp" component={Signup} />
