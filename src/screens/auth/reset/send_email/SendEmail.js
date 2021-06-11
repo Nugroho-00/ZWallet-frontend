@@ -10,6 +10,8 @@ import {
 import {Toast} from 'native-base';
 import classes from './Styles';
 import Ionicons from 'react-native-vector-icons/Ionicons';
+import {API_URL} from '@env';
+import axios from 'axios';
 
 const SendEmail = props => {
   const [email, setEmail] = useState();
@@ -39,7 +41,19 @@ const SendEmail = props => {
         duration: 3000,
       });
     }
-    props.navigation.navigate('ConfirmOtp');
+    let config = {
+      method: 'POST',
+      url: `${API_URL}/auth/send-otp`,
+      data: {email: email},
+    };
+    axios(config)
+      .then(res => {
+        console.log(res);
+        props.navigation.navigate('ConfirmOtp', {id: res.data.id});
+      })
+      .catch(err => {
+        console.log({err});
+      });
   };
   console.log(email);
   return (
@@ -47,7 +61,7 @@ const SendEmail = props => {
       <StatusBar
         translucent
         backgroundColor="transparent"
-        barStyle="light-content"
+        barStyle="dark-content"
       />
       <View style={classes.uppercontent}>
         <Text style={classes.headertext}>Zwallet</Text>

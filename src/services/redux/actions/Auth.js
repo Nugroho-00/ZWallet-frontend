@@ -10,7 +10,7 @@ export let userRegister = (url, auth) => {
 export function userLogin(data) {
   let config = {
     method: 'POST',
-    url: `${API_URL}/users/login`,
+    url: `${API_URL}/auth/login`,
     data: data,
   };
   return dispatch => {
@@ -19,9 +19,10 @@ export function userLogin(data) {
     });
     axios(config)
       .then(res => {
-        dispatch({type: 'LOGIN_SUCCESS', payload: res.data.data});
+        dispatch({type: 'LOGIN_SUCCESS', payload: res.data});
       })
       .catch(err => {
+        console.log({err});
         dispatch({
           type: 'LOGIN_REJECTED',
           payload: err.response,
@@ -29,7 +30,7 @@ export function userLogin(data) {
       });
   };
 }
-export function logoutHandler() {
+export function userLogout() {
   return dispatch => {
     dispatch({type: 'LOGOUT'});
   };

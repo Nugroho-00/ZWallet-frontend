@@ -1,4 +1,4 @@
-import React, {useState} from 'react';
+import React, {useState, useRef, useEffect} from 'react';
 import {
   View,
   ScrollView,
@@ -11,6 +11,10 @@ import {Toast} from 'native-base';
 import classes from './Styles';
 import Ionicons from 'react-native-vector-icons/Ionicons';
 // import Material from 'react-native-vector-icons/MaterialIcons';
+import {userLogin} from '../../../services/redux/actions/Auth';
+import {API_URL} from '@env';
+import {connect} from 'react-redux';
+import axios from 'axios';
 
 const Login = props => {
   const [login, setLogin] = useState({
@@ -54,16 +58,40 @@ const Login = props => {
         duration: 3000,
       });
     }
-    props.navigation.navigate('Home');
+    props.onLoginHandler(login);
   };
-  console.log(login);
+  const ref = useRef();
+  useEffect(() => {
+    if (!ref.current) {
+      ref.current = true;
+    } else {
+      if (props.loginReducers.err.data?.message === 'Wrong Email or Password') {
+        setLogin({});
+        return Toast.show({
+          text: 'Incorrect Email or Password',
+          type: 'danger',
+          textStyle: {textAlign: 'center'},
+          duration: 3000,
+        });
+      }
+      if (props.loginReducers.err.data?.message === 'Network Error') {
+        return Toast.show({
+          text: 'Network Error',
+          type: 'danger',
+          textStyle: {textAlign: 'center'},
+          duration: 3000,
+        });
+      }
+    }
+  }, []);
+  // console.log(props);
   return (
     <ScrollView>
       <View style={classes.maincontainer}>
         <StatusBar
           translucent
           backgroundColor="transparent"
-          barStyle="light-content"
+          barStyle="dark-content"
         />
         <View style={classes.uppercontent}>
           <Text style={classes.headertext}>Zwallet</Text>
@@ -149,4 +177,20 @@ const Login = props => {
   );
 };
 
-export default Login;
+const mapStatetoProps = state => {
+  return {
+    loginReducers: state.loginReducers,
+  };
+};
+
+const mapDispatchtoProps = dispatch => {
+  return {
+    onLoginHandler: data => {
+      dispatch(userLogin(data));
+    },
+  };
+};
+
+const connectedLogin = connect(mapStatetoProps, mapDispatchtoProps)(Login);
+
+export default connectedLogin;

@@ -20,8 +20,11 @@ let loginReducers = (state = initialState, action) => {
     case 'LOGIN_REJECTED':
       return {
         ...state,
-        isRejected: true,
         isPending: false,
+        isRejected: true,
+        isFulfilled: false,
+        isLogin: false,
+        user: {},
         err: payload,
       };
     case 'LOGIN_SUCCESS':
