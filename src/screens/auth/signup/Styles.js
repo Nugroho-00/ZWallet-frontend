@@ -25,7 +25,7 @@ const classes = StyleSheet.create({
     height: '100%',
     justifyContent: 'space-between',
     alignItems: 'center',
-    paddingVertical: '10%',
+    paddingTop: '10%',
     paddingHorizontal: '3%',
     borderTopLeftRadius: 30,
     borderTopRightRadius: 30,
@@ -38,7 +38,7 @@ const classes = StyleSheet.create({
     color: '#3A3D42',
     marginBottom: '5%',
   },
-  logindesc: {
+  headerdesc: {
     fontFamily: 'NunitoSans-Regular',
     fontSize: 16,
     color: 'rgba(58, 61, 66, 0.6)',
@@ -60,6 +60,15 @@ const classes = StyleSheet.create({
     left: 5,
     justifyContent: 'center',
     zIndex: 10,
+  },
+  phonetext: {
+    position: 'absolute',
+    left: 40,
+    justifyContent: 'center',
+    zIndex: 10,
+    fontFamily: 'NunitoSans-Regular',
+    fontSize: 16,
+    color: 'black',
   },
   inputbox: {
     width: '100%',
@@ -85,6 +94,15 @@ const classes = StyleSheet.create({
     borderBottomWidth: 1.5,
     borderBottomColor: 'rgba(255, 91, 55, 1)',
     fontFamily: 'NunitoSans-Bold',
+    fontSize: 16,
+    color: 'black',
+  },
+  inputboxphone: {
+    width: '100%',
+    paddingLeft: 80,
+    borderBottomWidth: 1.5,
+    borderBottomColor: 'rgba(169, 169, 169, 0.6)',
+    fontFamily: 'NunitoSans-Regular',
     fontSize: 16,
     color: 'black',
   },
@@ -119,7 +137,7 @@ const classes = StyleSheet.create({
     color: 'white',
   },
   login: {
-    marginVertical: '5%',
+    marginVertical: '10%',
     flexDirection: 'row',
     alignItems: 'center',
   },
@@ -137,7 +155,6 @@ const classes = StyleSheet.create({
     paddingLeft: '2%',
     fontFamily: 'NunitoSans-SemiBold',
     fontSize: 16,
-    marginBottom: '10%',
   },
 });
 

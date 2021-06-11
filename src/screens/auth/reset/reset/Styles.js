@@ -10,6 +10,18 @@ const classes = StyleSheet.create({
     alignItems: 'center',
     backgroundColor: '#FAFCFF',
   },
+  modalcontainer: {
+    flex: 1,
+    justifyContent: 'space-between',
+    alignItems: 'center',
+    paddingVertical: '20%',
+    backgroundColor: 'white',
+  },
+  modalbtntext: {
+    fontFamily: 'NunitoSans-SemiBold',
+    fontSize: 16,
+    color: '#6379F4',
+  },
   uppercontent: {
     paddingVertical: '10%',
   },
@@ -137,10 +149,16 @@ const classes = StyleSheet.create({
     color: 'rgba(99, 121, 244, 1)',
   },
   inputwarning: {
+    flexDirection: 'row',
+    alignItems: 'center',
     paddingLeft: '2%',
+    marginTop: 5,
+  },
+
+  inputwarningtext: {
+    marginLeft: 2,
     fontFamily: 'NunitoSans-SemiBold',
     fontSize: 12,
-    marginTop: 5,
   },
 });
 

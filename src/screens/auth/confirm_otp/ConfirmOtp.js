@@ -58,13 +58,13 @@ const ConfirmOtp = props => {
     e.preventDefault();
     axios
       .post(`${API_URL}/data/auth/verify-otp`, {
-        id: props.idUser,
+        id: props.route.params.id,
         otp: [num1, num2, num3, num4, num5, num6].join(''),
       })
       .then(res => {
         console.log('sukses');
         props.codeOTP([num1, num2, num3, num4, num5, num6].join(''));
-        props.navigation.navigate('CreateNewPassword');
+        props.navigation.navigate('CreateNewPassword', {token: res.data.token});
       })
       .catch(err => {
         console.log('failed', err);

@@ -8,10 +8,11 @@ import {
 } from 'react-native';
 
 import Icon from 'react-native-vector-icons/Ionicons';
-
 import styles from './styles';
+import {userLogout} from '../../../services/redux/actions/Auth';
+import {connect} from 'react-redux';
 
-const Home = () => {
+const Home = props => {
   const dataHistory = [
     {
       user: 'Samuel',
@@ -61,7 +62,10 @@ const Home = () => {
           </TouchableOpacity>
         </View>
         <View style={{flex: 1}}>
-          <TouchableOpacity>
+          <TouchableOpacity
+            onPress={() => {
+              props.onLogoutHandler();
+            }}>
             <Icon name="notifications-outline" size={28} color="#FFF" />
           </TouchableOpacity>
         </View>
@@ -124,4 +128,14 @@ const Home = () => {
   );
 };
 
-export default Home;
+const mapStatetoProps = state => ({
+  loginReducers: state.loginReducers,
+});
+
+const mapDispatchToProps = dispatch => ({
+  onLogoutHandler: () => {
+    dispatch(userLogout());
+  },
+});
+const connectedHome = connect(mapStatetoProps, mapDispatchToProps)(Home);
+export default connectedHome;
