@@ -19,14 +19,27 @@ import {connect} from 'react-redux';
 import Home from './src/screens/dashboard/home/Home';
 import TransactionDetail from './src/screens/dashboard/transaction_detail/TransactionDetail';
 
+import SearchReceiver from './src/screens/dashboard/transfer/search_reciever/SearchReciever';
+import AmountInput from './src/screens/dashboard/transfer/amount_input/Amount';
+
 const Stack = createStackNavigator();
 const Tab = createBottomTabNavigator();
+
+function TransferNavigation() {
+  return (
+    <Stack.Navigator headerMode={'none'} initialRouteName="SearchReceiver">
+      <Stack.Screen name="SearchReceiver" component={SearchReceiver} />
+      <Stack.Screen name="AmountInput" component={AmountInput} />
+    </Stack.Navigator>
+  );
+}
 
 function HomeNavigation() {
   return (
     <Stack.Navigator headerMode={'none'} initialRouteName="HomeScreen">
       <Stack.Screen name="HomeScreen" component={Home} />
       <Stack.Screen name="TransactionDetail" component={TransactionDetail} />
+      <Stack.Screen name="Transfer" component={TransferNavigation} />
     </Stack.Navigator>
   );
 }
