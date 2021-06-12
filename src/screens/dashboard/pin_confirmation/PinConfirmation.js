@@ -1,11 +1,10 @@
-/* eslint-disable react-native/no-inline-styles */
 import React, {useEffect, useState, useRef} from 'react';
 import {View, Text, TextInput, Keyboard} from 'react-native';
 import {Button} from 'native-base';
 import styles from './Styles';
-import Header from '../../components/header/Header';
+import Header from '../../../components/header/Header';
 
-function NewPin(props) {
+function PinConfirmation(props) {
   const {navigation} = props;
   const [isFilled, setIsFilled] = useState(false);
   const [isEdit, setIsEdit] = useState(false);
@@ -59,11 +58,12 @@ function NewPin(props) {
 
   return (
     <>
-      <Header isBack={true} title="Change PIN" navigation={navigation} />
+      <Header isBack={true} title="Enter Your PIN" navigation={navigation} />
       <View style={styles.container}>
-        {/* <Text style={styles.title}>Enter PIN to Transfer</Text> */}
+        <Text style={styles.title}>Enter PIN to Transfer</Text>
         <Text style={styles.content}>
-        Type your new 6 digits security PIN to use in Zwallet.
+          Enter your 6 digits PIN for confirmation to continue transferring
+          money.
         </Text>
 
         <View style={styles.pinGroup}>
@@ -206,10 +206,10 @@ function NewPin(props) {
               ? {...styles.buttonOn}
               : {...styles.buttonOff}
           }
-          onPress={()=>props.navigation.navigate('Profile')}
+          onPress={()=>props.navigation.navigate('ConfirmationResult')}
           disabled={isFilled ? false : true}>
           <Text style={isFilled ? styles.textOn : styles.textOff}>
-            Change PIN
+            Transfer Now
           </Text>
         </Button>
       </View>
@@ -217,4 +217,4 @@ function NewPin(props) {
   );
 }
 
-export default NewPin;
+export default PinConfirmation;

@@ -14,7 +14,6 @@ import ResetPassword from './src/screens/auth/reset/reset/ResetPassword';
 import CreatePin from './src/screens/auth/create_pin/CreatePin';
 import PinSuccess from './src/screens/auth/create_pin/PinSuccess';
 import ConfirmOtp from './src/screens/auth/confirm_otp/ConfirmOtp';
-import PinConfirmation from './src/screens/pin_confirmation/PinConfirmation';
 
 // MAIN SCREEN
 import Home from './src/screens/dashboard/home/Home';
@@ -27,13 +26,14 @@ import AmountInput from './src/screens/dashboard/transfer/amount_input/Amount';
 
 import TopUp from './src/screens/dashboard/top_up/TopUp';
 import Confirmation from './src/screens/dashboard/transfer/confirmation/Confirmation';
+import PinConfirmation from './src/screens/dashboard/pin_confirmation/PinConfirmation';
 import ConfirmationResult from './src/screens/dashboard/transfer/confirmation_result/ConfirmationResult';
 
 import Profile from './src/screens/profile/Profile';
 import PersonalInformation from './src/screens/profile/personal_information/PersonalInformation';
-import ChangePassword from './src/screens/change_password/ChangePassword';
-import OldPin from './src/screens/change_pin/OldPin';
-import NewPin from './src/screens/change_pin/NewPin';
+import ChangePassword from './src/screens/profile/change_password/ChangePassword';
+import OldPin from './src/screens/profile/change_pin/OldPin';
+import NewPin from './src/screens/profile/change_pin/NewPin';
 import AddPhone from './src/screens/profile/add_phone/AddPhone';
 import ManagePhone from './src/screens/profile/manage_phone/ManagePhone';
 
