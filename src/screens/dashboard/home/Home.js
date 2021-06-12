@@ -63,9 +63,6 @@ const Home = props => {
         </View>
         <View style={{flex: 1}}>
           <TouchableOpacity
-            // onPress={() => {
-            //   props.onLogoutHandler();
-            // }}
             onPress={()=>props.navigation.navigate('Notification')}
             >
             <Icon name="notifications-outline" size={28} color="#FFF" />
@@ -75,14 +72,14 @@ const Home = props => {
 
       <ScrollView>
         <View style={styles.btnTransactionWrapper}>
-          <TouchableOpacity style={styles.btnTransaction}>
+          <TouchableOpacity style={styles.btnTransaction} onPress={()=>props.navigation.navigate('Transfer')}>
             <Icon name="arrow-up" size={28} color="#608DE2" />
             <Text style={{...styles.btnTransactionText, ...styles.font}}>
               Transfer
             </Text>
           </TouchableOpacity>
 
-          <TouchableOpacity style={styles.btnTransaction}>
+          <TouchableOpacity style={styles.btnTransaction} onPress={()=>props.navigation.navigate('TopUp')}>
             <Icon name="add" size={28} color="#608DE2" />
             <Text style={{...styles.btnTransactionText, ...styles.font}}>
               Top Up
@@ -94,7 +91,7 @@ const Home = props => {
           <Text style={{...styles.font, fontSize: 18}}>
             Transaction History
           </Text>
-          <TouchableOpacity>
+          <TouchableOpacity onPress={()=>props.navigation.navigate('TransactionDetail')}>
             <Text style={{...styles.font, color: '#6379F4'}}>See all</Text>
           </TouchableOpacity>
         </View>

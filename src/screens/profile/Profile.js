@@ -9,8 +9,10 @@ import {
 import {Icon} from 'native-base';
 import styles from './Styles';
 import ToggleSwitch from 'toggle-switch-react-native';
+import {userLogout} from '../../services/redux/actions/Auth';
+import {connect} from 'react-redux';
 
-function Profile() {
+function Profile(props) {
   const [isNotifOn, setIsNotifOn] = useState(true);
   return (
     <>
@@ -20,9 +22,9 @@ function Profile() {
         backgroundColor="#FFF"
       />
       <View style={styles.container}>
-        <View style={styles.header}>
+        <Pressable style={styles.header} onPress={()=>props.navigation.goBack()}>
           <Icon name="arrow-back-outline" style={styles.back} />
-        </View>
+        </Pressable>
 
         <ScrollView showsVerticalScrollIndicator={false}>
           <View style={styles.mainInfo}>
@@ -40,16 +42,16 @@ function Profile() {
             <Text style={styles.phoneText}>+62 813-9387-7946</Text>
           </View>
           <View style={styles.menuSection}>
-            <Pressable style={styles.menuItem}>
+            <Pressable style={styles.menuItem} onPress={()=>props.navigation.navigate('PersonalInformation')}>
               <Text style={styles.menuText}>Personal Information</Text>
               <Icon name="arrow-forward-outline" style={styles.menuNext} />
             </Pressable>
 
-            <Pressable style={styles.menuItem}>
+            <Pressable style={styles.menuItem} onPress={()=>props.navigation.navigate('ChangePassword')}>
               <Text style={styles.menuText}>Change Password</Text>
               <Icon name="arrow-forward-outline" style={styles.menuNext} />
             </Pressable>
-            <Pressable style={styles.menuItem}>
+            <Pressable style={styles.menuItem} onPress={()=>props.navigation.navigate('OldPin')}>
               <Text style={styles.menuText}>Change PIN</Text>
               <Icon name="arrow-forward-outline" style={styles.menuNext} />
             </Pressable>
@@ -64,7 +66,11 @@ function Profile() {
                 onToggle={isOn => setIsNotifOn(isOn)}
               />
             </Pressable>
-            <Pressable style={styles.menuItem}>
+            <Pressable style={styles.menuItem}
+            onPress={() => {
+              props.onLogoutHandler();
+            }}
+            >
               <Text style={styles.menuText}>Logout</Text>
             </Pressable>
           </View>
@@ -74,4 +80,17 @@ function Profile() {
   );
 }
 
-export default Profile;
+
+const mapStatetoProps = state => ({
+  loginReducers: state.loginReducers,
+});
+
+const mapDispatchToProps = dispatch => ({
+  onLogoutHandler: () => {
+    dispatch(userLogout());
+  },
+});
+
+const connectedProfile = connect(mapStatetoProps, mapDispatchToProps)(Profile);
+
+export default connectedProfile;

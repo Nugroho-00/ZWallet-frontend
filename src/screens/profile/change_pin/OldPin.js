@@ -3,9 +3,9 @@ import React, {useEffect, useState, useRef} from 'react';
 import {View, Text, TextInput, Keyboard} from 'react-native';
 import {Button} from 'native-base';
 import styles from './Styles';
-import Header from '../../components/header/Header';
+import Header from '../../../components/header/Header';
 
-function NewPin(props) {
+function OldPin(props) {
   const {navigation} = props;
   const [isFilled, setIsFilled] = useState(false);
   const [isEdit, setIsEdit] = useState(false);
@@ -63,7 +63,8 @@ function NewPin(props) {
       <View style={styles.container}>
         {/* <Text style={styles.title}>Enter PIN to Transfer</Text> */}
         <Text style={styles.content}>
-        Type your new 6 digits security PIN to use in Zwallet.
+          Enter your current 6 digits Zwallet PIN below to continue to the next
+          steps.
         </Text>
 
         <View style={styles.pinGroup}>
@@ -206,9 +207,11 @@ function NewPin(props) {
               ? {...styles.buttonOn}
               : {...styles.buttonOff}
           }
-          disabled={isFilled ? false : true}>
+          disabled={isFilled ? false : true}
+          onPress={()=>props.navigation.navigate('NewPin')}
+          >
           <Text style={isFilled ? styles.textOn : styles.textOff}>
-            Change PIN
+            Continue
           </Text>
         </Button>
       </View>
@@ -216,4 +219,4 @@ function NewPin(props) {
   );
 }
 
-export default NewPin;
+export default OldPin;

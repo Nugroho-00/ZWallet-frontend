@@ -79,8 +79,8 @@ const styles = StyleSheet.create({
     marginLeft: 15,
     fontSize: 16,
   },
+
   btnContinue: {
-    minWidth: '100%',
     alignItems: 'center',
     paddingVertical: 16,
     backgroundColor: '#6379F4',

@@ -108,6 +108,7 @@ const Signup = props => {
     axios(config)
       .then(res => {
         setSignup({});
+        props.navigation.navigate('Login')
         return Toast.show({
           text: 'Sign up success',
           type: 'success',

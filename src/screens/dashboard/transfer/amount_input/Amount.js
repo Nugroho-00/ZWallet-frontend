@@ -6,12 +6,12 @@ import Content from './Content';
 
 import styles from './styles';
 
-const Amount = () => {
+const Amount = (props) => {
   return (
     <View style={styles.container}>
-      <Header />
+      <Header navigation = {props.navigation} />
       <ScrollView>
-        <Content />
+        <Content navigation={props.navigation}/>
       </ScrollView>
     </View>
   );
