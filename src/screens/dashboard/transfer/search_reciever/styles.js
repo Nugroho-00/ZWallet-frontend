@@ -112,6 +112,82 @@ const styles = StyleSheet.create({
     fontFamily: 'NunitoSans-Regular',
     color: '#7A7886',
   },
+  
+  createNewSection:{
+    flexDirection:'row',
+    justifyContent:'center',
+    alignItems:'center',
+    marginBottom:12,
+    
+  },
+  inputWrapper: {
+    flexDirection: 'row',
+    justifyContent:'space-between',
+    alignItems: 'center',
+    paddingHorizontal: 5,
+    backgroundColor: '#fff',
+    borderRadius: 12,
+    width:'80%',
+    shadowColor: '#000',
+    shadowOffset: {
+      width: 0,
+      height: 1,
+    },
+    shadowOpacity: 0.22,
+    shadowRadius: 2.22,
+    
+    elevation: 3,
+  },
+
+  inputTitle:{
+    fontFamily: 'NunitoSans-Bold',
+    fontSize: 16,
+    color: '#514F5B',
+    marginBottom:5,
+  },
+  numberInput: {
+    width:'80%',
+    height:40,
+    flexDirection: 'row',
+    justifyContent:'space-between',
+    alignItems: 'center',
+    paddingHorizontal: 10,
+    backgroundColor: '#fff',
+    borderRadius: 12,
+    width:'80%',
+    shadowColor: '#000',
+    shadowOffset: {
+      width: 0,
+      height: 1,
+    },
+    shadowOpacity: 0.22,
+    shadowRadius: 2.22,
+    
+    elevation: 3,
+  },
+  sendIconWrapper:{
+    justifyContent:'center',
+    width:'20%',
+    backgroundColor: '#EAEDFF',
+    paddingHorizontal: 5,
+    borderRadius: 12,
+    marginLeft:5,
+    height:40,
+  },
+  sendIcon:{
+    color:'#6379F4',
+    fontSize:25,
+    textAlign:'center',
+    shadowColor: '#000',
+    shadowOffset: {
+      width: 0,
+      height: 1,
+    },
+    shadowOpacity: 0.22,
+    shadowRadius: 2.22,
+    
+    elevation: 3,
+  },
 });
 
 export default styles;
