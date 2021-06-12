@@ -18,6 +18,7 @@ import PinConfirmation from './src/screens/pin_confirmation/PinConfirmation';
 import Profile from './src/screens/profile/Profile';
 import PersonalInformation from './src/screens/profile/personal_information/PersonalInformation';
 import AddPhone from './src/screens/profile/add_phone/AddPhone';
+import ManagePhone from './src/screens/profile/manage_phone/ManagePhone';
 
 import {connect} from 'react-redux';
 
@@ -52,7 +53,7 @@ function HomeNavigation() {
       screenOptions={{
         cardStyle: {backgroundColor: '#FAFCFF'},
       }}
-      initialRouteName="AddPhone">
+      initialRouteName="ManagePhone">
       <Stack.Screen name="HomeScreen" component={Home} />
       <Stack.Screen name="TransactionDetail" component={TransactionDetail} />
       <Stack.Screen name="TransactionHistory" component={TransactionHistory} />
@@ -63,6 +64,7 @@ function HomeNavigation() {
         name="PersonalInformation"
         component={PersonalInformation}
       />
+      <Stack.Screen name="ManagePhone" component={ManagePhone} />
       <Stack.Screen name="AddPhone" component={AddPhone} />
     </Stack.Navigator>
   );
