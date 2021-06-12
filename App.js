@@ -21,13 +21,17 @@ import TransactionDetail from './src/screens/dashboard/transaction_detail/Transa
 
 import SearchReceiver from './src/screens/dashboard/transfer/search_reciever/SearchReciever';
 import AmountInput from './src/screens/dashboard/transfer/amount_input/Amount';
+import Confirmation from './src/screens/dashboard/transfer/confirmation/Confirmation';
+import ConfirmationResult from './src/screens/dashboard/transfer/confirmation_result/ConfirmationResult';
+
+import ChangePassword from './src/screens/change_password/ChangePassword';
 
 const Stack = createStackNavigator();
 const Tab = createBottomTabNavigator();
 
 function TransferNavigation() {
   return (
-    <Stack.Navigator headerMode={'none'} initialRouteName="SearchReceiver">
+    <Stack.Navigator headerMode={'none'} initialRouteName="Confirmation">
       <Stack.Screen name="SearchReceiver" component={SearchReceiver} />
       <Stack.Screen name="AmountInput" component={AmountInput} />
     </Stack.Navigator>
@@ -36,7 +40,7 @@ function TransferNavigation() {
 
 function HomeNavigation() {
   return (
-    <Stack.Navigator headerMode={'none'} initialRouteName="HomeScreen">
+    <Stack.Navigator headerMode={'none'} initialRouteName="Transfer">
       <Stack.Screen name="HomeScreen" component={Home} />
       <Stack.Screen name="TransactionDetail" component={TransactionDetail} />
       <Stack.Screen name="Transfer" component={TransferNavigation} />
@@ -54,7 +58,7 @@ const App = props => {
         screenOptions={{
           cardStyle: {backgroundColor: '#FAFCFF'},
         }}
-        initialRouteName="Login">
+        initialRouteName="ChangePassword">
         {!props.loginReducers.isLogin ? (
           <>
             <Stack.Screen name="Login" component={Login} />
@@ -66,6 +70,12 @@ const App = props => {
             <Stack.Screen name="ConfirmOtp" component={ConfirmOtp} />
             <Stack.Screen name="PinConfirmation" component={PinConfirmation} />
             <Stack.Screen name="ChangePin" component={ChangePin} />
+            <Stack.Screen name="Confirmation" component={Confirmation} />
+            <Stack.Screen
+              name="ConfirmationResult"
+              component={ConfirmationResult}
+            />
+            <Stack.Screen name="ChangePassword" component={ChangePassword} />
           </>
         ) : (
           <Stack.Screen name="Home" component={HomeNavigation} />
