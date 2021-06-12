@@ -17,7 +17,7 @@ import PinConfirmation from './src/screens/pin_confirmation/PinConfirmation';
 
 import Profile from './src/screens/profile/Profile';
 import PersonalInformation from './src/screens/profile/personal_information/PersonalInformation';
-import AddPhone from './src/screens/profile/addphone/AddPhone';
+import AddPhone from './src/screens/profile/add_phone/AddPhone';
 
 import {connect} from 'react-redux';
 
