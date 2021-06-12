@@ -4,6 +4,7 @@ import RNBootSplash from 'react-native-bootsplash';
 import {NavigationContainer} from '@react-navigation/native';
 import {createStackNavigator} from '@react-navigation/stack';
 import {createBottomTabNavigator} from '@react-navigation/bottom-tabs';
+import {connect} from 'react-redux';
 
 import Login from './src/screens/auth/login/Login';
 import Signup from './src/screens/auth/signup/Signup';
@@ -12,7 +13,8 @@ import ResetPassword from './src/screens/auth/reset/reset/ResetPassword';
 import CreatePin from './src/screens/auth/create_pin/CreatePin';
 import PinSuccess from './src/screens/auth/create_pin/PinSuccess';
 import ConfirmOtp from './src/screens/auth/confirm_otp/ConfirmOtp';
-import ChangePin from './src/screens/change_pin/ChangePin';
+import OldPin from './src/screens/change_pin/OldPin';
+import NewPin from './src/screens/change_pin/NewPin';
 import PinConfirmation from './src/screens/pin_confirmation/PinConfirmation';
 
 import Profile from './src/screens/profile/Profile';
@@ -34,12 +36,20 @@ import ConfirmationResult from './src/screens/dashboard/transfer/confirmation_re
 
 import ChangePassword from './src/screens/change_password/ChangePassword';
 
+import Profile from './src/screens/profile/Profile';
+import Notification from './src/screens/notif/Notification';
+
 const Stack = createStackNavigator();
 const Tab = createBottomTabNavigator();
 
 function TransferNavigation() {
   return (
-    <Stack.Navigator headerMode={'none'} initialRouteName="Confirmation">
+    <Stack.Navigator
+      headerMode={'none'}
+      initialRouteName="Confirmation"
+      screenOptions={{
+        cardStyle: {backgroundColor: '#FAFCFF'},
+      }}>
       <Stack.Screen name="SearchReceiver" component={SearchReceiver} />
       <Stack.Screen name="AmountInput" component={AmountInput} />
     </Stack.Navigator>
@@ -53,7 +63,7 @@ function HomeNavigation() {
       screenOptions={{
         cardStyle: {backgroundColor: '#FAFCFF'},
       }}
-      initialRouteName="ManagePhone">
+      initialRouteName="Home">
       <Stack.Screen name="HomeScreen" component={Home} />
       <Stack.Screen name="TransactionDetail" component={TransactionDetail} />
       <Stack.Screen name="TransactionHistory" component={TransactionHistory} />
@@ -66,6 +76,7 @@ function HomeNavigation() {
       />
       <Stack.Screen name="ManagePhone" component={ManagePhone} />
       <Stack.Screen name="AddPhone" component={AddPhone} />
+      <Stack.Screen name="Notification" component={Notification} />
     </Stack.Navigator>
   );
 }
@@ -80,7 +91,7 @@ const App = props => {
         screenOptions={{
           cardStyle: {backgroundColor: '#FAFCFF'},
         }}
-        initialRouteName="ChangePassword">
+        initialRouteName="Login">
         {!props.loginReducers.isLogin ? (
           <>
             <Stack.Screen name="Login" component={Login} />
@@ -91,7 +102,8 @@ const App = props => {
             <Stack.Screen name="PinSuccess" component={PinSuccess} />
             <Stack.Screen name="ConfirmOtp" component={ConfirmOtp} />
             <Stack.Screen name="PinConfirmation" component={PinConfirmation} />
-            <Stack.Screen name="ChangePin" component={ChangePin} />
+            <Stack.Screen name="OldPin" component={OldPin} />
+            <Stack.Screen name="NewPin" component={NewPin} />
             <Stack.Screen name="Confirmation" component={Confirmation} />
             <Stack.Screen
               name="ConfirmationResult"
