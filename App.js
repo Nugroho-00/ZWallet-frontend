@@ -17,8 +17,15 @@ import OldPin from './src/screens/change_pin/OldPin';
 import NewPin from './src/screens/change_pin/NewPin';
 import PinConfirmation from './src/screens/pin_confirmation/PinConfirmation';
 
+import Profile from './src/screens/profile/Profile';
+import PersonalInformation from './src/screens/profile/personal_information/PersonalInformation';
+import AddPhone from './src/screens/profile/add_phone/AddPhone';
+import ManagePhone from './src/screens/profile/manage_phone/ManagePhone';
+
 import Home from './src/screens/dashboard/home/Home';
 import TransactionDetail from './src/screens/dashboard/transaction_detail/TransactionDetail';
+import TransactionHistory from './src/screens/dashboard/transaction_history/TransactionHistory';
+import TopUp from './src/screens/dashboard/top_up/TopUp';
 
 import SearchReceiver from './src/screens/dashboard/transfer/search_reciever/SearchReciever';
 import AmountInput from './src/screens/dashboard/transfer/amount_input/Amount';
@@ -27,17 +34,19 @@ import ConfirmationResult from './src/screens/dashboard/transfer/confirmation_re
 
 import ChangePassword from './src/screens/change_password/ChangePassword';
 
-import Profile from './src/screens/profile/Profile'
-import Notification from './src/screens/notif/Notification'
+import Notification from './src/screens/notif/Notification';
 
 const Stack = createStackNavigator();
 const Tab = createBottomTabNavigator();
 
 function TransferNavigation() {
   return (
-    <Stack.Navigator headerMode={'none'} initialRouteName="Confirmation" screenOptions={{
-      cardStyle: {backgroundColor: '#FAFCFF'},
-    }}>
+    <Stack.Navigator
+      headerMode={'none'}
+      initialRouteName="Confirmation"
+      screenOptions={{
+        cardStyle: {backgroundColor: '#FAFCFF'},
+      }}>
       <Stack.Screen name="SearchReceiver" component={SearchReceiver} />
       <Stack.Screen name="AmountInput" component={AmountInput} />
     </Stack.Navigator>
@@ -46,14 +55,25 @@ function TransferNavigation() {
 
 function HomeNavigation() {
   return (
-    <Stack.Navigator headerMode={'none'} initialRouteName="Home" screenOptions={{
-      cardStyle: {backgroundColor: '#FAFCFF'},
-    }}>
+    <Stack.Navigator
+      headerMode={'none'}
+      screenOptions={{
+        cardStyle: {backgroundColor: '#FAFCFF'},
+      }}
+      initialRouteName="Home">
       <Stack.Screen name="HomeScreen" component={Home} />
       <Stack.Screen name="TransactionDetail" component={TransactionDetail} />
+      <Stack.Screen name="TransactionHistory" component={TransactionHistory} />
       <Stack.Screen name="Transfer" component={TransferNavigation} />
+      <Stack.Screen name="TopUp" component={TopUp} />
       <Stack.Screen name="Profile" component={Profile} />
-      <Stack.Screen name="Notification" component={Notification}/>
+      <Stack.Screen
+        name="PersonalInformation"
+        component={PersonalInformation}
+      />
+      <Stack.Screen name="ManagePhone" component={ManagePhone} />
+      <Stack.Screen name="AddPhone" component={AddPhone} />
+      <Stack.Screen name="Notification" component={Notification} />
     </Stack.Navigator>
   );
 }
