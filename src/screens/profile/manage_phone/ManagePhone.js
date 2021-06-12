@@ -33,7 +33,8 @@ const ManagePhone = props => {
             <Text style={classes.phonenumber}>+62 {phone}</Text>
           </View>
           <View style={classes.rightside}>
-            <TouchableOpacity onPress={() => {}}>
+            {/* sementara aja. ntar buatin navigasi untuk add phone ya */}
+            <TouchableOpacity onPress={() => props.navigation.navigate('AddPhone')}>
               <Ionicons
                 name="trash-outline"
                 size={32}

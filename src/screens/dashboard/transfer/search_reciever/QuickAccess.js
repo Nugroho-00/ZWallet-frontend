@@ -5,7 +5,7 @@ import Icon from 'react-native-vector-icons/Ionicons';
 
 import styles from './styles';
 
-const QuickAccess = () => {
+const QuickAccess = (props) => {
   const quickAccessData = [
     {
       user: 'Rian',
@@ -27,7 +27,9 @@ const QuickAccess = () => {
       </View>
       <View style={styles.quickContentWrapper}>
         {quickAccessData.map((user, index) => (
-          <TouchableOpacity style={styles.quickListWrapper} key={index}>
+          <TouchableOpacity style={styles.quickListWrapper} key={index}
+          onPress={()=>props.navigation.navigate('AmountInput')}
+          >
             <Icon name="person-outline" size={56} />
             <Text style={styles.quickName}>{user.user}</Text>
             <Text style={styles.quickAmount}>{user.amount}</Text>

@@ -5,13 +5,13 @@ import Header from './Header';
 import Chart from './Chart';
 import History from './TransactionHistory';
 
-const TransactionDetail = () => {
+const TransactionDetail = (props) => {
   return (
     <View style={{flex: 1}}>
-      <Header />
+      <Header navigation={props.navigation}/>
       <ScrollView>
         <Chart />
-        <History />
+        <History navigation={props.navigation}/>
       </ScrollView>
     </View>
   );

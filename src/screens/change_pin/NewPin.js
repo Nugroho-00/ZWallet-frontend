@@ -206,6 +206,7 @@ function NewPin(props) {
               ? {...styles.buttonOn}
               : {...styles.buttonOff}
           }
+          onPress={()=>props.navigation.navigate('Profile')}
           disabled={isFilled ? false : true}>
           <Text style={isFilled ? styles.textOn : styles.textOff}>
             Change PIN

@@ -89,7 +89,7 @@ const PersonalInformation = props => {
                   }}
                 />
               </View>
-              <TouchableOpacity style={classes.managebtn}>
+              <TouchableOpacity style={classes.managebtn} onPress={()=>props.navigation.navigate('ManagePhone')}>
                 <Text style={classes.managebtntext}>Manage</Text>
               </TouchableOpacity>
             </View>

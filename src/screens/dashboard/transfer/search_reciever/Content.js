@@ -5,7 +5,7 @@ import Icon from 'react-native-vector-icons/Ionicons';
 
 import styles from './styles';
 
-const Content = () => {
+const Content = (props) => {
   const contactData = [
     {
       user: 'Samuel Suhi',
@@ -36,7 +36,7 @@ const Content = () => {
       </View>
       <View>
         {contactData.map((contact, index) => (
-          <TouchableOpacity style={styles.listContactWrapper} key={index}>
+          <TouchableOpacity style={styles.listContactWrapper} key={index} onPress={()=>props.navigation.navigate('AmountInput')}>
             <View>
               <Icon name="person-outline" size={56} />
             </View>

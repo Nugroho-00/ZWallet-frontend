@@ -206,6 +206,7 @@ function PinConfirmation(props) {
               ? {...styles.buttonOn}
               : {...styles.buttonOff}
           }
+          onPress={()=>props.navigation.navigate('ConfirmationResult')}
           disabled={isFilled ? false : true}>
           <Text style={isFilled ? styles.textOn : styles.textOff}>
             Transfer Now

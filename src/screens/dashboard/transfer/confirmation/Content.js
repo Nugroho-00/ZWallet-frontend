@@ -3,7 +3,7 @@ import {View, TouchableOpacity, Text} from 'react-native';
 
 import styles from './styles';
 
-const Content = () => {
+const Content = (props) => {
   return (
     <View style={styles.contentWrapper}>
       <View style={styles.balanceWrapper}>
@@ -39,7 +39,7 @@ const Content = () => {
         <Text style={styles.infoText}>For buying some socks</Text>
       </View>
 
-      <TouchableOpacity style={styles.btnContinue}>
+      <TouchableOpacity style={styles.btnContinue} onPress={()=>props.navigation.navigate('PinConfirmation')}>
         <Text style={styles.textContinue}>Continue</Text>
       </TouchableOpacity>
     </View>
