@@ -1,14 +1,16 @@
-const initialState = {
+let initialState = {
   user: {},
 };
 
-const userReducers = (state = initialState, {type, payload}) => {
+let userReducers = (state = initialState, {type, payload}) => {
   switch (type) {
     case 'GET_USER':
       return {
         ...state,
         user: payload,
       };
+    default:
+      return state;
   }
 };
 

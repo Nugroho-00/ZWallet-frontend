@@ -9,16 +9,16 @@ export const getUser = token => {
   };
   return dispatch => {
     return axios
-      .get(`${API_URL}/profile}`, config)
+      .get(`${API_URL}/profile`, config)
       .then(res => {
-        console.log(res);
+        // console.log(res);
         dispatch({
           type: 'GET_USER',
           payload: res.data,
         });
       })
       .catch(err => {
-        console.log(err);
+        console.log(err.response);
       });
   };
 };
