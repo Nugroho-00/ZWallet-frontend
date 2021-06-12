@@ -23,6 +23,7 @@ import {connect} from 'react-redux';
 import Home from './src/screens/dashboard/home/Home';
 import TransactionDetail from './src/screens/dashboard/transaction_detail/TransactionDetail';
 import TransactionHistory from './src/screens/dashboard/transaction_history/TransactionHistory';
+import TopUp from './src/screens/dashboard/top_up/TopUp';
 
 import SearchReceiver from './src/screens/dashboard/transfer/search_reciever/SearchReciever';
 import AmountInput from './src/screens/dashboard/transfer/amount_input/Amount';
@@ -50,11 +51,12 @@ function HomeNavigation() {
       screenOptions={{
         cardStyle: {backgroundColor: '#FAFCFF'},
       }}
-      initialRouteName="PersonalInformation">
+      initialRouteName="TopUp">
       <Stack.Screen name="HomeScreen" component={Home} />
       <Stack.Screen name="TransactionDetail" component={TransactionDetail} />
       <Stack.Screen name="TransactionHistory" component={TransactionHistory} />
       <Stack.Screen name="Transfer" component={TransferNavigation} />
+      <Stack.Screen name="TopUp" component={TopUp} />
       <Stack.Screen name="Profile" component={Profile} />
       <Stack.Screen
         name="PersonalInformation"
