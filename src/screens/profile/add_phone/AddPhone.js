@@ -12,12 +12,7 @@ import Ionicons from 'react-native-vector-icons/Ionicons';
 
 const AddPhone = props => {
   const {navigation} = props;
-  const [profile, setProfile] = useState({
-    firstname: 'Robert',
-    lastname: 'Kjelberg',
-    email: 'pewpewpew@gmail.com',
-    phone: '88877776666',
-  });
+  const [phone, setPhone] = useState();
 
   return (
     <ScrollView>
@@ -40,18 +35,21 @@ const AddPhone = props => {
               placeholder="Enter your phone number"
               placeholderTextColor="rgba(169, 169, 169, 0.8)"
               keyboardType="phone-pad"
+              value={phone}
               onChangeText={value => {
-                setSignup({...signup, phone: value});
+                setPhone(value);
               }}
             />
           </View>
         </View>
-        <View
-          style={{
-            ...classes.submitbtn,
-            backgroundColor: 'rgba(99, 121, 244, 1)',
-          }}>
-          <TouchableOpacity disabled={false} onPress={() => {}}>
+        <View>
+          <TouchableOpacity
+            style={{
+              ...classes.submitbtn,
+              backgroundColor: 'rgba(99, 121, 244, 1)',
+            }}
+            disabled={false}
+            onPress={() => {}}>
             <Text style={{...classes.submitbtntext, color: 'white'}}>
               Submit
             </Text>
