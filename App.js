@@ -22,8 +22,6 @@ import PersonalInformation from './src/screens/profile/personal_information/Pers
 import AddPhone from './src/screens/profile/add_phone/AddPhone';
 import ManagePhone from './src/screens/profile/manage_phone/ManagePhone';
 
-import {connect} from 'react-redux';
-
 import Home from './src/screens/dashboard/home/Home';
 import TransactionDetail from './src/screens/dashboard/transaction_detail/TransactionDetail';
 import TransactionHistory from './src/screens/dashboard/transaction_history/TransactionHistory';
@@ -36,7 +34,6 @@ import ConfirmationResult from './src/screens/dashboard/transfer/confirmation_re
 
 import ChangePassword from './src/screens/change_password/ChangePassword';
 
-import Profile from './src/screens/profile/Profile';
 import Notification from './src/screens/notif/Notification';
 
 const Stack = createStackNavigator();
