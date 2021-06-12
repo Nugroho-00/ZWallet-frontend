@@ -3,7 +3,6 @@ import React from 'react';
 import RNBootSplash from 'react-native-bootsplash';
 import {NavigationContainer} from '@react-navigation/native';
 import {createStackNavigator} from '@react-navigation/stack';
-import {createBottomTabNavigator} from '@react-navigation/bottom-tabs';
 import {connect} from 'react-redux';
 
 // AUTH SCREEN
@@ -38,7 +37,6 @@ import AddPhone from './src/screens/profile/add_phone/AddPhone';
 import ManagePhone from './src/screens/profile/manage_phone/ManagePhone';
 
 const Stack = createStackNavigator();
-const Tab = createBottomTabNavigator();
 
 function TransferNavigation() {
   return (
@@ -95,7 +93,7 @@ const App = props => {
         screenOptions={{
           cardStyle: {backgroundColor: '#FAFCFF'},
         }}
-        initialRouteName="Login">
+        initialRouteName="AmountInput">
         {!props.loginReducers.isLogin ? (
           <>
             <Stack.Screen name="Login" component={Login} />
