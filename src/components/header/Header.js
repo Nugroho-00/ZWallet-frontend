@@ -11,7 +11,7 @@ const Header = props => {
       <StatusBar
         translucent
         backgroundColor="#6379F4"
-        barStyle="dark-content"
+        barStyle="light-content"
       />
       <Pressable
         style={

@@ -63,9 +63,11 @@ const Home = props => {
         </View>
         <View style={{flex: 1}}>
           <TouchableOpacity
-            onPress={() => {
-              props.onLogoutHandler();
-            }}>
+            // onPress={() => {
+            //   props.onLogoutHandler();
+            // }}
+            onPress={()=>props.navigation.navigate('Notification')}
+            >
             <Icon name="notifications-outline" size={28} color="#FFF" />
           </TouchableOpacity>
         </View>
