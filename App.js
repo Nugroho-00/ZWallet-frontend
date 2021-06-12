@@ -14,6 +14,9 @@ import PinSuccess from './src/screens/auth/create_pin/PinSuccess';
 import ConfirmOtp from './src/screens/auth/confirm_otp/ConfirmOtp';
 import ChangePin from './src/screens/change_pin/ChangePin';
 import PinConfirmation from './src/screens/pin_confirmation/PinConfirmation';
+
+import Profile from './src/screens/profile/Profile'
+
 import {connect} from 'react-redux';
 
 import Home from './src/screens/dashboard/home/Home';
@@ -44,6 +47,8 @@ function HomeNavigation() {
       <Stack.Screen name="HomeScreen" component={Home} />
       <Stack.Screen name="TransactionDetail" component={TransactionDetail} />
       <Stack.Screen name="Transfer" component={TransferNavigation} />
+      <Stack.Screen name="Profile" component={Profile} />
+
     </Stack.Navigator>
   );
 }

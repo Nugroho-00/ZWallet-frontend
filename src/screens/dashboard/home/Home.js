@@ -49,7 +49,7 @@ const Home = props => {
       />
       <View style={styles.headerWrapper}>
         <View style={{flex: 2}}>
-          <Icon name="person" size={52} color="#FFF" />
+          <Icon name="person" size={52} color="#FFF" onPress={()=>props.navigation.navigate('Profile')}/>
         </View>
         <View style={{flex: 6}}>
           <TouchableOpacity>
