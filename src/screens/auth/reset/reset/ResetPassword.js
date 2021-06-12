@@ -15,6 +15,7 @@ import {KeyboardAwareScrollView} from 'react-native-keyboard-aware-scroll-view';
 import {Toast} from 'native-base';
 import classes from './Styles';
 import Ionicons from 'react-native-vector-icons/Ionicons';
+import {API_URL} from '@env';
 
 const ResetPassword = props => {
   const [reset, setReset] = useState({
@@ -102,10 +103,11 @@ const ResetPassword = props => {
         duration: 3000,
       });
     }
+    //api url token validasi di cek
     let config = {
       method: 'PATCH',
       url: `${API_URL}/auth/reset-password`,
-      headers: {authorization: `Bearer ${props.route.params.token}`},
+      headers: {authorization: `Bearer ${props.route.params?.token}`},
       data: {newPassword: reset.password},
     };
     axios(config)

@@ -18,15 +18,22 @@ import {connect} from 'react-redux';
 
 import Home from './src/screens/dashboard/home/Home';
 import TransactionDetail from './src/screens/dashboard/transaction_detail/TransactionDetail';
+import TransactionHistory from './src/screens/dashboard/transaction_history/TransactionHistory';
 
 const Stack = createStackNavigator();
 const Tab = createBottomTabNavigator();
 
 function HomeNavigation() {
   return (
-    <Stack.Navigator headerMode={'none'} initialRouteName="HomeScreen">
+    <Stack.Navigator
+      headerMode={'none'}
+      screenOptions={{
+        cardStyle: {backgroundColor: '#FAFCFF'},
+      }}
+      initialRouteName="TransactionHistory">
       <Stack.Screen name="HomeScreen" component={Home} />
       <Stack.Screen name="TransactionDetail" component={TransactionDetail} />
+      <Stack.Screen name="TransactionHistory" component={TransactionHistory} />
     </Stack.Navigator>
   );
 }
