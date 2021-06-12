@@ -5,7 +5,7 @@ import Icon from 'react-native-vector-icons/Ionicons';
 
 import styles from './styles';
 
-const Content = (props) => {
+const Content = props => {
   return (
     <View style={styles.contentContainer}>
       <View style={styles.inputAmountWrapper}>
@@ -22,8 +22,9 @@ const Content = (props) => {
         <TextInput style={styles.noteInput} placeholder="Add some notes" />
       </View>
 
-      <TouchableOpacity style={{...styles.btnContinue, marginTop:20, width:'100%'}}
-      onPress={()=>props.navigation.navigate('Confirmation')}>
+      <TouchableOpacity
+        style={{...styles.btnContinue, marginTop: 20, width: '100%'}}
+        onPress={() => props.navigation.navigate('Confirmation')}>
         <Text style={styles.textContinue}>Continue</Text>
       </TouchableOpacity>
     </View>

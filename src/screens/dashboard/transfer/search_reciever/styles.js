@@ -7,6 +7,7 @@ const styles = StyleSheet.create({
   headerWrapper: {
     paddingHorizontal: 16,
     paddingVertical: 40,
+    paddingBottom: 25,
     backgroundColor: '#6379F4',
     borderBottomLeftRadius: 20,
     borderBottomRightRadius: 20,
@@ -27,7 +28,7 @@ const styles = StyleSheet.create({
   searchWrapper: {
     flexDirection: 'row',
     alignItems: 'center',
-    paddingVertical: 7,
+    paddingVertical: 5,
     paddingHorizontal: 18,
     backgroundColor: '#FFF',
     borderRadius: 12,
@@ -62,6 +63,15 @@ const styles = StyleSheet.create({
     paddingHorizontal: 16,
     backgroundColor: '#FFF',
     borderRadius: 10,
+    shadowColor: '#000',
+    shadowOffset: {
+      width: 0,
+      height: 1,
+    },
+    shadowOpacity: 0.22,
+    shadowRadius: 2.22,
+
+    elevation: 3,
   },
   contactInfoWrapper: {
     marginLeft: 15,
@@ -99,6 +109,15 @@ const styles = StyleSheet.create({
     marginHorizontal: 10,
     borderRadius: 10,
     backgroundColor: '#FFF',
+    shadowColor: '#000',
+    shadowOffset: {
+      width: 0,
+      height: 1,
+    },
+    shadowOpacity: 0.22,
+    shadowRadius: 2.22,
+
+    elevation: 3,
   },
   quickName: {
     fontFamily: 'NunitoSans-Regular',
