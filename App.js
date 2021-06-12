@@ -15,7 +15,8 @@ import ConfirmOtp from './src/screens/auth/confirm_otp/ConfirmOtp';
 import ChangePin from './src/screens/change_pin/ChangePin';
 import PinConfirmation from './src/screens/pin_confirmation/PinConfirmation';
 
-import Profile from './src/screens/profile/Profile'
+import Profile from './src/screens/profile/Profile';
+import PersonalInformation from './src/screens/profile/personal_information/PersonalInformation';
 
 import {connect} from 'react-redux';
 
@@ -49,13 +50,16 @@ function HomeNavigation() {
       screenOptions={{
         cardStyle: {backgroundColor: '#FAFCFF'},
       }}
-      initialRouteName="TransactionHistory">
+      initialRouteName="PersonalInformation">
       <Stack.Screen name="HomeScreen" component={Home} />
       <Stack.Screen name="TransactionDetail" component={TransactionDetail} />
       <Stack.Screen name="TransactionHistory" component={TransactionHistory} />
       <Stack.Screen name="Transfer" component={TransferNavigation} />
       <Stack.Screen name="Profile" component={Profile} />
-
+      <Stack.Screen
+        name="PersonalInformation"
+        component={PersonalInformation}
+      />
     </Stack.Navigator>
   );
 }
