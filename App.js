@@ -14,14 +14,33 @@ import PinSuccess from './src/screens/auth/create_pin/PinSuccess';
 import ConfirmOtp from './src/screens/auth/confirm_otp/ConfirmOtp';
 import ChangePin from './src/screens/change_pin/ChangePin';
 import PinConfirmation from './src/screens/pin_confirmation/PinConfirmation';
+
+import Profile from './src/screens/profile/Profile'
+
 import {connect} from 'react-redux';
 
 import Home from './src/screens/dashboard/home/Home';
 import TransactionDetail from './src/screens/dashboard/transaction_detail/TransactionDetail';
 import TransactionHistory from './src/screens/dashboard/transaction_history/TransactionHistory';
 
+import SearchReceiver from './src/screens/dashboard/transfer/search_reciever/SearchReciever';
+import AmountInput from './src/screens/dashboard/transfer/amount_input/Amount';
+import Confirmation from './src/screens/dashboard/transfer/confirmation/Confirmation';
+import ConfirmationResult from './src/screens/dashboard/transfer/confirmation_result/ConfirmationResult';
+
+import ChangePassword from './src/screens/change_password/ChangePassword';
+
 const Stack = createStackNavigator();
 const Tab = createBottomTabNavigator();
+
+function TransferNavigation() {
+  return (
+    <Stack.Navigator headerMode={'none'} initialRouteName="Confirmation">
+      <Stack.Screen name="SearchReceiver" component={SearchReceiver} />
+      <Stack.Screen name="AmountInput" component={AmountInput} />
+    </Stack.Navigator>
+  );
+}
 
 function HomeNavigation() {
   return (
@@ -34,6 +53,9 @@ function HomeNavigation() {
       <Stack.Screen name="HomeScreen" component={Home} />
       <Stack.Screen name="TransactionDetail" component={TransactionDetail} />
       <Stack.Screen name="TransactionHistory" component={TransactionHistory} />
+      <Stack.Screen name="Transfer" component={TransferNavigation} />
+      <Stack.Screen name="Profile" component={Profile} />
+
     </Stack.Navigator>
   );
 }
@@ -48,7 +70,7 @@ const App = props => {
         screenOptions={{
           cardStyle: {backgroundColor: '#FAFCFF'},
         }}
-        initialRouteName="Login">
+        initialRouteName="ChangePassword">
         {!props.loginReducers.isLogin ? (
           <>
             <Stack.Screen name="Login" component={Login} />
@@ -60,6 +82,12 @@ const App = props => {
             <Stack.Screen name="ConfirmOtp" component={ConfirmOtp} />
             <Stack.Screen name="PinConfirmation" component={PinConfirmation} />
             <Stack.Screen name="ChangePin" component={ChangePin} />
+            <Stack.Screen name="Confirmation" component={Confirmation} />
+            <Stack.Screen
+              name="ConfirmationResult"
+              component={ConfirmationResult}
+            />
+            <Stack.Screen name="ChangePassword" component={ChangePassword} />
           </>
         ) : (
           <Stack.Screen name="Home" component={HomeNavigation} />
