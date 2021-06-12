@@ -4,10 +4,10 @@ import {View, ScrollView, Text} from 'react-native';
 import Header from './Header';
 import Content from './Content';
 
-const ChangePassword = () => {
+const ChangePassword = (props) => {
   return (
     <View style={{flex: 1}}>
-      <Header />
+      <Header navigation={props.navigation} />
       <ScrollView>
         <Content />
       </ScrollView>

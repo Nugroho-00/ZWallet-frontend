@@ -7,13 +7,13 @@ import QuickAccess from './QuickAccess';
 
 import styles from './styles';
 
-const SearchReciever = () => {
+const SearchReciever = (props) => {
   return (
     <View style={styles.container}>
-      <Header />
+      <Header navigation={props.navigation}/>
       <ScrollView>
-        <QuickAccess />
-        <Content />
+        <QuickAccess navigation={props.navigation} />
+        <Content navigation={props.navigation}/>
       </ScrollView>
     </View>
   );

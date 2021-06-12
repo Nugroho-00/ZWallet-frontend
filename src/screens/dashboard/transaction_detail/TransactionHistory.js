@@ -5,7 +5,7 @@ import Icon from 'react-native-vector-icons/Ionicons';
 
 import styles from './styles';
 
-const TransactionHistory = () => {
+const TransactionHistory = (props) => {
   const dataHistory = [
     {
       user: 'Samuel',
@@ -33,7 +33,7 @@ const TransactionHistory = () => {
       <View style={styles.historyTitleWrapper}>
         <Text style={{...styles.font, fontSize: 18}}>Transaction History</Text>
         <TouchableOpacity>
-          <Text style={{...styles.font, color: '#6379F4'}}>See all</Text>
+          <Text style={{...styles.font, color: '#6379F4'}} onPress={()=>props.navigation.navigate('TransactionHistory')}>See all</Text>
         </TouchableOpacity>
       </View>
 

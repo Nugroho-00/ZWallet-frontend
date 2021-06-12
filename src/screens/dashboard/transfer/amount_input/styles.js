@@ -77,6 +77,19 @@ const styles = StyleSheet.create({
     marginLeft: 15,
     fontSize: 16,
   },
+
+  btnContinue: {
+    alignItems: 'center',
+    paddingVertical: 16,
+    backgroundColor: '#6379F4',
+    borderRadius: 12,
+  },
+  textContinue: {
+    fontFamily: 'NunitoSans-Regular',
+    fontSize: 18,
+    fontWeight: 'bold',
+    color: '#FFF',
+  },
 });
 
 export default styles;
