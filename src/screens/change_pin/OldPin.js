@@ -5,7 +5,7 @@ import {Button} from 'native-base';
 import styles from './Styles';
 import Header from '../../components/header/Header';
 
-function PinConfirmation(props) {
+function OldPin(props) {
   const {navigation} = props;
   const [isFilled, setIsFilled] = useState(false);
   const [isEdit, setIsEdit] = useState(false);
@@ -207,7 +207,9 @@ function PinConfirmation(props) {
               ? {...styles.buttonOn}
               : {...styles.buttonOff}
           }
-          disabled={isFilled ? false : true}>
+          disabled={isFilled ? false : true}
+          onPress={()=>props.navigation.navigate('NewPin')}
+          >
           <Text style={isFilled ? styles.textOn : styles.textOff}>
             Continue
           </Text>
@@ -217,4 +219,4 @@ function PinConfirmation(props) {
   );
 }
 
-export default PinConfirmation;
+export default OldPin;
