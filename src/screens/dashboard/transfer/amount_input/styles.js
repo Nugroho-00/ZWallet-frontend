@@ -59,6 +59,7 @@ const styles = StyleSheet.create({
   inputAmount: {
     marginBottom: 29,
     fontSize: 48,
+    color: '#6379F4',
   },
   balanceText: {
     fontFamily: 'NunitoSans-Regular',
@@ -72,10 +73,24 @@ const styles = StyleSheet.create({
     alignItems: 'center',
     borderBottomWidth: 1,
     borderColor: 'rgba(169, 169, 169, 0.6)',
+    marginBottom: 180,
   },
   noteInput: {
     marginLeft: 15,
     fontSize: 16,
+  },
+  btnContinue: {
+    minWidth: '100%',
+    alignItems: 'center',
+    paddingVertical: 16,
+    backgroundColor: '#6379F4',
+    borderRadius: 12,
+  },
+  textContinue: {
+    fontFamily: 'NunitoSans-Regular',
+    fontSize: 18,
+    fontWeight: 'bold',
+    color: '#FFF',
   },
 });
 

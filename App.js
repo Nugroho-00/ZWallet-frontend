@@ -3,7 +3,6 @@ import React from 'react';
 import RNBootSplash from 'react-native-bootsplash';
 import {NavigationContainer} from '@react-navigation/native';
 import {createStackNavigator} from '@react-navigation/stack';
-import {createBottomTabNavigator} from '@react-navigation/bottom-tabs';
 import {connect} from 'react-redux';
 
 import Login from './src/screens/auth/login/Login';
@@ -37,7 +36,6 @@ import ChangePassword from './src/screens/change_password/ChangePassword';
 import Notification from './src/screens/notif/Notification';
 
 const Stack = createStackNavigator();
-const Tab = createBottomTabNavigator();
 
 function TransferNavigation() {
   return (
@@ -48,7 +46,8 @@ function TransferNavigation() {
         cardStyle: {backgroundColor: '#FAFCFF'},
       }}>
       <Stack.Screen name="SearchReceiver" component={SearchReceiver} />
-      <Stack.Screen name="AmountInput" component={AmountInput} />
+      <Stack.Screen name="Confirmation" component={Confirmation} />
+      <Stack.Screen name="ConfirmationResult" component={ConfirmationResult} />
     </Stack.Navigator>
   );
 }
@@ -88,7 +87,7 @@ const App = props => {
         screenOptions={{
           cardStyle: {backgroundColor: '#FAFCFF'},
         }}
-        initialRouteName="Login">
+        initialRouteName="AmountInput">
         {!props.loginReducers.isLogin ? (
           <>
             <Stack.Screen name="Login" component={Login} />
@@ -101,12 +100,8 @@ const App = props => {
             <Stack.Screen name="PinConfirmation" component={PinConfirmation} />
             <Stack.Screen name="OldPin" component={OldPin} />
             <Stack.Screen name="NewPin" component={NewPin} />
-            <Stack.Screen name="Confirmation" component={Confirmation} />
-            <Stack.Screen
-              name="ConfirmationResult"
-              component={ConfirmationResult}
-            />
             <Stack.Screen name="ChangePassword" component={ChangePassword} />
+            <Stack.Screen name="AmountInput" component={AmountInput} />
           </>
         ) : (
           <Stack.Screen name="Home" component={HomeNavigation} />
