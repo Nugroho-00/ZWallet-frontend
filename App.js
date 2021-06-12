@@ -24,6 +24,8 @@ import AmountInput from './src/screens/dashboard/transfer/amount_input/Amount';
 import Confirmation from './src/screens/dashboard/transfer/confirmation/Confirmation';
 import ConfirmationResult from './src/screens/dashboard/transfer/confirmation_result/ConfirmationResult';
 
+import ChangePassword from './src/screens/change_password/ChangePassword';
+
 const Stack = createStackNavigator();
 const Tab = createBottomTabNavigator();
 
@@ -56,7 +58,7 @@ const App = props => {
         screenOptions={{
           cardStyle: {backgroundColor: '#FAFCFF'},
         }}
-        initialRouteName="ConfirmationResult">
+        initialRouteName="ChangePassword">
         {!props.loginReducers.isLogin ? (
           <>
             <Stack.Screen name="Login" component={Login} />
@@ -73,6 +75,7 @@ const App = props => {
               name="ConfirmationResult"
               component={ConfirmationResult}
             />
+            <Stack.Screen name="ChangePassword" component={ChangePassword} />
           </>
         ) : (
           <Stack.Screen name="Home" component={HomeNavigation} />
