@@ -16,6 +16,7 @@ import {connect} from 'react-redux';
 import axios from 'axios';
 import {API_URL} from '@env';
 
+import PushNotification from 'react-native-push-notification';
 
 const TopUp = props => {
   const {navigation} = props;
@@ -26,6 +27,23 @@ const TopUp = props => {
   const [animateModal, setAnimateModal] = useState(false);
 
   const token = props.loginReducers.user.token;
+
+  const channel = 'notif';
+  useEffect(() => {
+    PushNotification.createChannel(
+      {
+        channelId: 'notif', 
+        channelName: 'My Notification Channel',
+      },
+      created => console.log(`student createChannel returned '${created}'`), // (optional) callback returns whether the channel was created, false means it already existed.
+    );
+  }, []);
+
+  useEffect(() => {
+    PushNotification.getChannels(channel_ids => {
+      console.log(channel_ids);
+    });
+  }, []);
 
 
   const isValidNum = num => {
@@ -39,6 +57,30 @@ const TopUp = props => {
       setIsFilled(false)
     }
   },[amount])
+
+
+  const storeNotification=()=>{
+    let config = {
+      method: 'POST',
+      url: `${API_URL}/notification`,
+      data: {content: `in#Top Up with instant method#${amount}`},
+      headers: {
+        Authorization: 'Bearer ' + token,
+      },
+    };
+    axios(config)
+      .then(res => {
+        PushNotification.localNotification({
+          channelId: channel,
+          title: 'Hurray! top up was successful.',
+          message: 'The balance will be added to your Zwallet account',
+        });
+        props.navigation.navigate('HomeScreen');
+      })
+      .catch(err => {
+        console.log(err);
+      });
+  }
 
 
   const submitHandler = () => {
@@ -58,7 +100,7 @@ const TopUp = props => {
       };
       axios(config)
         .then(res => {
-          props.navigation.navigate('HomeScreen');
+          storeNotification()
         })
         .catch(err => {
           console.log(err);
