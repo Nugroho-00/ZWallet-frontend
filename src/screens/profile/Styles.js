@@ -4,12 +4,13 @@ import {StatusBar} from 'react-native';
 const styles = StyleSheet.create({
   container: {
     flex: 1,
-    paddingTop:StatusBar.currentHeight+8,
+    paddingTop:StatusBar.currentHeight-10,
     paddingHorizontal: 16,
     backgroundColor:'#FFF'
   },
   header :{
-    alignItems:'flex-start'
+    alignItems:'flex-start',
+    // backgroundColor:'red'
   },
 
   mainInfo:{
