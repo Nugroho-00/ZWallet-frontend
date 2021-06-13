@@ -1,6 +1,6 @@
 import React, {useState, useEffect} from 'react';
 
-import {View, Text, TouchableOpacity, TextInput} from 'react-native';
+import {View, Text, TouchableOpacity, TextInput, Image} from 'react-native';
 
 import Icon from 'react-native-vector-icons/Ionicons';
 
@@ -12,21 +12,22 @@ import {API_URL} from '@env';
 
 const QuickAccess = props => {
   const [myContact, setMyContact] = useState();
-  const [isAvailabel, setIsAvailabel] = useState(false);
-  const [createNew, setCreateNew] = useState();
+  const [isAvailable, setIsAvailable] = useState(false);
+  const [addNew, setAddNew] = useState('');
+  const [dataReceiver, setDataReceiver] = useState();
+  const [errorMessage, setErrorMessage] = useState('');
   const token = props.loginReducers.user.token;
 
   useEffect(() => {
     axios
-      .get(`${API_URL}/profile/my-contact`, {
+      .get(`${API_URL}/profile/my-contact?sort=rank-ZA`, {
         headers: {Authorization: `Bearer ${token}`},
       })
       .then(res => {
-        if (!res.data.success) {
-          return;
-        } else if (res.data.result) {
+        if (res.data.success===false) {
+          setIsAvailable(false);
+        } else {
           setMyContact(res.data.result);
-          setIsAvailabel(true);
         }
       })
       .catch(err => {
@@ -34,48 +35,76 @@ const QuickAccess = props => {
       });
   }, []);
 
-  // const quickAccessData = [
-  //   {
-  //     user: 'Rian',
-  //     amount: '-9999',
-  //   },
-  //   {
-  //     user: 'Rian',
-  //     amount: '-19293',
-  //   },
-  //   {
-  //     user: 'Rian',
-  //     amount: '-129i3',
-  //   },
-  // ];
+  const isValidPhone = num => {
+    return !!num.match(/^[0-9]*$/);
+  };
+
+  const findHandler = () => {
+    if (!addNew) {
+      setErrorMessage('Please fill in this field');
+    } else {
+      let config = {
+        method: 'POST',
+        url: `${API_URL}/ext/find`,
+        data: {phone: addNew},
+        headers: {
+          Authorization: 'Bearer ' + token,
+        },
+      };
+      axios(config)
+        .then(res => {
+          if (res.data.success) {
+            setDataReceiver(res.data.result);
+            props.navigation.navigate('AmountInput', {...dataReceiver[0]});
+          } else {
+            setErrorMessage('No user is associated with the phone number');
+          }
+        })
+        .catch(err => {
+          console.log(err);
+        });
+    }
+  };
   return (
     <View style={styles.quickContainer}>
       <View style={styles.createNewSection}>
         <TextInput
+          value={addNew}
           style={styles.numberInput}
           placeholder="Input phone number here"
           keyboardType="numeric"
+          onChangeText={p => {
+            isValidPhone(p) && setAddNew(p);
+          }}
+          onPressIn={() => setErrorMessage('')}
         />
 
-        <TouchableOpacity style={styles.sendIconWrapper}>
+        <TouchableOpacity style={styles.sendIconWrapper} onPress={findHandler}>
           <Icon name="send-outline" style={styles.sendIcon} />
         </TouchableOpacity>
       </View>
-      {myContact ? (
+      {errorMessage ? (
+        <Text style={styles.errorMessage}>{errorMessage}</Text>
+      ) : null}
+
+      {myContact && !props.onSearch ? (
         <>
-          <View style={myContact?styles.quickTitle:null}>
+          <View style={myContact ? styles.quickTitle : null}>
             <Text style={styles.quickTitleText}>Quick Access</Text>
           </View>
           <View style={styles.quickContentWrapper}>
-            {myContact &&
+            {myContact && !props.onSearch &&
               myContact.slice(0, 3).map((user, index) => (
                 <TouchableOpacity
                   style={styles.quickListWrapper}
                   key={index}
-                  onPress={() => props.navigation.navigate('AmountInput')}>
-                  <Icon name="person-outline" size={56} />
-                  <Text style={styles.quickName}>{user.user}</Text>
-                  <Text style={styles.quickAmount}>{user.amount}</Text>
+                  onPress={() => props.navigation.navigate('AmountInput', {...user})}>
+                  {!user.avatar ? 
+                  <Icon name="person-outline" size={56} />:
+                  <Image source={{uri:`${API_URL}/${user.avatar}`}}/>
+                  }
+                  <Text style={styles.quickName}>{user.username.length>7?user.username.slice(0,5)+'...':user.username}</Text>
+                  <Text style={styles.quickAmount}>{user.phone.slice(-4)}</Text>
                 </TouchableOpacity>
               ))}
           </View>

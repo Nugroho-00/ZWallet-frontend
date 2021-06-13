@@ -28,7 +28,7 @@ const styles = StyleSheet.create({
   searchWrapper: {
     flexDirection: 'row',
     alignItems: 'center',
-    paddingVertical: 5,
+    // paddingVertical: 5,
     paddingHorizontal: 18,
     backgroundColor: '#FFF',
     borderRadius: 12,
@@ -207,6 +207,11 @@ const styles = StyleSheet.create({
     
     elevation: 3,
   },
+  errorMessage:{
+    color:'red',
+    fontFamily: 'NunitoSans-Regular',
+    fontSize:14
+  }
 });
 
 export default styles;

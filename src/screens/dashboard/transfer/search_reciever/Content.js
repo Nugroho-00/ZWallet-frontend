@@ -11,61 +11,48 @@ import {API_URL} from '@env';
 
 const Content = props => {
   const [myContact, setMyContact] = useState();
-  const [isAvailabel, setIsAvailabel] = useState(false);
+  const [isAvailable, setIsAvailable] = useState(false);
   const token = props.loginReducers.user.token;
 
-  useEffect(() => {
+  const getContact = ()=>{
     axios
-      .get(`${API_URL}/profile/my-contact`, {
-        headers: {Authorization: `Bearer ${token}`},
-      })
-      .then(res => {
-        if (!res.data.success) {
-          return;
-        } else if (res.data.result) {
-          setMyContact(res.data.result);
-          setIsAvailabel(true);
-        }
-      })
-      .catch(err => {
-        console.log(err);
-      });
+    .get(`${API_URL}/profile/my-contact?search=${props.onSearch}&sort=name-AZ`, {
+      headers: {Authorization: `Bearer ${token}`},
+    })
+    .then(res => {
+      if (res.data.success===false) {
+        setIsAvailable(false);
+      } else if (res.data.result) {
+        setMyContact(res.data.result);
+        setIsAvailable(true);
+      }
+    })
+    .catch(err => {
+      console.log(err);
+    });
+  }
+
+  useEffect(() => {
+    getContact()
   }, []);
-  // const contactData = [
-  //   {
-  //     user: 'Samuel Suhi',
-  //     phone: '+62 813-8492-9994',
-  //   },
-  //   {
-  //     user: 'Samuel Suhi',
-  //     phone: '+62 813-8492-9994',
-  //   },
-  //   {
-  //     user: 'Samuel Suhi',
-  //     phone: '+62 813-8492-9994',
-  //   },
-  //   {
-  //     user: 'Samuel Suhi',
-  //     phone: '+62 813-8492-9994',
-  //   },
-  //   {
-  //     user: 'Samuel Suhi',
-  //     phone: '+62 813-8492-9994',
-  //   },
-  // ];
+
+  useEffect(() => {
+    getContact()
+  }, [props.onSearch]);
+
   return (
-    <View style={styles.contentContainer}>
+    <View style={props.onSearch?{...styles.contentContainer,marginTop:-10}:styles.contentContainer}>
       <View style={styles.titleContentWrapper}>
         <Text style={styles.titleContentText}>Contact</Text>
-        <Text style={styles.countContact}>{!isAvailabel ? 'No contact found': myContact.length+' Contact Founds'}</Text>
+        <Text style={styles.countContact}>{!isAvailable ? 'No contact found': myContact.length+' Contact Founds'}</Text>
       </View>
       <View>
-        {isAvailabel && myContact ?  (
+        {isAvailable && myContact ?  (
          myContact.map((contact, index) => (
             <TouchableOpacity
               style={styles.listContactWrapper}
               key={index}
-              onPress={() => props.navigation.navigate('AmountInput')}>
+              onPress={() => props.navigation.navigate('AmountInput', {...contact})}>
               <View>
                 <Icon name="person-outline" size={56} />
               </View>
