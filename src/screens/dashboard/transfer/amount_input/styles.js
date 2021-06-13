@@ -59,6 +59,7 @@ const styles = StyleSheet.create({
   inputAmount: {
     marginBottom: 29,
     fontSize: 48,
+    color: '#6379F4',
   },
   balanceText: {
     fontFamily: 'NunitoSans-Regular',
@@ -72,6 +73,7 @@ const styles = StyleSheet.create({
     alignItems: 'center',
     borderBottomWidth: 1,
     borderColor: 'rgba(169, 169, 169, 0.6)',
+    marginBottom: 180,
   },
   noteInput: {
     marginLeft: 15,
@@ -90,6 +92,11 @@ const styles = StyleSheet.create({
     fontWeight: 'bold',
     color: '#FFF',
   },
+  avatar:{
+    height:50,
+    width:50,
+    borderRadius:10
+  }
 });
 
 export default styles;

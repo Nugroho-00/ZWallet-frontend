@@ -7,6 +7,7 @@ const styles = StyleSheet.create({
   headerWrapper: {
     paddingHorizontal: 16,
     paddingVertical: 40,
+    paddingBottom: 25,
     backgroundColor: '#6379F4',
     borderBottomLeftRadius: 20,
     borderBottomRightRadius: 20,
@@ -27,7 +28,7 @@ const styles = StyleSheet.create({
   searchWrapper: {
     flexDirection: 'row',
     alignItems: 'center',
-    paddingVertical: 7,
+    // paddingVertical: 5,
     paddingHorizontal: 18,
     backgroundColor: '#FFF',
     borderRadius: 12,
@@ -62,6 +63,15 @@ const styles = StyleSheet.create({
     paddingHorizontal: 16,
     backgroundColor: '#FFF',
     borderRadius: 10,
+    shadowColor: '#000',
+    shadowOffset: {
+      width: 0,
+      height: 1,
+    },
+    shadowOpacity: 0.22,
+    shadowRadius: 2.22,
+
+    elevation: 3,
   },
   contactInfoWrapper: {
     marginLeft: 15,
@@ -99,6 +109,15 @@ const styles = StyleSheet.create({
     marginHorizontal: 10,
     borderRadius: 10,
     backgroundColor: '#FFF',
+    shadowColor: '#000',
+    shadowOffset: {
+      width: 0,
+      height: 1,
+    },
+    shadowOpacity: 0.22,
+    shadowRadius: 2.22,
+
+    elevation: 3,
   },
   quickName: {
     fontFamily: 'NunitoSans-Regular',
@@ -112,6 +131,92 @@ const styles = StyleSheet.create({
     fontFamily: 'NunitoSans-Regular',
     color: '#7A7886',
   },
+  
+  createNewSection:{
+    flexDirection:'row',
+    justifyContent:'center',
+    alignItems:'center',
+    marginBottom:12,
+    
+  },
+  inputWrapper: {
+    flexDirection: 'row',
+    justifyContent:'space-between',
+    alignItems: 'center',
+    paddingHorizontal: 5,
+    backgroundColor: '#fff',
+    borderRadius: 12,
+    width:'80%',
+    shadowColor: '#000',
+    shadowOffset: {
+      width: 0,
+      height: 1,
+    },
+    shadowOpacity: 0.22,
+    shadowRadius: 2.22,
+    
+    elevation: 3,
+  },
+
+  inputTitle:{
+    fontFamily: 'NunitoSans-Bold',
+    fontSize: 16,
+    color: '#514F5B',
+    marginBottom:5,
+  },
+  numberInput: {
+    width:'80%',
+    height:40,
+    flexDirection: 'row',
+    justifyContent:'space-between',
+    alignItems: 'center',
+    paddingHorizontal: 10,
+    backgroundColor: '#fff',
+    borderRadius: 12,
+    width:'80%',
+    shadowColor: '#000',
+    shadowOffset: {
+      width: 0,
+      height: 1,
+    },
+    shadowOpacity: 0.22,
+    shadowRadius: 2.22,
+    
+    elevation: 3,
+  },
+  sendIconWrapper:{
+    justifyContent:'center',
+    width:'20%',
+    backgroundColor: '#EAEDFF',
+    paddingHorizontal: 5,
+    borderRadius: 12,
+    marginLeft:5,
+    height:40,
+  },
+  sendIcon:{
+    color:'#6379F4',
+    fontSize:25,
+    textAlign:'center',
+    shadowColor: '#000',
+    shadowOffset: {
+      width: 0,
+      height: 1,
+    },
+    shadowOpacity: 0.22,
+    shadowRadius: 2.22,
+    
+    elevation: 3,
+  },
+  errorMessage:{
+    color:'red',
+    fontFamily: 'NunitoSans-Regular',
+    fontSize:14
+  },
+  avatar:{
+    height:50,
+    width:50,
+    borderRadius:10
+  }
 });
 
 export default styles;

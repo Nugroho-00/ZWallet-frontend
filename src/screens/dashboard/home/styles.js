@@ -40,6 +40,15 @@ const styles = StyleSheet.create({
     paddingVertical: 16,
     backgroundColor: '#EAEDFF',
     borderRadius: 10,
+    shadowColor: '#000',
+    shadowOffset: {
+      width: 0,
+      height: 1,
+    },
+    shadowOpacity: 0.22,
+    shadowRadius: 2.22,
+
+    elevation: 3,
   },
   btnTransactionText: {
     fontSize: 18,
@@ -62,6 +71,15 @@ const styles = StyleSheet.create({
     paddingVertical: 20,
     backgroundColor: '#FFF',
     borderRadius: 10,
+    shadowColor: '#000',
+    shadowOffset: {
+      width: 0,
+      height: 1,
+    },
+    shadowOpacity: 0.22,
+    shadowRadius: 2.22,
+
+    elevation: 3,
   },
 });
 
