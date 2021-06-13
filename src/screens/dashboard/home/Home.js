@@ -19,8 +19,6 @@ const Home = props => {
   const [userData, setUserData] = useState({});
   const [historyData, setHistoryData] = useState([]);
 
-  console.log(historyData);
-
   const getDataUser = () => {
     const token = props.loginReducers.user.token;
     return props.getUserHandler(token);
@@ -48,7 +46,7 @@ const Home = props => {
     return axios
       .get(`${API_URL}/transaction/?sort=amount-ZA`, config)
       .then(res => {
-        console.log(res);
+        // console.log(res);
         return setHistoryData(res.data.result);
       })
       .catch(err => {
