@@ -29,7 +29,7 @@ const classes = StyleSheet.create({
     paddingHorizontal: '3%',
     borderTopLeftRadius: 30,
     borderTopRightRadius: 30,
-    shadowColor: 'black',
+    shadowColor: 'rgba(58, 61, 66, 1)',
     elevation: 16,
   },
   loginheader: {
@@ -53,7 +53,12 @@ const classes = StyleSheet.create({
     flexDirection: 'row',
     alignItems: 'center',
     marginHorizontal: '4%',
-    marginBottom: '10%',
+  },
+  inputwarning: {
+    paddingLeft: '4%',
+    fontFamily: 'NunitoSans-Regular',
+    fontSize: 14,
+    marginBottom: '3%',
   },
   lefticon: {
     position: 'absolute',
@@ -68,7 +73,7 @@ const classes = StyleSheet.create({
     zIndex: 10,
     fontFamily: 'NunitoSans-Regular',
     fontSize: 16,
-    color: 'black',
+    color: 'rgba(58, 61, 66, 1)',
   },
   inputbox: {
     width: '100%',
@@ -77,25 +82,7 @@ const classes = StyleSheet.create({
     borderBottomColor: 'rgba(169, 169, 169, 0.6)',
     fontFamily: 'NunitoSans-Regular',
     fontSize: 16,
-    color: 'black',
-  },
-  inputboxactive: {
-    width: '100%',
-    paddingLeft: '14%',
-    borderBottomWidth: 1.5,
-    borderBottomColor: 'rgba(169, 169, 169, 0.6)',
-    fontFamily: 'NunitoSans-Bold',
-    fontSize: 16,
-    color: 'black',
-  },
-  inputboxwarning: {
-    width: '100%',
-    paddingLeft: '14%',
-    borderBottomWidth: 1.5,
-    borderBottomColor: 'rgba(255, 91, 55, 1)',
-    fontFamily: 'NunitoSans-Bold',
-    fontSize: 16,
-    color: 'black',
+    color: 'rgba(58, 61, 66, 1)',
   },
   inputboxphone: {
     width: '100%',
@@ -104,7 +91,7 @@ const classes = StyleSheet.create({
     borderBottomColor: 'rgba(169, 169, 169, 0.6)',
     fontFamily: 'NunitoSans-Regular',
     fontSize: 16,
-    color: 'black',
+    color: 'rgba(58, 61, 66, 1)',
   },
   righticon: {
     position: 'absolute',
@@ -119,7 +106,7 @@ const classes = StyleSheet.create({
     marginBottom: '7%',
   },
   forgottext: {
-    fontFamily: 'NunitoSans-SemiBold',
+    fontFamily: 'NunitoSans-Regular',
     fontSize: 14,
     color: 'rgba(58, 61, 66, 0.8)',
   },
@@ -150,11 +137,6 @@ const classes = StyleSheet.create({
     fontFamily: 'NunitoSans-Bold',
     fontSize: 16,
     color: 'rgba(99, 121, 244, 1)',
-  },
-  inputwarning: {
-    paddingLeft: '2%',
-    fontFamily: 'NunitoSans-SemiBold',
-    fontSize: 16,
   },
 });
 
