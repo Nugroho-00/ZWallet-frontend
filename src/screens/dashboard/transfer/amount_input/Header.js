@@ -1,12 +1,16 @@
 import React from 'react';
-import {View, StatusBar, TouchableOpacity, Text} from 'react-native';
+import {View, StatusBar, TouchableOpacity, Text, Image} from 'react-native';
 
 import Icon from 'react-native-vector-icons/Ionicons';
 
 import styles from './styles';
 
+import {API_URL} from '@env';
+
+
 const Header = (props) => {
   const{id, phone, username, avatar} = props.dataReceiver
+  console.log(username, avatar);
 
   return (
     <View>
@@ -25,7 +29,11 @@ const Header = (props) => {
         </View>
 
         <View style={styles.userWrapper}>
-          <Icon name="person-outline" size={56} />
+        {!avatar ? 
+          <Icon name="person-outline" size={56} />:
+          <Image source={{uri:`${API_URL}/${avatar}`}} style={styles.avatar}/>
+        }
+          {/* <Icon name="person-outline" size={56} /> */}
           <View style={styles.userInfo}>
             <Text style={styles.userName}>{username}</Text>
             <Text style={styles.userPhone}>{phone}</Text>

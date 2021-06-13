@@ -92,6 +92,11 @@ const styles = StyleSheet.create({
     fontWeight: 'bold',
     color: '#FFF',
   },
+  avatar:{
+    height:50,
+    width:50,
+    borderRadius:10
+  }
 });
 
 export default styles;
