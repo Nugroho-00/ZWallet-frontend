@@ -6,6 +6,8 @@ import Icon from 'react-native-vector-icons/Ionicons';
 import styles from './styles';
 
 const Header = (props) => {
+  const{id, phone, username, avatar} = props.dataReceiver
+
   return (
     <View>
       <StatusBar
@@ -25,8 +27,8 @@ const Header = (props) => {
         <View style={styles.userWrapper}>
           <Icon name="person-outline" size={56} />
           <View style={styles.userInfo}>
-            <Text style={styles.userName}>Samuel Sushi</Text>
-            <Text style={styles.userPhone}>+62 813-8492-9994</Text>
+            <Text style={styles.userName}>{username}</Text>
+            <Text style={styles.userPhone}>{phone}</Text>
           </View>
         </View>
       </View>
