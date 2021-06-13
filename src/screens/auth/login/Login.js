@@ -18,7 +18,7 @@ import axios from 'axios';
 import {
   emailValidation,
   passwordValidation,
-} from '../../../services/valid/InputValidate';
+} from '../../../services/validation/Validation';
 import {FormStyle} from '../../../services/formhandler/FormStyle';
 
 const Login = props => {

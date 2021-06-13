@@ -17,7 +17,7 @@ import {
   emailValidation,
   passwordValidation,
   phoneValidation,
-} from '../../../services/valid/InputValidate';
+} from '../../../services/validation/Validation';
 import {FormStyle} from '../../../services/formhandler/FormStyle';
 
 const Signup = props => {
