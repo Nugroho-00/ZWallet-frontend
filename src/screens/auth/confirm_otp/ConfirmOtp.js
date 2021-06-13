@@ -63,14 +63,17 @@ const ConfirmOtp = props => {
       .then(res => {
         console.log(res);
         // console.log('sukses');
-        props.navigation.navigate('ResetPassword', {token: res.data.token});
+        if (props.route.params.type === 'non-reset') {
+          props.navigation.navigate('CreatePin', {id:  props.route.params.id});
+        } else {
+          props.navigation.navigate('ResetPassword', {token: res.data.token});
+        }
       })
       .catch(err => {
         console.log('failed', {err});
         setErrorMessage('Oops. You entered the wrong OTP code');
       });
   };
-  console.log(props.route.params);
   return (
     <>
       <Backdrop />

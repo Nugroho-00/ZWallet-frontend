@@ -103,8 +103,6 @@ const App = props => {
             <Stack.Screen name="CreatePin" component={CreatePin} />
             <Stack.Screen name="PinSuccess" component={PinSuccess} />
             <Stack.Screen name="ConfirmOtp" component={ConfirmOtp} />
-
-            <Stack.Screen name="Confirmation" component={Confirmation} />
           </>
         ) : (
           <Stack.Screen name="Home" component={HomeNavigation} />

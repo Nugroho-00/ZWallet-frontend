@@ -4,11 +4,13 @@ import {View, Text, TextInput, Keyboard} from 'react-native';
 import {Button} from 'native-base';
 import Backdrop from '../../../components/backdrop/Backdrop';
 import styles from './Styles';
-import {API_URL} from '@env';
+import {connect} from 'react-redux';
 import axios from 'axios';
+import {API_URL} from '@env';
 
 const CreatePin = props => {
   const {navigation} = props;
+  const {id} = props.route.params
   const [isFilled, setIsFilled] = useState(false);
   const [isEdit, setIsEdit] = useState(false);
   const [errorMessage, setErrorMessage] = useState('');
@@ -55,27 +57,26 @@ const CreatePin = props => {
     };
   }, [num1, num2, num3, num4, num5, num6]);
   //   error Handling
-  const verificationHandler = e => {
-    e.preventDefault();
-    axios
-      .post(`${API_URL}/data/auth/verify-otp`, {
-        id: props.idUser,
-        otp: [num1, num2, num3, num4, num5, num6].join(''),
-      })
+  const createPinHandler =  ()=> {
+    const token = props.loginReducers.user.token;
+    let config = {
+      method: 'PATCH',
+      url: `${API_URL}/auth/create-pin`,
+      data: {id:id, pin: [num1, num2, num3, num4, num5, num6].join('')},
+    };
+    axios(config)
       .then(res => {
-        console.log('sukses');
-        props.codeOTP([num1, num2, num3, num4, num5, num6].join(''));
-        props.navigation.navigate('CreateNewPassword');
+        navigation.navigate('PinSuccess')
       })
       .catch(err => {
-        console.log('failed', err);
-        setErrorMessage('Oops. You entered the wrong OTP code');
+        console.log(err);
       });
   };
+
+
   const isValidPin = pin => {
     return !!pin.match(/^[0-9]*$/);
   };
-  console.log(props)
   return (
     <>
       <Backdrop />
@@ -229,7 +230,7 @@ const CreatePin = props => {
               : {...styles.buttonOff}
           }
           disabled={isFilled ? false : true}
-          onPress={() => navigation.navigate('PinSuccess')}>
+          onPress={createPinHandler}>
           <Text style={isFilled ? styles.textOn : styles.textOff}>Confirm</Text>
         </Button>
       </View>
@@ -237,4 +238,11 @@ const CreatePin = props => {
   );
 };
 
-export default CreatePin;
+
+const mapStatetoProps = state => {
+  return {
+    loginReducers: state.loginReducers,
+  };
+};
+const connectedCreatedPin = connect(mapStatetoProps)(CreatePin);
+export default connectedCreatedPin;
