@@ -5,7 +5,7 @@ import Icon from 'react-native-vector-icons/Ionicons';
 
 import styles from './styles';
 
-const Header = (props) => {
+const Header = props => {
   return (
     <View>
       <StatusBar
@@ -16,7 +16,9 @@ const Header = (props) => {
 
       <View style={styles.headerWrapper}>
         <View style={styles.titleWrapper}>
-          <TouchableOpacity style={styles.backBtn}  onPress={()=>props.navigation.goBack()}>
+          <TouchableOpacity
+            style={styles.backBtn}
+            onPress={() => props.navigation.goBack()}>
             <Icon name="arrow-back" size={28} color="#FFF" />
           </TouchableOpacity>
           <Text style={styles.titleText}>Confirmation</Text>
@@ -25,8 +27,8 @@ const Header = (props) => {
         <View style={styles.userWrapper}>
           <Icon name="person-outline" size={56} />
           <View style={styles.userInfo}>
-            <Text style={styles.userName}>Samuel Sushi</Text>
-            <Text style={styles.userPhone}>+62 813-8492-9994</Text>
+            <Text style={styles.userName}>{props.dataReceiver.username}</Text>
+            <Text style={styles.userPhone}>{props.dataReceiver.phone}</Text>
           </View>
         </View>
       </View>

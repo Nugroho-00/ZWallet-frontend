@@ -3,12 +3,18 @@ import {View, Text, TextInput, Keyboard} from 'react-native';
 import {Button} from 'native-base';
 import styles from './Styles';
 import Header from '../../../components/header/Header';
+import axios from 'axios';
+import {API_URL} from '@env';
+import {useSelector} from 'react-redux';
 
 function PinConfirmation(props) {
   const {navigation} = props;
   const [isFilled, setIsFilled] = useState(false);
   const [isEdit, setIsEdit] = useState(false);
   const [errorMessage, setErrorMessage] = useState('');
+
+  const data = props.route.params;
+  const loginReducers = useSelector(state => state.loginReducers);
 
   const [num1, setNum1] = useState('');
   const [num2, setNum2] = useState('');
@@ -23,6 +29,9 @@ function PinConfirmation(props) {
   const ref4 = useRef();
   const ref5 = useRef();
   const ref6 = useRef();
+
+  const pinNumber = [num1, num2, num3, num4, num5, num6];
+  const joinPin = Number(pinNumber.join(''));
 
   useEffect(() => {
     if (num1 && num2 && num3 && num4 && num5 && num6) {
@@ -51,6 +60,27 @@ function PinConfirmation(props) {
       keyboardDidShowListener.remove();
     };
   }, [num1, num2, num3, num4, num5, num6]);
+
+  const pinValidationHandler = () => {
+    const token = loginReducers.user.token;
+    let config = {
+      method: 'POST',
+      url: `${API_URL}/auth/validation-pin`,
+      headers: {
+        authorization: 'Bearer ' + token,
+      },
+      data: {
+        pin: joinPin,
+      },
+    };
+    return axios(config)
+      .then(res => {
+        return props.navigation.navigate('ConfirmationResult', {...data});
+      })
+      .catch(err => {
+        console.log(err.response);
+      });
+  };
 
   const isValidPin = pin => {
     return !!pin.match(/^[0-9]*$/);
@@ -206,7 +236,7 @@ function PinConfirmation(props) {
               ? {...styles.buttonOn}
               : {...styles.buttonOff}
           }
-          onPress={()=>props.navigation.navigate('ConfirmationResult')}
+          onPress={pinValidationHandler}
           disabled={isFilled ? false : true}>
           <Text style={isFilled ? styles.textOn : styles.textOff}>
             Transfer Now

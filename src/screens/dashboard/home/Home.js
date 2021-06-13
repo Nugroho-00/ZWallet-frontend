@@ -12,7 +12,7 @@ import styles from './styles';
 import {userLogout} from '../../../services/redux/actions/Auth';
 import {getUser} from '../../../services/redux/actions/Users';
 
-import { useIsFocused } from '@react-navigation/native';
+import {useIsFocused} from '@react-navigation/native';
 import {connect} from 'react-redux';
 import axios from 'axios';
 import {API_URL} from '@env';
