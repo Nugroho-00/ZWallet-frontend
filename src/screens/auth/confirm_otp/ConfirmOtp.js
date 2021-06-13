@@ -55,23 +55,22 @@ const ConfirmOtp = props => {
 
   //   error Handling
   const verificationHandler = e => {
-    e.preventDefault();
     axios
-      .post(`${API_URL}/data/auth/verify-otp`, {
-        id: props.route.params.id,
+      .post(`${API_URL}/auth/verify-otp`, {
         otp: [num1, num2, num3, num4, num5, num6].join(''),
+        userId: props.route.params.id,
       })
       .then(res => {
-        console.log('sukses');
-        props.codeOTP([num1, num2, num3, num4, num5, num6].join(''));
-        props.navigation.navigate('CreateNewPassword', {token: res.data.token});
+        console.log(res);
+        // console.log('sukses');
+        props.navigation.navigate('ResetPassword', {token: res.data.token});
       })
       .catch(err => {
-        console.log('failed', err);
+        console.log('failed', {err});
         setErrorMessage('Oops. You entered the wrong OTP code');
       });
   };
-
+  console.log(props.route.params);
   return (
     <>
       <Backdrop />
@@ -218,7 +217,7 @@ const ConfirmOtp = props => {
           }
           disabled={isFilled ? false : true}
           onPress={() => {
-            props.navigation.navigate('ResetPassword');
+            verificationHandler();
           }}>
           <Text style={isFilled ? styles.textOn : styles.textOff}>Confirm</Text>
         </Button>
