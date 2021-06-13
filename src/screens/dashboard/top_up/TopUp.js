@@ -6,40 +6,64 @@ import {
   TouchableOpacity,
   StatusBar,
   TextInput,
-  Keyboard
 } from 'react-native';
 import {Icon} from 'native-base';
 import classes from './Styles';
 import Ionicons from 'react-native-vector-icons/Ionicons';
 
 import SwipeUpDownModal from 'react-native-swipe-modal-up-down';
+import {connect} from 'react-redux';
+import axios from 'axios';
+import {API_URL} from '@env';
+
 
 const TopUp = props => {
   const {navigation} = props;
-  const [addNew, setAddNew] = useState('');
+  const [amount, setAmout] = useState('');
   const [isFilled, setIsFilled] = useState(false)
   const [errorMessage, setErrorMessage] = useState();
   const [showModal, setShowModal] = useState(false);
   const [animateModal, setAnimateModal] = useState(false);
+
+  const token = props.loginReducers.user.token;
+
 
   const isValidNum = num => {
     return !!num.match(/^[0-9]*$/);
   };
 
   useEffect(()=>{
-    if(Number(addNew)>10000){
+    if(Number(amount)>=10000){
       setIsFilled(true)
     } else {
       setIsFilled(false)
     }
-  },[addNew])
+  },[amount])
 
 
   const submitHandler = () => {
-    if(!addNew){
+    if(!amount){
       setErrorMessage('Please fill in this field')
-    } else if(Number(addNew)<10000){
+    } else if(Number(amount)<10000){
       setErrorMessage('the minimum topup amount is Rp10.000')
+    }else if(isFilled){
+
+      let config = {
+        method: 'PATCH',
+        url: `${API_URL}/transaction/topup`,
+        data: {amount: amount},
+        headers: {
+          Authorization: 'Bearer ' + token,
+        },
+      };
+      axios(config)
+        .then(res => {
+          props.navigation.navigate('HomeScreen');
+        })
+        .catch(err => {
+          console.log(err);
+        });
+
     }
   };
 
@@ -142,12 +166,12 @@ const TopUp = props => {
             <View style={classes.createNewSection}>
               <Text style={classes.rupiah}>Rp</Text>
               <TextInput
-                value={addNew}
+                value={amount}
                 style={classes.numberInput}
                 placeholder="0"
                 keyboardType="numeric"
                 onChangeText={p => {
-                  isValidNum(p) && setAddNew(p);
+                  isValidNum(p) && setAmout(p);
                 }}
                 onPressIn={() => setErrorMessage('')}
               />
@@ -171,7 +195,7 @@ const TopUp = props => {
           </View>
         }
         onClose={() => {
-          setAddNew('')
+          setAmout('')
           setErrorMessage('')
           setShowModal(false);
           setAnimateModal(false);
@@ -181,4 +205,14 @@ const TopUp = props => {
   );
 };
 
-export default TopUp;
+
+const mapStatetoProps = state => {
+  return {
+    loginReducers: state.loginReducers,
+  };
+};
+
+const connectedTopUp = connect(mapStatetoProps)(TopUp);
+
+export default connectedTopUp;
+

@@ -11,6 +11,8 @@ import Icon from 'react-native-vector-icons/Ionicons';
 import styles from './styles';
 import {userLogout} from '../../../services/redux/actions/Auth';
 import {getUser} from '../../../services/redux/actions/Users';
+
+import { useIsFocused } from '@react-navigation/native';
 import {connect} from 'react-redux';
 import axios from 'axios';
 import {API_URL} from '@env';
@@ -18,7 +20,7 @@ import {API_URL} from '@env';
 const Home = props => {
   const [userData, setUserData] = useState({});
   const [historyData, setHistoryData] = useState([]);
-
+  const isFocused = useIsFocused();
   console.log(historyData);
 
   const getDataUser = () => {
@@ -29,6 +31,9 @@ const Home = props => {
   useEffect(() => {
     getDataUser();
   }, []);
+  useEffect(() => {
+    getDataUser();
+  }, [isFocused]);
 
   const updateUserData = () => {
     return setUserData(props.userReducers.user?.data[0]);
@@ -36,7 +41,7 @@ const Home = props => {
 
   useEffect(() => {
     updateUserData();
-  }, [props.userReducers]);
+  }, [props.userReducers, isFocused]);
 
   const getHistoryData = () => {
     const token = props.loginReducers.user.token;
