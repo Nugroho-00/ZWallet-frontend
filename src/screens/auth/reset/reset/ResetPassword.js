@@ -11,90 +11,31 @@ import {
   Modal,
   Alert,
 } from 'react-native';
-import {KeyboardAwareScrollView} from 'react-native-keyboard-aware-scroll-view';
 import {Toast} from 'native-base';
 import classes from './Styles';
 import Ionicons from 'react-native-vector-icons/Ionicons';
 import {API_URL} from '@env';
+import {passwordValidation} from '../../../../services/valid/InputValidate';
+import {FormStyle} from '../../../../services/formhandler/FormStyle';
+import axios from 'axios';
 
 const ResetPassword = props => {
   const [reset, setReset] = useState({
     password: '',
     repeat: '',
   });
-  const [eye, setEye] = useState(true);
+  const [eye, setEye] = useState({
+    eyepass: true,
+    eyerepeat: true,
+  });
+  const [warning, setWarning] = useState({
+    warningpassword: '',
+    warningrepeat: '',
+  });
   const [modalVisible, setModal] = useState(false);
 
-  const passwordValidation = () => {
-    if (reset.password && reset.password.length < 8) {
-      return (
-        <View style={classes.inputwarning}>
-          <Text
-            style={{
-              ...classes.inputwarningtext,
-              color: 'rgba(255, 91, 55, 1)',
-            }}>
-            Password minimum length is 8 characters
-          </Text>
-        </View>
-      );
-    } else {
-      null;
-    }
-  };
-  const repeatValidation = () => {
-    if (reset.repeat && reset.repeat.length < 8) {
-      return (
-        <View style={classes.inputwarning}>
-          <Text
-            style={{
-              ...classes.inputwarningtext,
-              color: 'rgba(255, 91, 55, 1)',
-            }}>
-            Password minimum length is 8 characters
-          </Text>
-        </View>
-      );
-    }
-    if (reset.password && reset.repeat && reset.password !== reset.repeat) {
-      return (
-        <View style={classes.inputwarning}>
-          <Ionicons
-            name="close-outline"
-            size={14}
-            color="rgba(255, 91, 55, 1)"
-          />
-          <Text
-            style={{
-              ...classes.inputwarningtext,
-              color: 'rgba(255, 91, 55, 1)',
-            }}>
-            Password didn't match
-          </Text>
-        </View>
-      );
-    }
-    if (reset.password && reset.repeat && reset.password === reset.repeat) {
-      return (
-        <View style={classes.inputwarning}>
-          <Ionicons
-            name="checkmark-outline"
-            size={14}
-            color="rgba(30, 193, 95, 1)"
-          />
-          <Text
-            style={{
-              ...classes.inputwarningtext,
-              color: 'rgbargba(30, 193, 95, 1)',
-            }}>
-            Password match
-          </Text>
-        </View>
-      );
-    }
-  };
-
   const resetHandler = () => {
+    console.log(warning);
     if (!reset.password || !reset.repeat) {
       return Toast.show({
         text: 'Fill in your details!',
@@ -103,7 +44,22 @@ const ResetPassword = props => {
         duration: 3000,
       });
     }
-    //api url token validasi di cek
+    if (warning.warningpassword || warning.warningrepeat) {
+      return Toast.show({
+        text: warning.passwordwarning || warning.warningrepeat,
+        type: 'warning',
+        textStyle: {textAlign: 'center'},
+        duration: 3000,
+      });
+    }
+    if (reset.password !== reset.repeat) {
+      return Toast.show({
+        text: "Password didn't match",
+        type: 'danger',
+        textStyle: {textAlign: 'center'},
+        duration: 3000,
+      });
+    }
     let config = {
       method: 'PATCH',
       url: `${API_URL}/auth/reset-password`,
@@ -113,20 +69,30 @@ const ResetPassword = props => {
     axios(config)
       .then(res => {
         console.log(res);
-        if (res.data?.message === 'success to reset password') {
-          setModal(!modal);
+        if (res.data?.message === 'Success to reset password!') {
+          setReset({...reset, password: '', repeat: ''});
+          return setModal(!modalVisible);
         }
       })
       .catch(err => {
+        if (err.message === 'invalid signature') {
+          return Toast.show({
+            text: 'Invalid signature, Repeat the reset password process',
+            type: 'danger',
+            textStyle: {textAlign: 'center'},
+            duration: 3000,
+          });
+        }
         if (err.message === 'Network Error') {
-          Toast.show({
+          return Toast.show({
             text: 'Network Error',
             type: 'danger',
             textStyle: {textAlign: 'center'},
             duration: 3000,
           });
         } else if (err) {
-          Toast.show({
+          console.log({err});
+          return Toast.show({
             text: 'An Error Occured',
             type: 'danger',
             textStyle: {textAlign: 'center'},
@@ -134,7 +100,6 @@ const ResetPassword = props => {
           });
         }
       });
-    props.navigation.navigate('Login');
   };
 
   useEffect(() => {
@@ -161,15 +126,14 @@ const ResetPassword = props => {
     const backAction = () => {
       Alert.alert('Hold on!', 'All progress will be lost', [
         {
-          text: 'CANCEL',
-          onPress: () => {
-            setPassword('');
-            setRepeat('');
-          },
-        },
-        {
           text: 'OK',
           onPress: () => props.navigation.navigate('Login'),
+        },
+        {
+          text: 'CANCEL',
+          onPress: () => {
+            setReset({...reset, repeat: ''});
+          },
         },
       ]);
       return true;
@@ -229,54 +193,88 @@ const ResetPassword = props => {
                   <Ionicons
                     name="lock-closed-outline"
                     size={24}
-                    color="#A9A9A9"
+                    color={FormStyle(
+                      'icon',
+                      warning.warningpassword,
+                      reset.password,
+                    )}
                   />
                 </View>
                 <TextInput
-                  style={classes.inputbox}
+                  style={FormStyle(
+                    'form',
+                    warning.warningpassword,
+                    reset.password,
+                  )}
                   placeholder="Enter your password"
                   placeholderTextColor="rgba(169, 169, 169, 0.8)"
-                  secureTextEntry={eye}
+                  secureTextEntry={eye.eyepass}
+                  value={reset.password}
                   onChangeText={value => {
+                    setWarning({...warning, password: ''});
                     setReset({...reset, password: value});
+                    setWarning({
+                      ...warning,
+                      warningpassword: passwordValidation(value),
+                    });
                   }}
                 />
                 <TouchableOpacity
                   style={classes.righticon}
                   onPress={() => {
-                    setEye(!eye);
+                    setEye({...eye, eyepass: !eye.eyepass});
                   }}>
                   <Ionicons
-                    name={eye ? 'eye-off-outline' : 'eye-outline'}
+                    name={eye.eyepass ? 'eye-off-outline' : 'eye-outline'}
                     size={24}
                     color="#A9A9A9"
                   />
                 </TouchableOpacity>
               </View>
-              {passwordValidation()}
             </View>
+            {warning.warningpassword ? (
+              <Text
+                style={{
+                  ...classes.inputwarning,
+                  color: 'rgba(255, 91, 55, 1)',
+                }}>
+                {warning.warningpassword}
+              </Text>
+            ) : (
+              <View style={{marginBottom: '7%'}} />
+            )}
             <View style={classes.input}>
               <View style={classes.upperinput}>
                 <View style={classes.lefticon}>
                   <Ionicons
                     name="lock-closed-outline"
                     size={24}
-                    color="#A9A9A9"
+                    color={FormStyle(
+                      'icon',
+                      warning.warningrepeat,
+                      reset.repeat,
+                    )}
                   />
                 </View>
                 <TextInput
-                  style={classes.inputbox}
+                  style={FormStyle('form', warning.warningrepeat, reset.repeat)}
                   placeholder="Enter your password"
                   placeholderTextColor="rgba(169, 169, 169, 0.8)"
-                  secureTextEntry={eye}
+                  secureTextEntry={eye.eyerepeat}
+                  value={reset.repeat}
                   onChangeText={value => {
+                    setWarning({...warning, repeat: ''});
                     setReset({...reset, repeat: value});
+                    setWarning({
+                      ...warning,
+                      warningrepeat: passwordValidation(value, reset.password),
+                    });
                   }}
                 />
                 <TouchableOpacity
                   style={classes.righticon}
                   onPress={() => {
-                    setEye(!eye);
+                    setEye({...eye, eyerepeat: !eye.eyerepeat});
                   }}>
                   <Ionicons
                     name={eye ? 'eye-off-outline' : 'eye-outline'}
@@ -285,8 +283,18 @@ const ResetPassword = props => {
                   />
                 </TouchableOpacity>
               </View>
-              {repeatValidation()}
             </View>
+            {warning.warningrepeat ? (
+              <Text
+                style={{
+                  ...classes.inputwarning,
+                  color: 'rgba(255, 91, 55, 1)',
+                }}>
+                {warning.warningrepeat}
+              </Text>
+            ) : (
+              <View style={{marginBottom: '7%'}} />
+            )}
           </View>
           <TouchableOpacity
             style={classes.btn}

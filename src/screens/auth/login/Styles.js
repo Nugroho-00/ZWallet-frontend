@@ -49,11 +49,15 @@ const classes = StyleSheet.create({
   inputgroup: {
     flexDirection: 'column',
   },
+  inputwarning: {
+    paddingLeft: '4%',
+    fontFamily: 'NunitoSans-Regular',
+    fontSize: 14,
+  },
   input: {
     flexDirection: 'row',
     alignItems: 'center',
     marginHorizontal: '4%',
-    marginBottom: '10%',
   },
   lefticon: {
     position: 'absolute',
@@ -70,24 +74,6 @@ const classes = StyleSheet.create({
     fontSize: 16,
     color: 'black',
   },
-  inputboxactive: {
-    width: '100%',
-    paddingLeft: '14%',
-    borderBottomWidth: 1.5,
-    borderBottomColor: 'rgba(169, 169, 169, 0.6)',
-    fontFamily: 'NunitoSans-Bold',
-    fontSize: 16,
-    color: 'black',
-  },
-  inputboxwarning: {
-    width: '100%',
-    paddingLeft: '14%',
-    borderBottomWidth: 1.5,
-    borderBottomColor: 'rgba(255, 91, 55, 1)',
-    fontFamily: 'NunitoSans-Bold',
-    fontSize: 16,
-    color: 'black',
-  },
   righticon: {
     position: 'absolute',
     right: 5,
@@ -95,7 +81,6 @@ const classes = StyleSheet.create({
     zIndex: 10,
   },
   forgotpassword: {
-    marginTop: '-5%',
     marginRight: 16,
     alignSelf: 'flex-end',
     marginBottom: '7%',
@@ -132,12 +117,6 @@ const classes = StyleSheet.create({
     fontFamily: 'NunitoSans-Bold',
     fontSize: 16,
     color: 'rgba(99, 121, 244, 1)',
-  },
-  inputwarning: {
-    paddingLeft: '2%',
-    fontFamily: 'NunitoSans-SemiBold',
-    fontSize: 16,
-    marginBottom: '10%',
   },
 });
 

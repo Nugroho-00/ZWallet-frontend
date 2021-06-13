@@ -12,25 +12,12 @@ import classes from './Styles';
 import Ionicons from 'react-native-vector-icons/Ionicons';
 import {API_URL} from '@env';
 import axios from 'axios';
+import {emailValidation} from '../../../../services/valid/InputValidate';
+import {FormStyle} from '../../../../services/formhandler/FormStyle';
 
 const SendEmail = props => {
   const [email, setEmail] = useState();
-
-  const validation = () => {
-    let reg = /^\w+([.-]?\w+)*@\w+([.-]?\w+)*(\.\w\w+)+$/;
-    if (email && !reg.test(email)) {
-      return (
-        <View>
-          <Text
-            style={{...classes.inputwarning, color: 'rgba(255, 91, 55, 1)'}}>
-            Incorrect Email
-          </Text>
-        </View>
-      );
-    } else {
-      null;
-    }
-  };
+  const [warning, setWarning] = useState();
 
   const confirmHandler = () => {
     if (!email) {
@@ -49,13 +36,21 @@ const SendEmail = props => {
     axios(config)
       .then(res => {
         console.log(res);
-        props.navigation.navigate('ConfirmOtp', {id: res.data.id});
+        props.navigation.navigate('ConfirmOtp', {id: res.data.userId});
       })
       .catch(err => {
         console.log({err});
+        if (err.response.data?.message === 'Email not found !!!') {
+          return Toast.show({
+            text: 'User is not registered, go to signup page to get started',
+            type: 'danger',
+            textStyle: {textAlign: 'center'},
+            duration: 3000,
+          });
+        }
       });
   };
-  console.log(email);
+  // console.log(email);
   return (
     <ScrollView contentContainerStyle={classes.maincontainer}>
       <StatusBar
@@ -74,19 +69,36 @@ const SendEmail = props => {
         <View style={classes.inputgroup}>
           <View style={classes.input}>
             <View style={classes.lefticon}>
-              <Ionicons name="mail-outline" size={24} color="#A9A9A9" />
+              <Ionicons
+                name="mail-outline"
+                size={24}
+                color={FormStyle('icon', warning, email)}
+              />
             </View>
             <TextInput
-              style={classes.inputbox}
+              style={FormStyle('form', warning, email)}
               placeholder="Enter your email"
               placeholderTextColor="rgba(169, 169, 169, 0.8)"
               onChangeText={value => {
+                setWarning('');
                 setEmail(value);
+                setWarning(emailValidation(value));
               }}
             />
           </View>
+          {warning ? (
+            <Text
+              style={{
+                ...classes.inputwarning,
+                color: 'rgba(255, 91, 55, 1)',
+              }}>
+              {warning}
+            </Text>
+          ) : (
+            <View style={{marginBottom: '7%'}} />
+          )}
         </View>
-        {validation()}
+
         <TouchableOpacity
           style={classes.btn}
           onPress={() => {

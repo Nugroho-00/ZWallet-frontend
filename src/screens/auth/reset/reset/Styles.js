@@ -61,9 +61,15 @@ const classes = StyleSheet.create({
   inputgroup: {
     flexDirection: 'column',
   },
+  inputwarning: {
+    alignSelf: 'flex-start',
+    paddingLeft: '4%',
+    fontFamily: 'NunitoSans-Regular',
+    fontSize: 14,
+    marginBottom: '7%',
+  },
   input: {
     flexDirection: 'column',
-    marginBottom: '10%',
   },
   upperinput: {
     flexDirection: 'row',
@@ -147,18 +153,6 @@ const classes = StyleSheet.create({
     fontFamily: 'NunitoSans-Bold',
     fontSize: 16,
     color: 'rgba(99, 121, 244, 1)',
-  },
-  inputwarning: {
-    flexDirection: 'row',
-    alignItems: 'center',
-    paddingLeft: '2%',
-    marginTop: 5,
-  },
-
-  inputwarningtext: {
-    marginLeft: 2,
-    fontFamily: 'NunitoSans-SemiBold',
-    fontSize: 12,
   },
 });
 

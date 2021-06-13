@@ -7,11 +7,18 @@ import {
   TextInput,
   TouchableOpacity,
 } from 'react-native';
-import {Toast} from 'native-base';
+import {Form, Toast} from 'native-base';
 import classes from './Styles';
 import Ionicons from 'react-native-vector-icons/Ionicons';
 import axios from 'axios';
 import {API_URL} from '@env';
+import {
+  usernameValidation,
+  emailValidation,
+  passwordValidation,
+  phoneValidation,
+} from '../../../services/valid/InputValidate';
+import {FormStyle} from '../../../services/formhandler/FormStyle';
 
 const Signup = props => {
   const [signup, setSignup] = useState({
@@ -20,70 +27,13 @@ const Signup = props => {
     password: '',
     phone: '',
   });
-  const [isValid, setValid] = useState(false);
+  const [warning, setWarning] = useState({
+    usernamewarning: '',
+    emailwarning: '',
+    phonewarning: '',
+    passwordwarning: '',
+  });
   const [eye, setEye] = useState(true);
-
-  const validation = () => {
-    if (signup.username && signup.username.length < 4) {
-      return (
-        <View>
-          <Text
-            style={{...classes.inputwarning, color: 'rgba(255, 91, 55, 1)'}}>
-            User name must be at least 4 character
-          </Text>
-        </View>
-      );
-    }
-    let reg = /^\w+([.-]?\w+)*@\w+([.-]?\w+)*(\.\w\w+)+$/;
-    if (signup.email && !reg.test(signup.email)) {
-      return (
-        <View>
-          <Text
-            style={{...classes.inputwarning, color: 'rgba(255, 91, 55, 1)'}}>
-            Incorrect Email
-          </Text>
-        </View>
-      );
-    }
-    if (signup.password && signup.password.length < 8) {
-      return (
-        <View>
-          <Text
-            style={{...classes.inputwarning, color: 'rgba(255, 91, 55, 1)'}}>
-            Password minimum length is 8 character
-          </Text>
-        </View>
-      );
-    } else {
-      return null;
-    }
-  };
-
-  const phoneValidation = () => {
-    let reg = /^[0-9]*$/;
-    if (signup.phone.indexOf(0) === 0) {
-      return (
-        <View>
-          <Text
-            style={{...classes.inputwarning, color: 'rgba(255, 91, 55, 1)'}}>
-            Phone number should only contain numbers
-          </Text>
-        </View>
-      );
-    }
-    if (!reg.test(signup.phone)) {
-      return (
-        <View>
-          <Text
-            style={{...classes.inputwarning, color: 'rgba(255, 91, 55, 1)'}}>
-            Phone number should only contain numbers
-          </Text>
-        </View>
-      );
-    } else {
-      return true;
-    }
-  };
 
   const signupHandler = () => {
     if (
@@ -99,7 +49,24 @@ const Signup = props => {
         duration: 3000,
       });
     }
-    console.log("clicked")
+    if (
+      warning.usernamewarning ||
+      warning.emailwarning ||
+      warning.phonewarning ||
+      warning.passwordwarning
+    ) {
+      return Toast.show({
+        text:
+          warning.usernamewarning ||
+          warning.emailwarning ||
+          warning.phonewarning ||
+          warning.passwordwarning,
+        type: 'warning',
+        textStyle: {textAlign: 'center'},
+        duration: 3000,
+      });
+    }
+    console.log('clicked');
     let config = {
       method: 'POST',
       url: `${API_URL}/auth/register`,
@@ -107,19 +74,30 @@ const Signup = props => {
     };
     axios(config)
       .then(res => {
-        setSignup({});
-        props.navigation.navigate('Login')
-        return Toast.show({
-          text: 'Sign up success',
-          type: 'success',
-          textStyle: {textAlign: 'center'},
-          duration: 3000,
-        });
+        // console.log(res);
+        if (res.data?.message === 'User succes registered!') {
+          setSignup({});
+          Toast.show({
+            text: 'Sign up success',
+            type: 'success',
+            textStyle: {textAlign: 'center'},
+            duration: 3000,
+          });
+          return props.navigation.navigate('Login');
+        }
       })
-      .catch(err => console.log({err}));
+      .catch(err => {
+        if (err.response.data?.message === 'Email already exists') {
+          Toast.show({
+            text: 'Email already registered',
+            type: 'danger',
+            textStyle: {textAlign: 'center'},
+            duration: 3000,
+          });
+        }
+      });
   };
-
-  // console.log(phoneValidation());
+  // console.log(warning);
   return (
     <ScrollView>
       <View style={classes.maincontainer}>
@@ -139,60 +117,172 @@ const Signup = props => {
           <View style={classes.inputgroup}>
             <View style={classes.input}>
               <View style={classes.lefticon}>
-                <Ionicons name="person-outline" size={24} color="#A9A9A9" />
+                <Ionicons
+                  name="person-outline"
+                  size={24}
+                  color={FormStyle(
+                    'icon',
+                    warning.usernamewarning,
+                    signup.username,
+                  )}
+                />
               </View>
               <TextInput
-                style={classes.inputbox}
-                placeholder="Enter your username"
+                style={FormStyle(
+                  'form',
+                  warning.usernamewarning,
+                  signup.username,
+                )}
+                autoCapitalize="words"
+                keyboardType="name-phone-pad"
+                autoCompleteType="name"
+                placeholder="Enter your full name"
                 placeholderTextColor="rgba(169, 169, 169, 0.8)"
                 onChangeText={value => {
+                  setWarning({...warning, usernamewarning: ''});
                   setSignup({...signup, username: value});
+                  setWarning({
+                    ...warning,
+                    usernamewarning: usernameValidation(value),
+                  });
                 }}
               />
             </View>
+            {warning.usernamewarning ? (
+              <Text
+                style={{
+                  ...classes.inputwarning,
+                  color: 'rgba(255, 91, 55, 1)',
+                }}>
+                {warning.usernamewarning}
+              </Text>
+            ) : (
+              <View style={{marginBottom: '7%'}} />
+            )}
             <View style={classes.input}>
               <View style={classes.lefticon}>
-                <Ionicons name="mail-outline" size={24} color="#A9A9A9" />
+                <Ionicons
+                  name="mail-outline"
+                  size={24}
+                  color={FormStyle('icon', warning.emailwarning, signup.email)}
+                />
               </View>
               <TextInput
-                style={classes.inputbox}
+                style={FormStyle('form', warning.emailwarning, signup.email)}
+                autoCapitalize="none"
+                keyboardType="email-address"
+                autoCompleteType="email"
                 placeholder="Enter your e-mail"
                 placeholderTextColor="rgba(169, 169, 169, 0.8)"
                 onChangeText={value => {
+                  setWarning({...warning, emailwarning: ''});
                   setSignup({...signup, email: value});
+                  setWarning({
+                    ...warning,
+                    emailwarning: emailValidation(value),
+                  });
                 }}
               />
             </View>
+            {warning.emailwarning ? (
+              <Text
+                style={{
+                  ...classes.inputwarning,
+                  color: 'rgba(255, 91, 55, 1)',
+                }}>
+                {warning.emailwarning}
+              </Text>
+            ) : (
+              <View style={{marginBottom: '7%'}} />
+            )}
             <View style={classes.input}>
               <View style={classes.lefticon}>
-                <Ionicons name="call-outline" size={24} color="#A9A9A9" />
+                <Ionicons
+                  name="call-outline"
+                  size={24}
+                  color={FormStyle('icon', warning.phonewarning, signup.phone)}
+                />
               </View>
               <Text style={classes.phonetext}>+62</Text>
               <TextInput
-                style={classes.inputboxphone}
+                style={FormStyle('phone', warning.phonewarning, signup.phone)}
                 placeholder="Enter your phone number"
                 placeholderTextColor="rgba(169, 169, 169, 0.8)"
+                autoCompleteType="tel"
                 keyboardType="phone-pad"
+                maxLength={11}
+                value={signup.phone}
                 onChangeText={value => {
-                  setSignup({...signup, phone: value});
+                  setWarning({...warning, phonewarning: ''});
+                  if (value.substring(0) === '0') {
+                    setWarning({
+                      ...warning,
+                      phonewarning: phoneValidation(value),
+                    });
+                    return setSignup({...signup, phone: ''});
+                  }
+                  if (value.length > 11) {
+                    setWarning({
+                      ...warning,
+                      phonewarning: phoneValidation(value),
+                    });
+                  }
+                  if (value.length < 9) {
+                    setWarning({
+                      ...warning,
+                      phonewarning: phoneValidation(value),
+                    });
+                  }
+                  !!value.match(/^[0-9]*$/) &&
+                    setSignup({...signup, phone: value}) &&
+                    setWarning({
+                      ...warning,
+                      phonewarning: 'Phone number should only contain numbers',
+                    });
                 }}
               />
             </View>
+            {warning.phonewarning ? (
+              <Text
+                style={{
+                  ...classes.inputwarning,
+                  color: 'rgba(255, 91, 55, 1)',
+                }}>
+                {warning.phonewarning}
+              </Text>
+            ) : (
+              <View style={{marginBottom: '7%'}} />
+            )}
             <View style={classes.input}>
               <View style={classes.lefticon}>
                 <Ionicons
                   name="lock-closed-outline"
                   size={24}
-                  color="#A9A9A9"
+                  color={FormStyle(
+                    'icon',
+                    warning.passwordwarning,
+                    signup.password,
+                  )}
                 />
               </View>
               <TextInput
-                style={classes.inputbox}
+                style={FormStyle(
+                  'form',
+                  warning.passwordwarning,
+                  signup.password,
+                )}
                 placeholder="Enter your password"
+                autoCapitalize="none"
+                autoCompleteType="password"
                 placeholderTextColor="rgba(169, 169, 169, 0.8)"
                 secureTextEntry={eye}
                 onChangeText={value => {
+                  setWarning({...warning, passwordwarning: ''});
                   setSignup({...signup, password: value});
+                  setWarning({
+                    ...warning,
+                    passwordwarning: passwordValidation(value),
+                  });
                 }}
               />
               <TouchableOpacity
@@ -207,8 +297,19 @@ const Signup = props => {
                 />
               </TouchableOpacity>
             </View>
+            {warning.passwordwarning ? (
+              <Text
+                style={{
+                  ...classes.inputwarning,
+                  color: 'rgba(255, 91, 55, 1)',
+                  marginBottom: '7%',
+                }}>
+                {warning.passwordwarning}
+              </Text>
+            ) : (
+              <View style={{marginBottom: '7%'}} />
+            )}
           </View>
-          {validation()}
           <TouchableOpacity
             style={classes.signupbtn}
             disabled={false}

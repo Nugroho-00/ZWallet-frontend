@@ -15,39 +15,22 @@ import {userLogin} from '../../../services/redux/actions/Auth';
 import {API_URL} from '@env';
 import {connect} from 'react-redux';
 import axios from 'axios';
+import {
+  emailValidation,
+  passwordValidation,
+} from '../../../services/valid/InputValidate';
+import {FormStyle} from '../../../services/formhandler/FormStyle';
 
 const Login = props => {
   const [login, setLogin] = useState({
     email: '',
     password: '',
   });
+  const [warning, setWarning] = useState({
+    emailwarning: '',
+    passwordwarning: '',
+  });
   const [eye, setEye] = useState(true);
-
-  const validation = () => {
-    let reg = /^\w+([.-]?\w+)*@\w+([.-]?\w+)*(\.\w\w+)+$/;
-    if (login.email && !reg.test(login.email)) {
-      return (
-        <View>
-          <Text
-            style={{...classes.inputwarning, color: 'rgba(255, 91, 55, 1)'}}>
-            Incorrect Email
-          </Text>
-        </View>
-      );
-    }
-    if (login.password && login.password.length < 8) {
-      return (
-        <View>
-          <Text
-            style={{...classes.inputwarning, color: 'rgba(255, 91, 55, 1)'}}>
-            Password minimum length is 8 character
-          </Text>
-        </View>
-      );
-    } else {
-      null;
-    }
-  };
 
   const loginHandler = () => {
     if (!login.email || !login.password) {
@@ -58,23 +41,36 @@ const Login = props => {
         duration: 3000,
       });
     }
+    if (warning.emailwarning || warning.passwordwarning) {
+      return Toast.show({
+        text: warning.emailwarning || warning.passwordwarning,
+        type: 'warning',
+        textStyle: {textAlign: 'center'},
+        duration: 3000,
+      });
+    }
     props.onLoginHandler(login);
   };
+
   const ref = useRef();
   useEffect(() => {
     if (!ref.current) {
       ref.current = true;
     } else {
-      if (props.loginReducers.err.data?.message === 'Wrong Email or Password') {
+      if (
+        props.loginReducers.err?.data?.message === 'Wrong email!!!' ||
+        props.loginReducers.err?.data?.message === 'Wrong Password!!!'
+      ) {
         setLogin({});
         return Toast.show({
-          text: 'Incorrect Email or Password',
+          text: 'Incorrect email or password',
           type: 'danger',
           textStyle: {textAlign: 'center'},
           duration: 3000,
         });
       }
-      if (props.loginReducers.err.data?.message === 'Network Error') {
+      console.log(props.loginReducers.err?.data?.message);
+      if (props.loginReducers.err?.data?.message === 'Network Error') {
         return Toast.show({
           text: 'Network Error',
           type: 'danger',
@@ -83,8 +79,7 @@ const Login = props => {
         });
       }
     }
-  }, []);
-  // console.log(props);
+  }, [props.loginReducers.err]);
   return (
     <ScrollView>
       <View style={classes.maincontainer}>
@@ -105,32 +100,65 @@ const Login = props => {
           <View style={classes.inputgroup}>
             <View style={classes.input}>
               <View style={classes.lefticon}>
-                <Ionicons name="mail-outline" size={24} color="#A9A9A9" />
+                <Ionicons
+                  name="mail-outline"
+                  size={24}
+                  color={FormStyle('icon', warning.emailwarning, login.email)}
+                />
               </View>
               <TextInput
-                style={classes.inputbox}
+                style={FormStyle('form', warning.emailwarning, login.email)}
                 placeholder="Enter your e-mail"
                 placeholderTextColor="rgba(169, 169, 169, 0.8)"
                 onChangeText={value => {
+                  setWarning({...warning, emailwarning: ''});
                   setLogin({...login, email: value});
+                  setWarning({
+                    ...warning,
+                    emailwarning: emailValidation(value),
+                  });
                 }}
               />
             </View>
+            {warning.emailwarning ? (
+              <Text
+                style={{
+                  ...classes.inputwarning,
+                  color: 'rgba(255, 91, 55, 1)',
+                }}>
+                {warning.emailwarning}
+              </Text>
+            ) : (
+              <View style={{marginBottom: '7%'}} />
+            )}
             <View style={classes.input}>
               <View style={classes.lefticon}>
                 <Ionicons
                   name="lock-closed-outline"
                   size={24}
-                  color="#A9A9A9"
+                  color={FormStyle(
+                    'icon',
+                    warning.passwordwarning,
+                    login.password,
+                  )}
                 />
               </View>
               <TextInput
-                style={classes.inputbox}
+                style={FormStyle(
+                  'form',
+                  warning.passwordwarning,
+                  login.password,
+                )}
                 placeholder="Enter your password"
                 placeholderTextColor="rgba(169, 169, 169, 0.8)"
                 secureTextEntry={eye}
                 onChangeText={value => {
+                  setWarning({...warning, passwordwarning: ''});
                   setLogin({...login, password: value});
+                  setWarning({
+                    ...warning,
+                    passwordwarning: passwordValidation(value),
+                  });
                 }}
               />
               <TouchableOpacity
@@ -145,6 +173,18 @@ const Login = props => {
                 />
               </TouchableOpacity>
             </View>
+            {warning.passwordwarning ? (
+              <Text
+                style={{
+                  ...classes.inputwarning,
+                  color: 'rgba(255, 91, 55, 1)',
+                  marginBottom: '7%',
+                }}>
+                {warning.passwordwarning}
+              </Text>
+            ) : (
+              <View style={{marginBottom: '7%'}} />
+            )}
           </View>
           <TouchableOpacity
             style={classes.forgotpassword}
@@ -153,7 +193,6 @@ const Login = props => {
             }}>
             <Text style={classes.forgottext}>Forgot Password?</Text>
           </TouchableOpacity>
-          {validation()}
           <TouchableOpacity
             style={classes.loginbtn}
             onPress={() => {

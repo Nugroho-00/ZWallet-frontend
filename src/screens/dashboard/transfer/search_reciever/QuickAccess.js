@@ -101,7 +101,7 @@ const QuickAccess = props => {
                   onPress={() => props.navigation.navigate('AmountInput', {...user})}>
                   {!user.avatar ? 
                   <Icon name="person-outline" size={56} />:
-                  <Image source={{uri:`${API_URL}/${user.avatar}`}}/>
+                  <Image source={{uri:`${API_URL}/${user.avatar}`}} style={styles.avatar}/>
                   }
                   <Text style={styles.quickName}>{user.username.length>7?user.username.slice(0,5)+'...':user.username}</Text>
                   <Text style={styles.quickAmount}>{user.phone.slice(-4)}</Text>

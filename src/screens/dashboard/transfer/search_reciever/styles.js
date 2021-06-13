@@ -211,6 +211,11 @@ const styles = StyleSheet.create({
     color:'red',
     fontFamily: 'NunitoSans-Regular',
     fontSize:14
+  },
+  avatar:{
+    height:50,
+    width:50,
+    borderRadius:10
   }
 });
 
