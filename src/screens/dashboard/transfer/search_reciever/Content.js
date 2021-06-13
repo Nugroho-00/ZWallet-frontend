@@ -1,5 +1,5 @@
 import React, {useState, useEffect} from 'react';
-import {View, Text, TouchableOpacity} from 'react-native';
+import {View, Text, TouchableOpacity, Image} from 'react-native';
 
 import Icon from 'react-native-vector-icons/Ionicons';
 
@@ -54,7 +54,10 @@ const Content = props => {
               key={index}
               onPress={() => props.navigation.navigate('AmountInput', {...contact})}>
               <View>
-                <Icon name="person-outline" size={56} />
+              {!contact.avatar ? 
+                  <Icon name="person-outline" size={56} />:
+                  <Image source={{uri:`${API_URL}/${contact.avatar}`}} style={styles.avatar}/>
+                  }
               </View>
               <View style={styles.contactInfoWrapper}>
                 <Text style={styles.contactName}>{contact.username}</Text>
