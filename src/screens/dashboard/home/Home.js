@@ -17,11 +17,34 @@ import {connect} from 'react-redux';
 import axios from 'axios';
 import {API_URL} from '@env';
 
+import { useSocket } from '../../../services/contexts/SocketProvider';
+
+
 const Home = props => {
   const [userData, setUserData] = useState({});
   const [historyData, setHistoryData] = useState([]);
   const isFocused = useIsFocused();
-  console.log(historyData);
+  // console.log(historyData);
+  console.log(props.userReducers.user);
+
+  const socket = useSocket()
+  useEffect(() => {
+  
+      if (socket === undefined) {
+        return;
+      }
+      socket.on('connect', () =>
+        console.log(`connected from home page  ${socket.id}`),
+      );
+      return () => {
+        socket.off('connect');
+      };
+    }, [socket]);
+  
+  
+  
+  
+  
 
   const getDataUser = () => {
     const token = props.loginReducers.user.token;
@@ -53,7 +76,7 @@ const Home = props => {
     return axios
       .get(`${API_URL}/transaction/?sort=amount-ZA`, config)
       .then(res => {
-        console.log(res);
+        // console.log(res);
         return setHistoryData(res.data.result);
       })
       .catch(err => {
@@ -75,6 +98,7 @@ const Home = props => {
   const capitalizeFirstLetter = string => {
     return string.charAt(0).toUpperCase() + string.slice(1);
   };
+  
 
   return (
     <View style={styles.container}>

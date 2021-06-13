@@ -15,7 +15,7 @@ import {Toast} from 'native-base';
 import classes from './Styles';
 import Ionicons from 'react-native-vector-icons/Ionicons';
 import {API_URL} from '@env';
-import {passwordValidation} from '../../../../services/valid/InputValidate';
+import {passwordValidation} from '../../../../services/validation/Validation';
 import {FormStyle} from '../../../../services/formhandler/FormStyle';
 import axios from 'axios';
 

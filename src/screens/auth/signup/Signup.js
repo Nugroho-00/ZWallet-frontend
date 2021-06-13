@@ -17,7 +17,7 @@ import {
   emailValidation,
   passwordValidation,
   phoneValidation,
-} from '../../../services/valid/InputValidate';
+} from '../../../services/validation/Validation';
 import {FormStyle} from '../../../services/formhandler/FormStyle';
 
 const Signup = props => {
@@ -76,14 +76,14 @@ const Signup = props => {
       .then(res => {
         // console.log(res);
         if (res.data?.message === 'User succes registered!') {
-          setSignup({});
           Toast.show({
             text: 'Sign up success',
             type: 'success',
             textStyle: {textAlign: 'center'},
             duration: 3000,
           });
-          return props.navigation.navigate('Login');
+
+          return props.navigation.navigate('CreatePin', {email: signup.email});
         }
       })
       .catch(err => {

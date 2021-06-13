@@ -12,10 +12,12 @@ export function SocketProvider({children}) {
   const [socket, setSocket] = useState();
 
   useEffect(() => {
-    const newSocketConnection = io(`${API_URL}`);
+        const newSocketConnection = io(`${API_URL}`);
     setSocket(newSocketConnection);
+
     return () => newSocketConnection.close();
   }, []);
+
   return (
     <socketContext.Provider value={socket}>{children}</socketContext.Provider>
   );
