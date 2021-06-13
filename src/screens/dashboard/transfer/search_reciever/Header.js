@@ -6,8 +6,10 @@ import Icon from 'react-native-vector-icons/Ionicons';
 import styles from './styles';
 
 const Header = (props) => {
-  const [search, setSearch] = useState('');
-  console.log(search);
+  // console.log(search);
+  const changeHandler=(text)=>{
+    props.onSearch(text)
+  }
 
   return (
     <View>
@@ -30,7 +32,7 @@ const Header = (props) => {
           <TextInput
             style={styles.searchInput}
             placeholder="Search receiver here"
-            onChangeText={e => setSearch(e)}
+            onChangeText={e => changeHandler(e)}
           />
         </View>
         <View></View>
