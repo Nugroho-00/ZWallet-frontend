@@ -53,7 +53,7 @@ const Home = props => {
     return axios
       .get(`${API_URL}/transaction/?sort=amount-ZA`, config)
       .then(res => {
-        // console.log(res);
+        console.log(res);
         return setHistoryData(res.data.result);
       })
       .catch(err => {
