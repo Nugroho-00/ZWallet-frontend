@@ -3,144 +3,150 @@ import {View, Text, StatusBar, ScrollView, Pressable} from 'react-native';
 import {Icon} from 'native-base';
 import styles from './Styles';
 import Header from '../../components/header/Header';
+import {connect} from 'react-redux';
+import axios from 'axios';
+import {API_URL} from '@env';
 
-const currentDate = new Date().toISOString().slice(0,10)
+const currentDate = new Date().toISOString().slice(0, 10);
 
 function Notification(props) {
   const {navigation} = props;
-  const [notifItems, setNotifItems] = useState()
-  // const [today, setToday] = useState()
-  // const [thisMonth, setThisMonth] = useState()
-  // const [thisYear, setThisYear] = useState()
+  const [notifItems, setNotifItems] = useState();
 
+  const token = props.loginReducers.user.token;
+
+  let dayList, monthList, yearList;
   let dayItems, monthItems, yearItems;
 
   function numberWithDot(x) {
-    return x.toString().replace(/\B(?=(\d{3})+(?!\d))/g, ".");
-}
+    return x.toString().replace(/\B(?=(\d{3})+(?!\d))/g, '.');
+  }
 
-  const dataNotif = [
-    {
-      id: 1,
-      content: 'in#Transfered from JoshuaLee#220000',
-      created_at: '2021-06-12'
-    },
-    {
-      id: 2,
-      content: 'out#Transfer to Suyanto#500000',
-      created_at: '2021-06-12'
-    },
-    {
-      id: 3,
-      content: 'out#Netflix Subscription#190000',
-      created_at: '2021-06-10'
-    },
-    {
-      id: 4,
-      content: 'in#Transfered from Sukiyem#500000',
-      created_at: '2021-06-03'
-    },
-    {
-      id: 5,
-      content: 'out#Spotify Subscription#500000',
-      created_at: '2021-05-12'
-    },
-    {
-      id: 6,
-      content: 'in#Transfered from Juber#100000',
-      created_at: '2021-05-12'
-    },
-    {
-      id: 7,
-      content: 'out#Transfer to Abregedew#220000',
-      created_at: '2021-04-12'
-    },
-    {
-      id: 8,
-      content: 'out#Canva Subscription#500000',
-      created_at: '2021-04-12'
-    },
-    {
-      id: 9,
-      content: 'in#Top up via Muamalat Mobile Banking#100000',
-      created_at: '2021-01-12'
-    },
-  ];
+  const getNotification = () => {
+    let config = {
+      method: 'GET',
+      url: `${API_URL}/notification`,
+      headers: {
+        Authorization: 'Bearer ' + token,
+      },
+    };
+    axios(config)
+      .then(res => {
+        setNotifItems(res.data.result);
+      })
+      .catch(err => {
+        console.log(err);
+      });
+  };
 
-  const dayList = dataNotif.filter(item=>item.created_at===currentDate)
-  const monthList = dataNotif.filter(item=>item.created_at.slice(0,7)===currentDate.slice(0,7) && !dayList.includes(item))
-  const yearList = dataNotif.filter(item=>item.created_at.slice(0,5)===currentDate.slice(0,5) && !dayList.includes(item) && !monthList.includes(item))
+  useEffect(() => {
+    getNotification();
+  }, []);
 
-  dayItems = dayList.map(item=>{
-    const data = item.content.split('#')
-    return (
-      <View style={styles.cardItem} key={item.id}>
-        <View style={styles.left}>
-          {data[0]==='out'?
-          <Icon name="arrow-up" style={styles.arrowUp}/> : 
-          <Icon name="arrow-down" style={styles.arrowDown}/>
-          }
+  if (notifItems) {
+    dayList = notifItems.filter(item => item.created_at.slice(0, 10) === currentDate);
+  }
+
+  if (notifItems) {
+    monthList = notifItems.filter(
+      item =>
+        item.created_at.slice(0, 7) === currentDate.slice(0, 7) &&
+        !dayList.includes(item),
+    );
+  }
+  if (notifItems) {
+    yearList = notifItems.filter(
+      item =>
+        item.created_at.slice(0, 5) === currentDate.slice(0, 5) &&
+        !dayList.includes(item) &&
+        !monthList.includes(item),
+    );
+  }
+
+  if (notifItems && dayList) {
+    dayItems = dayList.map(item => {
+      const data = item.content.split('#');
+      return (
+        <View style={styles.cardItem} key={item.id}>
+          <View style={styles.left}>
+            {data[0] === 'out' ? (
+              <Icon name="arrow-up" style={styles.arrowUp} />
+            ) : (
+              <Icon name="arrow-down" style={styles.arrowDown} />
+            )}
+          </View>
+          <View style={styles.right}>
+            <Text style={styles.content}>{data[1]}</Text>
+            <Text style={styles.amount}>Rp. {numberWithDot(data[2])}</Text>
+          </View>
         </View>
-        <View style={styles.right}>
+      );
+    });
+  }
 
-          <Text style={styles.content}>{data[1]}</Text>
-          <Text style={styles.amount}>Rp. {numberWithDot(data[2])}</Text>
+  if (notifItems && monthList) {
+    monthItems = monthList.map(item => {
+      const data = item.content.split('#');
+      return (
+        <View style={styles.cardItem} key={item.id}>
+          <View style={styles.left}>
+            {data[0] === 'out' ? (
+              <Icon name="arrow-up" style={styles.arrowUp} />
+            ) : (
+              <Icon name="arrow-down" style={styles.arrowDown} />
+            )}
+          </View>
+          <View style={styles.right}>
+            <Text style={styles.content}>{data[1]}</Text>
+            <Text style={styles.amount}>Rp. {numberWithDot(data[2])}</Text>
+          </View>
         </View>
-      </View>
-    )
-  })
+      );
+    });
+  }
 
-  monthItems = monthList.map(item=>{
-    const data = item.content.split('#')
-    return (
-      <View style={styles.cardItem} key={item.id}>
-        <View style={styles.left}>
-          {data[0]==='out'?
-          <Icon name="arrow-up" style={styles.arrowUp}/> : 
-          <Icon name="arrow-down" style={styles.arrowDown}/>
-          }
+  if (notifItems && yearList) {
+    yearItems = yearList.map(item => {
+      const data = item.content.split('#');
+      return (
+        <View style={styles.cardItem} key={item.id}>
+          <View style={styles.left}>
+            {data[0] === 'out' ? (
+              <Icon name="arrow-up" style={styles.arrowUp} />
+            ) : (
+              <Icon name="arrow-down" style={styles.arrowDown} />
+            )}
+          </View>
+          <View style={styles.right}>
+            <Text style={styles.content}>{data[1]}</Text>
+            <Text style={styles.amount}>Rp. {numberWithDot(data[2])}</Text>
+          </View>
         </View>
-        <View style={styles.right}>
-
-          <Text style={styles.content}>{data[1]}</Text>
-          <Text style={styles.amount}>Rp. {numberWithDot(data[2])}</Text>
-        </View>
-      </View>
-    )
-  })
-
-  yearItems = yearList.map(item=>{
-    const data = item.content.split('#')
-    return (
-      <View style={styles.cardItem} key={item.id}>
-        <View style={styles.left}>
-          {data[0]==='out'?
-          <Icon name="arrow-up" style={styles.arrowUp}/> : 
-          <Icon name="arrow-down" style={styles.arrowDown}/>
-          }
-        </View>
-        <View style={styles.right}>
-
-          <Text style={styles.content}>{data[1]}</Text>
-          <Text style={styles.amount}>Rp. {numberWithDot(data[2])}</Text>
-        </View>
-      </View>
-    )
-  })
+      );
+    });
+  }
 
   return (
     <>
       <Header isBack={true} title="Notification" navigation={navigation} />
       <ScrollView showsVerticalScrollIndicator={false} style={styles.container}>
-        <Text style={styles.section}>Today</Text>
+        {dayList&&dayList.length>0?<Text style={styles.section}>Today</Text>:null}
         {dayItems}
-        <Text style={styles.section}>This Month</Text>
+        {monthList&&monthList.length>0?<Text style={styles.section}>This Month</Text>:null}
         {monthItems}
-        <Text style={styles.section}>This Year</Text>
+        {yearList&&yearList.length>0?<Text style={styles.section}>This Year</Text>:null}
         {yearItems}
       </ScrollView>
     </>
   );
 }
 
-export default Notification;
+const mapStatetoProps = state => {
+  return {
+    loginReducers: state.loginReducers,
+  };
+};
+
+const connectedNotification = connect(mapStatetoProps)(Notification);
+
+export default connectedNotification;

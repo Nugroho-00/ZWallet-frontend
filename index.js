@@ -11,13 +11,13 @@ import storewithPersistor from './src/services/redux/Store';
 const AppRedux = () => {
   return (
     <Root>
-      {/* <SocketProvider> */}
+      <SocketProvider>
         <Provider store={storewithPersistor.store}>
           <PersistGate loading={null} persistor={storewithPersistor.persistor}>
             <App />
           </PersistGate>
         </Provider>
-      {/* </SocketProvider> */}
+      </SocketProvider>
     </Root>
   );
 };
