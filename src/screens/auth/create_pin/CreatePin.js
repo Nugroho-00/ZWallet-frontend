@@ -10,6 +10,7 @@ import {API_URL} from '@env';
 
 const CreatePin = props => {
   const {navigation} = props;
+  const {id} = props.route.params
   const [isFilled, setIsFilled] = useState(false);
   const [isEdit, setIsEdit] = useState(false);
   const [errorMessage, setErrorMessage] = useState('');
@@ -59,12 +60,9 @@ const CreatePin = props => {
   const createPinHandler =  ()=> {
     const token = props.loginReducers.user.token;
     let config = {
-      method: 'POST',
+      method: 'PATCH',
       url: `${API_URL}/auth/create-pin`,
-      data: {pin: [num1, num2, num3, num4, num5, num6].join('')},
-      headers: {
-        Authorization: 'Bearer ' + token,
-      },
+      data: {id:id, pin: [num1, num2, num3, num4, num5, num6].join('')},
     };
     axios(config)
       .then(res => {
@@ -232,7 +230,7 @@ const CreatePin = props => {
               : {...styles.buttonOff}
           }
           disabled={isFilled ? false : true}
-          onPress={() => navigation.navigate('PinSuccess')}>
+          onPress={createPinHandler}>
           <Text style={isFilled ? styles.textOn : styles.textOff}>Confirm</Text>
         </Button>
       </View>

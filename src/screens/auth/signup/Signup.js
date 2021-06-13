@@ -35,6 +35,31 @@ const Signup = props => {
   });
   const [eye, setEye] = useState(true);
 
+
+  const sendOtp = ()=>{
+    let config = {
+      method: 'POST',
+      url: `${API_URL}/auth/send-otp`,
+      data: {email: signup.email},
+    };
+    axios(config)
+      .then(res => {
+        console.log(res);
+        props.navigation.navigate('ConfirmOtp', {id: res.data.userId, type:'non-reset'});
+      })
+      .catch(err => {
+        console.log({err});
+        if (err.response.data?.message === 'Email not found !!!') {
+          return Toast.show({
+            text: 'User is not registered, go to signup page to get started',
+            type: 'danger',
+            textStyle: {textAlign: 'center'},
+            duration: 3000,
+          });
+        }
+      });
+  }
+
   const signupHandler = () => {
     if (
       !signup.email ||
@@ -82,8 +107,8 @@ const Signup = props => {
             textStyle: {textAlign: 'center'},
             duration: 3000,
           });
+          sendOtp()
 
-          return props.navigation.navigate('CreatePin', {email: signup.email});
         }
       })
       .catch(err => {
