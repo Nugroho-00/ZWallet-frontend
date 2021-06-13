@@ -5,12 +5,13 @@ import Header from './Header';
 import Content from './Content';
 import styles from './styles';
 
-const ConfirmationResult = () => {
+const ConfirmationResult = props => {
+  const data = props.route.params;
   return (
     <View style={styles.container}>
       <Header />
       <ScrollView>
-        <Content />
+        <Content navigation={props.navigation} dataReceiver={data} />
       </ScrollView>
     </View>
   );
