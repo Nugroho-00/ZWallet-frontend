@@ -143,10 +143,16 @@ const Home = props => {
               </View>
               <View style={{flex: 4}}>
                 <Text style={{fontSize: 16, marginBottom: 9}}>
-                  {history.type === 'debit' ? history.receiver : history.sender}
+                  {history.type === 'debit' ? history.sender : history.receiver}
                 </Text>
                 <Text style={{color: '#7A7886'}}>
-                  {capitalizeFirstLetter(history.type)}
+                  {capitalizeFirstLetter(
+                    history.type === 'credit'
+                      ? 'Transfer'
+                      : history.type === 'debit'
+                      ? 'Transfer'
+                      : history.type,
+                  )}
                 </Text>
               </View>
               <View style={{flex: 3}}>
@@ -154,11 +160,15 @@ const Home = props => {
                   style={{
                     fontSize: 18,
                     color:
-                      history.type === 'transfer' || 'topup'
+                      history.type === 'topup'
+                        ? '#1EC15F'
+                        : history.type === 'debit'
                         ? '#1EC15F'
                         : '#FF5B37',
                   }}>
-                  {history.type === 'transfer' || 'topup'
+                  {history.type === 'topup'
+                    ? `+Rp${separator(history.nominal)}`
+                    : history.type === 'debit'
                     ? `+Rp${separator(history.nominal)}`
                     : `-Rp${separator(history.nominal)}`}
                 </Text>
