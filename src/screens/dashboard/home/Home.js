@@ -64,6 +64,9 @@ const Home = props => {
   useEffect(() => {
     getHistoryData();
   }, []);
+  useEffect(() => {
+    getHistoryData();
+  }, [isFocused]);
 
   const separator = x => {
     return x.toString().replace(/\B(?=(\d{3})+(?!\d))/g, '.');
