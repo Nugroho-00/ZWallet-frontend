@@ -14,39 +14,52 @@ const Content = props => {
   const [isAvailable, setIsAvailable] = useState(false);
   const token = props.loginReducers.user.token;
 
-  const getContact = ()=>{
+  const getContact = () => {
     axios
-    .get(`${API_URL}/profile/my-contact?search=${props.onSearch}&sort=name-AZ`, {
-      headers: {Authorization: `Bearer ${token}`},
-    })
-    .then(res => {
-      if (res.data.success===false) {
-        setIsAvailable(false);
-      } else if (res.data.result) {
-        setMyContact(res.data.result);
-        setIsAvailable(true);
-      }
-    })
-    .catch(err => {
-      console.log(err);
-    });
-  }
+      .get(
+        `${API_URL}/profile/my-contact?search=${props.onSearch}&sort=name-AZ`,
+        {
+          headers: {Authorization: `Bearer ${token}`},
+        },
+      )
+      .then(res => {
+        if (res.data.success === false) {
+          setIsAvailable(false);
+        } else if (res.data.result) {
+          setMyContact(res.data.result);
+          setIsAvailable(true);
+        }
+      })
+      .catch(err => {
+        console.log(err);
+      });
+  };
 
   useEffect(() => {
-    getContact()
+    getContact();
   }, []);
 
   useEffect(() => {
-    getContact()
+    getContact();
   }, [props.onSearch]);
 
   return (
-    <View style={props.onSearch?{...styles.contentContainer,marginTop:-10}:styles.contentContainer}>
+    <View
+      style={
+        props.onSearch
+          ? {...styles.contentContainer, marginTop: -10}
+          : styles.contentContainer
+      }>
       <View style={styles.titleContentWrapper}>
         <Text style={styles.titleContentText}>Contact</Text>
-        <Text style={styles.countContact}>{!isAvailable ? 'No contact found': myContact.length+' Contact Founds'}</Text>
+        <Text style={styles.countContact}>
+          {!isAvailable
+            ? 'No contact found'
+            : myContact.length + ' Contact Founds'}
+        </Text>
       </View>
       <View>
+
         {isAvailable && myContact ?  (
          myContact.map((contact, index) => (
             <TouchableOpacity
@@ -66,6 +79,7 @@ const Content = props => {
             </TouchableOpacity>
           ))
         ):null}
+
       </View>
     </View>
   );
