@@ -69,15 +69,15 @@ function Notification(props) {
       return (
         <View style={styles.cardItem} key={item.id}>
           <View style={styles.left}>
-            {data[0] === 'out' ? (
+            {data[1] === 'out' ? (
               <Icon name="arrow-up" style={styles.arrowUp} />
             ) : (
               <Icon name="arrow-down" style={styles.arrowDown} />
             )}
           </View>
           <View style={styles.right}>
-            <Text style={styles.content}>{data[1]}</Text>
-            <Text style={styles.amount}>Rp. {numberWithDot(data[2])}</Text>
+            <Text style={styles.content}>{data[2]}</Text>
+            <Text style={styles.amount}>Rp. {numberWithDot(data[3])}</Text>
           </View>
         </View>
       );
@@ -90,15 +90,15 @@ function Notification(props) {
       return (
         <View style={styles.cardItem} key={item.id}>
           <View style={styles.left}>
-            {data[0] === 'out' ? (
+            {data[1] === 'out' ? (
               <Icon name="arrow-up" style={styles.arrowUp} />
             ) : (
               <Icon name="arrow-down" style={styles.arrowDown} />
             )}
           </View>
           <View style={styles.right}>
-            <Text style={styles.content}>{data[1]}</Text>
-            <Text style={styles.amount}>Rp. {numberWithDot(data[2])}</Text>
+            <Text style={styles.content}>{data[2]}</Text>
+            <Text style={styles.amount}>Rp. {numberWithDot(data[3])}</Text>
           </View>
         </View>
       );
@@ -111,15 +111,15 @@ function Notification(props) {
       return (
         <View style={styles.cardItem} key={item.id}>
           <View style={styles.left}>
-            {data[0] === 'out' ? (
+            {data[1] === 'out' ? (
               <Icon name="arrow-up" style={styles.arrowUp} />
             ) : (
               <Icon name="arrow-down" style={styles.arrowDown} />
             )}
           </View>
           <View style={styles.right}>
-            <Text style={styles.content}>{data[1]}</Text>
-            <Text style={styles.amount}>Rp. {numberWithDot(data[2])}</Text>
+            <Text style={styles.content}>{data[2]}</Text>
+            <Text style={styles.amount}>Rp. {numberWithDot(data[3])}</Text>
           </View>
         </View>
       );
