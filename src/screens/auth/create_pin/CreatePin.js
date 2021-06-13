@@ -79,8 +79,6 @@ const CreatePin = props => {
   const isValidPin = pin => {
     return !!pin.match(/^[0-9]*$/);
   };
-
-  
   return (
     <>
       <Backdrop />
