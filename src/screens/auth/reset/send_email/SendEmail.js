@@ -12,7 +12,7 @@ import classes from './Styles';
 import Ionicons from 'react-native-vector-icons/Ionicons';
 import {API_URL} from '@env';
 import axios from 'axios';
-import {emailValidation} from '../../../../services/valid/InputValidate';
+import {emailValidation} from '../../../../services/validation/Validation';
 import {FormStyle} from '../../../../services/formhandler/FormStyle';
 
 const SendEmail = props => {

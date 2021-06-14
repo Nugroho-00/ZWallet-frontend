@@ -1,30 +1,130 @@
-import React, {useState} from 'react';
+import React, {useState, useEffect} from 'react';
 import {View, TouchableOpacity, Text} from 'react-native';
 
 import Icon from 'react-native-vector-icons/Ionicons';
 
 import styles from './styles';
 
-const Content = () => {
-  const [result, setResult] = useState(false);
+import moment from 'moment';
+import {useSelector} from 'react-redux';
+import axios from 'axios';
+import {API_URL} from '@env';
+import {connect} from 'react-redux';
+
+
+import { useSocket } from '../../../../services/contexts/SocketProvider';
+
+const Content = props => {
+  const [result, setResult] = useState(null);
+  const [idTransaction, setIdTransaction] = useState()
+
+  const userReducer = useSelector(state => state.userReducers);
+  const userData = userReducer.user.data[0];
+  const loginReducers = useSelector(state => state.loginReducers);
+
+  const data = props.dataReceiver;
+  console.log(data.amount,'thiss');
+
+  
+  const socket = useSocket()
+  const token = loginReducers.user.token;
+
+  console.log(data.username);
+
+  console.log(data);
+  const storeNotification=(id)=>{
+    let config = {
+      method: 'POST',
+      url: `${API_URL}/notification`,
+      data: {content: `${id}#out#Transfer to ${data.username}#${data.amount}`},
+      headers: {
+        Authorization: 'Bearer ' + token,
+      },
+    };
+    axios(config)
+      .then(res => {
+        console.log(res.data);
+
+        const body = {
+          id:id,
+          sender: userData.username,
+          amount: data.amount
+        }
+        socket.emit('transfer',body, data.id,({status})=>{
+          if(status){
+            console.log(`${userData.username} joined room ${data.id}`);
+          }
+        })
+      })
+      .catch(err => {
+        console.log(err);
+      });
+  }
+
+
+  const transferHandler = () => {
+    let config = {
+      method: 'POST',
+      url: `${API_URL}/transaction/transfer`,
+      headers: {
+        Authorization: 'Bearer ' + token,
+      },
+      data: {
+        receiverPhone: data.phone,
+        amount: data.amount,
+        note: data.note,
+      },
+    };
+    return axios(config)
+      .then(res => {
+        console.log(res.data.result);
+        setIdTransaction(res.data.result.id)
+        return setResult(true)
+      })
+      .catch(err => {
+        console.log(err.response);
+        return setResult(false);
+      });
+  };
+
+  if (result){
+    storeNotification(idTransaction)
+
+  }
+
+  const navigateHome = () => {
+    return props.navigation.navigate('HomeScreen');
+  };
+
+  useEffect(() => {
+    transferHandler();
+  }, []);
+
+  const separator = x => {
+    return x.toString().replace(/\B(?=(\d{3})+(?!\d))/g, '.');
+  };
 
   return (
     <View style={styles.contentWrapper}>
       <View style={styles.resultWrapper}>
-        <View style={styles.iconResult}>
+        <View
+          style={{
+            ...styles.iconResult,
+            display: result === null ? 'none' : 'flex',
+          }}>
           <Icon
-            name={result ? 'checkmark-circle' : 'close-circle'}
+            name={result === true ? 'checkmark-circle' : 'close-circle'}
             size={70}
-            color={result ? '#1EC15F' : '#FF5B37'}
+            color={result === true ? '#1EC15F' : '#FF5B37'}
           />
         </View>
         <Text style={styles.textResult}>
-          {result ? 'Transfer Success' : 'Transfer Failed'}
+          {result === true ? 'Transfer Success' : 'Transfer Failed'}
         </Text>
         <Text
           style={{
             ...styles.textResultDescription,
-            display: result ? 'none' : 'flex',
+            display: result === true ? 'none' : 'flex',
           }}>
           We can’t transfer your money at the moment, we recommend you to check
           your internet connection and try again.
@@ -34,34 +134,36 @@ const Content = () => {
       <View style={styles.balanceWrapper}>
         <View style={styles.infoWrapper}>
           <Text style={styles.infoTitle}>Amount</Text>
-          <Text style={styles.infoText}>Rp100.000</Text>
+          <Text style={styles.infoText}>{`Rp${separator(data.amount)}`}</Text>
         </View>
 
         <View style={{width: 20}} />
 
         <View style={styles.infoWrapper}>
           <Text style={styles.infoTitle}>Balance Left</Text>
-          <Text style={styles.infoText}>Rp20.000</Text>
+          <Text style={styles.infoText}>{`Rp${separator(
+            userData.balances - data.amount,
+          )}`}</Text>
         </View>
       </View>
 
       <View style={styles.balanceWrapper}>
         <View style={styles.infoWrapper}>
           <Text style={styles.infoTitle}>Date</Text>
-          <Text style={styles.infoText}>May 11, 2020</Text>
+          <Text style={styles.infoText}>{moment().format('ll')}</Text>
         </View>
 
         <View style={{width: 20}} />
 
         <View style={styles.infoWrapper}>
           <Text style={styles.infoTitle}>Time</Text>
-          <Text style={styles.infoText}>12.20</Text>
+          <Text style={styles.infoText}>{moment().format('LT')}</Text>
         </View>
       </View>
 
       <View style={styles.noteWrapper}>
         <Text style={styles.infoTitle}>Notes</Text>
-        <Text style={styles.infoText}>For buying some socks</Text>
+        <Text style={styles.infoText}>{data.note}</Text>
       </View>
 
       <View style={styles.relationsWrapper}>
@@ -69,8 +171,8 @@ const Content = () => {
         <View style={styles.infoRelationsWrapper}>
           <Icon name="person-outline" size={56} />
           <View style={styles.infoUserWrapper}>
-            <Text style={styles.textUsername}>Robert Chandler</Text>
-            <Text style={styles.textPhone}>+62 813-9387-7946</Text>
+            <Text style={styles.textUsername}>{userData.username}</Text>
+            <Text style={styles.textPhone}>{userData.phone}</Text>
           </View>
         </View>
 
@@ -78,21 +180,29 @@ const Content = () => {
         <View style={styles.infoRelationsWrapper}>
           <Icon name="person-outline" size={56} />
           <View style={styles.infoUserWrapper}>
-            <Text style={styles.textUsername}>Samuel Suhi</Text>
-            <Text style={styles.textPhone}>+62 813-8492-9994</Text>
+            <Text style={styles.textUsername}>{data.username}</Text>
+            <Text style={styles.textPhone}>{data.phone}</Text>
           </View>
         </View>
       </View>
 
       <TouchableOpacity
         style={styles.btnContinue}
-        onPress={() => setResult(!result)}>
+        onPress={result === true ? navigateHome : transferHandler}>
         <Text style={styles.textContinue}>
-          {result ? 'Back to Home' : 'Try Again'}
+          {result === true ? 'Back to Home' : 'Try Again'}
         </Text>
       </TouchableOpacity>
     </View>
   );
 };
 
-export default Content;
+const mapStatetoProps = state => {
+  return {
+    loginReducers: state.loginReducers,
+  };
+};
+
+const connectedConfirmResult = connect(mapStatetoProps)(Content);
+
+export default connectedConfirmResult;

@@ -10,7 +10,6 @@ import styles from './styles';
 const SearchReciever = (props) => {
   const [search, setSearch] = useState('');
   const searchHandler=(e)=>{
-    console.log(e);
     setSearch(e)
   }
   return (

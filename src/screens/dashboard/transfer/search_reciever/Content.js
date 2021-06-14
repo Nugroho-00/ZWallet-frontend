@@ -8,11 +8,14 @@ import styles from './styles';
 import {connect} from 'react-redux';
 import axios from 'axios';
 import {API_URL} from '@env';
+import {useIsFocused} from '@react-navigation/native';
+
 
 const Content = props => {
   const [myContact, setMyContact] = useState();
   const [isAvailable, setIsAvailable] = useState(false);
   const token = props.loginReducers.user.token;
+  const isFocused = useIsFocused();
 
   const getContact = () => {
     axios
@@ -41,7 +44,7 @@ const Content = props => {
 
   useEffect(() => {
     getContact();
-  }, [props.onSearch]);
+  }, [props.onSearch, isFocused]);
 
   return (
     <View
@@ -59,27 +62,31 @@ const Content = props => {
         </Text>
       </View>
       <View>
-
-        {isAvailable && myContact ?  (
-         myContact.map((contact, index) => (
-            <TouchableOpacity
-              style={styles.listContactWrapper}
-              key={index}
-              onPress={() => props.navigation.navigate('AmountInput', {...contact})}>
-              <View>
-              {!contact.avatar ? 
-                  <Icon name="person-outline" size={56} />:
-                  <Image source={{uri:`${API_URL}/${contact.avatar}`}} style={styles.avatar}/>
-                  }
-              </View>
-              <View style={styles.contactInfoWrapper}>
-                <Text style={styles.contactName}>{contact.username}</Text>
-                <Text style={styles.contactPhone}>{contact.phone}</Text>
-              </View>
-            </TouchableOpacity>
-          ))
-        ):null}
-
+        {isAvailable && myContact
+          ? myContact.map((contact, index) => (
+              <TouchableOpacity
+                style={styles.listContactWrapper}
+                key={index}
+                onPress={() =>
+                  props.navigation.navigate('AmountInput', {...contact})
+                }>
+                <View>
+                  {!contact.avatar ? (
+                    <Icon name="person-outline" size={56} />
+                  ) : (
+                    <Image
+                      source={{uri: `${API_URL}/${contact.avatar}`}}
+                      style={styles.avatar}
+                    />
+                  )}
+                </View>
+                <View style={styles.contactInfoWrapper}>
+                  <Text style={styles.contactName}>{contact.username}</Text>
+                  <Text style={styles.contactPhone}>{contact.phone}</Text>
+                </View>
+              </TouchableOpacity>
+            ))
+          : null}
       </View>
     </View>
   );

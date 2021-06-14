@@ -59,11 +59,11 @@ const TopUp = props => {
   },[amount])
 
 
-  const storeNotification=()=>{
+  const storeNotification=(id)=>{
     let config = {
       method: 'POST',
       url: `${API_URL}/notification`,
-      data: {content: `in#Top Up with instant method#${amount}`},
+      data: {content: `${id}#in#Top Up with instant method#${amount}`},
       headers: {
         Authorization: 'Bearer ' + token,
       },
@@ -100,7 +100,8 @@ const TopUp = props => {
       };
       axios(config)
         .then(res => {
-          storeNotification()
+          // console.log(res.data.result.id)
+          storeNotification(res.data.result.id)
         })
         .catch(err => {
           console.log(err);
