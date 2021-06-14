@@ -237,7 +237,7 @@ const TopUp = props => {
               ) : null}
               <TouchableOpacity
                 style={isFilled ? classes.sendOn : classes.sendOff}
-                onPress={()=>setConfirmModal(true)}
+                onPress={() => setConfirmModal(true)}
                 disabled={isFilled ? false : true}>
                 <Text
                   style={isFilled ? classes.txtTopUpOn : classes.txtTopUpOff}>
@@ -265,7 +265,9 @@ const TopUp = props => {
         <CustomModal
           modalVisible={confirmModal}
           title="Top Up Confirmation"
-          msg={`Are you sure you want to top up a balance of Rp${amountValue.toString().replace(/\B(?=(\d{3})+(?!\d))/g, ',')}?`}
+          msg={`Are you sure you want to top up a balance of Rp${amountValue
+            .toString()
+            .replace(/\B(?=(\d{3})+(?!\d))/g, ',')}?`}
           btnLabel3="Cancel"
           onAction3={() => {
             setConfirmModal(false);

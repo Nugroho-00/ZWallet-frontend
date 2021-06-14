@@ -6,11 +6,11 @@ import ExampleAvatar from '../../../assets/images/example_avatar.jpg';
 import NumberFormat from 'react-number-format';
 import axios from 'axios';
 import {API_URL} from '@env';
+import moment from 'moment';
 
 const Card = props => {
   const {data} = props;
-  const [amount, setAmount] = React.useState();
-
+  const timestamp = moment(data.created_at).format('ddd, Do MMM YY');
   const prefix = type => {
     if (type === 'credit' || type === 'subscription') {
       return '-Rp';
@@ -19,7 +19,7 @@ const Card = props => {
       return '+Rp';
     }
   };
-
+  console.log(props);
   return (
     <View style={classes.cardcontainer}>
       <View style={classes.leftcontent}>
@@ -38,6 +38,9 @@ const Card = props => {
                 : data.type.charAt(0).toUpperCase() + data.type.slice(1)
               : data.type.charAt(0).toUpperCase() + data.type.slice(1)}
           </Text>
+          {props.timestamp === true ? (
+            <Text style={classes.timestamp}>{timestamp}</Text>
+          ) : null}
         </View>
       </View>
       <View style={classes.rightcontent}>

@@ -223,45 +223,61 @@ const Home = props => {
         </View>
 
         <View>
-          {historyData.map((history, index) => (
-            <View key={index} style={styles.historyListWrapper}>
-              <View style={{flex: 2}}>
-                <Icon name="person-outline" size={56} />
-              </View>
-              <View style={{flex: 4}}>
-                <Text style={{fontSize: 16, marginBottom: 9}}>
-                  {history.type === 'debit' ? history.sender : history.receiver}
-                </Text>
-                <Text style={{color: '#7A7886'}}>
-                  {capitalizeFirstLetter(
-                    history.type === 'credit'
-                      ? 'Transfer'
-                      : history.type === 'debit'
-                      ? 'Transfer'
-                      : history.type,
-                  )}
-                </Text>
-              </View>
-              <View style={{flex: 3}}>
-                <Text
-                  style={{
-                    fontSize: 18,
-                    color:
-                      history.type === 'topup'
-                        ? '#1EC15F'
-                        : history.type === 'debit'
-                        ? '#1EC15F'
-                        : '#FF5B37',
-                  }}>
-                  {history.type === 'topup'
-                    ? `+Rp${separator(history.nominal)}`
-                    : history.type === 'debit'
-                    ? `+Rp${separator(history.nominal)}`
-                    : `-Rp${separator(history.nominal)}`}
-                </Text>
-              </View>
+          {historyData.length < 1 ? (
+            <View style={{alignItems: 'center', marginTop: 200}}>
+              <Text
+                style={{
+                  fontFamily: 'NunitoSans-Regular',
+                  fontSize: 20,
+                  fontWeight: 'bold',
+                  color: '#7C7895',
+                }}>
+                No transactions yet
+              </Text>
             </View>
-          ))}
+          ) : (
+            historyData.map((history, index) => (
+              <View key={index} style={styles.historyListWrapper}>
+                <View style={{flex: 2}}>
+                  <Icon name="person-outline" size={56} />
+                </View>
+                <View style={{flex: 4}}>
+                  <Text style={{fontSize: 16, marginBottom: 9}}>
+                    {history.type === 'debit'
+                      ? history.sender
+                      : history.receiver}
+                  </Text>
+                  <Text style={{color: '#7A7886'}}>
+                    {capitalizeFirstLetter(
+                      history.type === 'credit'
+                        ? 'Transfer'
+                        : history.type === 'debit'
+                        ? 'Transfer'
+                        : history.type,
+                    )}
+                  </Text>
+                </View>
+                <View style={{flex: 3}}>
+                  <Text
+                    style={{
+                      fontSize: 18,
+                      color:
+                        history.type === 'topup'
+                          ? '#1EC15F'
+                          : history.type === 'debit'
+                          ? '#1EC15F'
+                          : '#FF5B37',
+                    }}>
+                    {history.type === 'topup'
+                      ? `+Rp${separator(history.nominal)}`
+                      : history.type === 'debit'
+                      ? `+Rp${separator(history.nominal)}`
+                      : `-Rp${separator(history.nominal)}`}
+                  </Text>
+                </View>
+              </View>
+            ))
+          )}
         </View>
       </ScrollView>
     </View>

@@ -26,10 +26,17 @@ const classes = StyleSheet.create({
   username: {
     fontFamily: 'NunitoSans-Bold',
     fontSize: 16,
+    color: 'rgba(77, 75, 87, 1)',
   },
   transactiontype: {
     fontFamily: 'NunitoSans-Regular',
     fontSize: 14,
+    color: 'rgba(77, 75, 87, 1)',
+  },
+  timestamp: {
+    fontFamily: 'NunitoSans-Regular',
+    fontSize: 12,
+    color: 'rgba(143, 143, 143, 1)',
   },
   rightcontent: {
     justifyContent: 'center',

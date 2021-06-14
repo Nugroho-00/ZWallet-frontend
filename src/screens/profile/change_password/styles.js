@@ -35,11 +35,16 @@ const styles = StyleSheet.create({
     fontSize: 16,
     color: '#7A7886',
   },
+  inputwarning: {
+    paddingLeft: '4%',
+    fontFamily: 'NunitoSans-Regular',
+    fontSize: 14,
+    marginBottom: '8%',
+  },
   input: {
     flexDirection: 'row',
     alignItems: 'center',
     marginHorizontal: '4%',
-    marginBottom: '10%',
   },
   lefticon: {
     position: 'absolute',
@@ -76,7 +81,7 @@ const styles = StyleSheet.create({
   },
   btnWrapper: {
     paddingHorizontal: 16,
-    marginTop: 170,
+    marginVertical: '5%',
   },
 });
 
