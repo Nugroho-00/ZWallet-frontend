@@ -4,12 +4,17 @@ import {View, Text, TextInput, Keyboard} from 'react-native';
 import {Button} from 'native-base';
 import styles from './Styles';
 import Header from '../../../components/header/Header';
+import {connect} from 'react-redux';
+import axios from 'axios';
+import {API_URL} from '@env';
+
 
 function NewPin(props) {
   const {navigation} = props;
   const [isFilled, setIsFilled] = useState(false);
   const [isEdit, setIsEdit] = useState(false);
   const [errorMessage, setErrorMessage] = useState('');
+  const {oldPin} =props.route.params
 
   const [num1, setNum1] = useState('');
   const [num2, setNum2] = useState('');
@@ -53,6 +58,29 @@ function NewPin(props) {
     };
   }, [num1, num2, num3, num4, num5, num6]);
 
+
+
+  const changePinHandler =  ()=> {
+    const token = props.loginReducers.user.token;
+    let config = {
+      method: 'PATCH',
+      url: `${API_URL}/profile/edit-pin`,
+      data: {oldPin:oldPin, newPin: [num1, num2, num3, num4, num5, num6].join('')},
+      headers: {
+        Authorization: 'Bearer ' + token,
+      },
+    };
+    axios(config)
+      .then(res => {
+        navigation.navigate('PinSuccess', {isLogin:true, mode:'change'})
+      })
+      .catch(err => {
+        console.log(err);
+      });
+  };
+
+
+
   const isValidPin = pin => {
     return !!pin.match(/^[0-9]*$/);
   };
@@ -73,6 +101,7 @@ function NewPin(props) {
             ref={ref}
             keyboardType="numeric"
             maxLength={1}
+            secureTextEntry={true}
             onChangeText={code => {
               if (code.length === 1) {
                 isValidPin(code) && ref2.current.focus();
@@ -92,6 +121,7 @@ function NewPin(props) {
             ref={ref2}
             keyboardType="numeric"
             maxLength={1}
+            secureTextEntry={true}
             onChangeText={code => {
               if (code.length === 1) {
                 isValidPin(code) && ref3.current.focus();
@@ -113,6 +143,7 @@ function NewPin(props) {
             ref={ref3}
             keyboardType="numeric"
             maxLength={1}
+            secureTextEntry={true}
             onChangeText={code => {
               if (code.length === 1) {
                 isValidPin(code) && ref4.current.focus();
@@ -134,6 +165,7 @@ function NewPin(props) {
             ref={ref4}
             keyboardType="numeric"
             maxLength={1}
+            secureTextEntry={true}
             onChangeText={code => {
               if (code.length === 1) {
                 isValidPin(code) && ref5.current.focus();
@@ -155,6 +187,7 @@ function NewPin(props) {
             ref={ref5}
             keyboardType="numeric"
             maxLength={1}
+            secureTextEntry={true}
             onChangeText={code => {
               if (code.length === 1) {
                 isValidPin(code) && ref6.current.focus();
@@ -176,6 +209,7 @@ function NewPin(props) {
             ref={ref6}
             keyboardType="numeric"
             maxLength={1}
+            secureTextEntry={true}
             onChangeText={code => {
               if (code.length < 1) {
                 ref5.current.focus();
@@ -206,7 +240,7 @@ function NewPin(props) {
               ? {...styles.buttonOn}
               : {...styles.buttonOff}
           }
-          onPress={()=>props.navigation.navigate('Profile')}
+          onPress={changePinHandler}
           disabled={isFilled ? false : true}>
           <Text style={isFilled ? styles.textOn : styles.textOff}>
             Change PIN
@@ -217,4 +251,11 @@ function NewPin(props) {
   );
 }
 
-export default NewPin;
+const mapStatetoProps = state => {
+  return {
+    loginReducers: state.loginReducers,
+  };
+};
+const connectedNewPin = connect(mapStatetoProps)(NewPin);
+export default connectedNewPin;
+

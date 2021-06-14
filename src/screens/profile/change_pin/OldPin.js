@@ -4,6 +4,10 @@ import {View, Text, TextInput, Keyboard} from 'react-native';
 import {Button} from 'native-base';
 import styles from './Styles';
 import Header from '../../../components/header/Header';
+import {connect} from 'react-redux';
+import axios from 'axios';
+import {API_URL} from '@env';
+
 
 function OldPin(props) {
   const {navigation} = props;
@@ -57,6 +61,28 @@ function OldPin(props) {
     return !!pin.match(/^[0-9]*$/);
   };
 
+  const pinValidationHandler =  ()=> {
+    const token = props.loginReducers.user.token;
+    let config = {
+      method: 'POST',
+      url: `${API_URL}/auth/validation-pin`,
+      data: {pin: [num1, num2, num3, num4, num5, num6].join('')},
+      headers: {
+        Authorization: 'Bearer ' + token,
+      },
+    };
+    axios(config)
+      .then(res => {
+        navigation.navigate('NewPin',{ oldPin: [num1, num2, num3, num4, num5, num6].join('')})
+      })
+      .catch(err => {
+        if(err.response.data.message.includes('Wrong Pin')){
+          setErrorMessage('The PIN you entered is incorrect')
+        }
+      });
+  };
+
+
   return (
     <>
       <Header isBack={true} title="Change PIN" navigation={navigation} />
@@ -74,7 +100,9 @@ function OldPin(props) {
             ref={ref}
             keyboardType="numeric"
             maxLength={1}
+            secureTextEntry={true}
             onChangeText={code => {
+              setErrorMessage('');
               if (code.length === 1) {
                 isValidPin(code) && ref2.current.focus();
               }
@@ -93,7 +121,9 @@ function OldPin(props) {
             ref={ref2}
             keyboardType="numeric"
             maxLength={1}
+            secureTextEntry={true}
             onChangeText={code => {
+              setErrorMessage('');
               if (code.length === 1) {
                 isValidPin(code) && ref3.current.focus();
               } else if (code.length < 1) {
@@ -114,7 +144,9 @@ function OldPin(props) {
             ref={ref3}
             keyboardType="numeric"
             maxLength={1}
+            secureTextEntry={true}
             onChangeText={code => {
+              setErrorMessage('');
               if (code.length === 1) {
                 isValidPin(code) && ref4.current.focus();
               } else if (code.length < 1) {
@@ -135,7 +167,9 @@ function OldPin(props) {
             ref={ref4}
             keyboardType="numeric"
             maxLength={1}
+            secureTextEntry={true}
             onChangeText={code => {
+              setErrorMessage('');
               if (code.length === 1) {
                 isValidPin(code) && ref5.current.focus();
               } else if (code.length < 1) {
@@ -156,7 +190,9 @@ function OldPin(props) {
             ref={ref5}
             keyboardType="numeric"
             maxLength={1}
+            secureTextEntry={true}
             onChangeText={code => {
+              setErrorMessage('');
               if (code.length === 1) {
                 isValidPin(code) && ref6.current.focus();
               } else if (code.length < 1) {
@@ -177,7 +213,9 @@ function OldPin(props) {
             ref={ref6}
             keyboardType="numeric"
             maxLength={1}
+            secureTextEntry={true}
             onChangeText={code => {
+              setErrorMessage('');
               if (code.length < 1) {
                 ref5.current.focus();
               }
@@ -208,7 +246,7 @@ function OldPin(props) {
               : {...styles.buttonOff}
           }
           disabled={isFilled ? false : true}
-          onPress={()=>props.navigation.navigate('NewPin')}
+          onPress={pinValidationHandler}
           >
           <Text style={isFilled ? styles.textOn : styles.textOff}>
             Continue
@@ -219,4 +257,11 @@ function OldPin(props) {
   );
 }
 
-export default OldPin;
+const mapStatetoProps = state => {
+  return {
+    loginReducers: state.loginReducers,
+  };
+};
+const connectedOldPin = connect(mapStatetoProps)(OldPin);
+export default connectedOldPin;
+
