@@ -6,17 +6,24 @@ import styles from './Styles';
 
 import {connect} from 'react-redux';
 import {getUser} from '../../../services/redux/actions/Users';
-import {API_URL} from '@env';
 
 const PinSuccess = props => {
   const {navigation} = props;
   const {isLogin} = props.route.params;
-  console.log(isLogin);
+  // console.log(isLogin);
 
   useEffect(() => {
     const token = props.loginReducers.user.token;
     return props.getUserHandler(token);
   }, []);
+
+  const nextHandler = () => {
+    if (isLogin) {
+      navigation.navigate('Home', {goBack: false});
+    } else {
+      navigation.navigate('Login');
+    }
+  };
   return (
     <>
       <Backdrop />
@@ -31,14 +38,8 @@ const PinSuccess = props => {
         </Text>
 
         {/* CONFIRM BUTTON */}
-        <Button style={styles.buttonOn}>
-          <Text
-            style={styles.textOn}
-            onPress={() =>
-              isLogin
-                ? navigation.navigate('Home', {goBack: false})
-                : navigation.navigate('Login')
-            }>
+        <Button style={styles.buttonOn}  onPress={nextHandler}>
+          <Text style={styles.textOn}>
             {isLogin ? 'Go to Dashboard' : 'Login Now'}
           </Text>
         </Button>

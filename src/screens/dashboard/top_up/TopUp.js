@@ -20,13 +20,15 @@ import PushNotification from 'react-native-push-notification';
 
 const TopUp = props => {
   const {navigation} = props;
-  const [amount, setAmout] = useState('');
+  const [amount, setAmount] = useState('');
+  const [amountValue, setAmountValue] = useState('')
   const [isFilled, setIsFilled] = useState(false)
   const [errorMessage, setErrorMessage] = useState();
   const [showModal, setShowModal] = useState(false);
   const [animateModal, setAnimateModal] = useState(false);
 
   const token = props.loginReducers.user.token;
+  const dataUser = props.userReducers.user.data[0];
 
   const channel = 'notif';
   useEffect(() => {
@@ -39,6 +41,9 @@ const TopUp = props => {
     );
   }, []);
 
+
+
+
   useEffect(() => {
     PushNotification.getChannels(channel_ids => {
       console.log(channel_ids);
@@ -46,17 +51,27 @@ const TopUp = props => {
   }, []);
 
 
-  const isValidNum = num => {
-    return !!num.match(/^[0-9]*$/);
-  };
+const addCommas = num => num.toString().replace(/\B(?=(\d{3})+(?!\d))/g, ",");
+const removeNonNumeric = num => num.toString().replace(/[^0-9]/g, "");
+
+
+
+  const handleChange=(num)=>{
+    setAmount(addCommas(removeNonNumeric(num)))
+  }
+
+  const numericHandler=num=>{
+    const currency= parseInt((num.replace(',','')))
+    setAmountValue(currency)
+  }
 
   useEffect(()=>{
-    if(Number(amount)>=10000){
+    if(Number(amountValue)>=10000){
       setIsFilled(true)
     } else {
       setIsFilled(false)
     }
-  },[amount])
+  },[amountValue])
 
 
   const storeNotification=(id)=>{
@@ -75,7 +90,7 @@ const TopUp = props => {
           title: 'Hurray! top up was successful.',
           message: 'The balance will be added to your Zwallet account',
         });
-        props.navigation.navigate('HomeScreen');
+        navigation.navigate('HomeScreen');
       })
       .catch(err => {
         console.log(err);
@@ -93,10 +108,7 @@ const TopUp = props => {
       let config = {
         method: 'PATCH',
         url: `${API_URL}/transaction/topup`,
-        data: {amount: amount},
-        headers: {
-          Authorization: 'Bearer ' + token,
-        },
+        data: {virtual_account:dataUser.virtual_account, amount: amountValue},
       };
       axios(config)
         .then(res => {
@@ -109,6 +121,8 @@ const TopUp = props => {
 
     }
   };
+
+
 
   const instructionData = [
     {
@@ -158,7 +172,7 @@ const TopUp = props => {
           <View style={{flexDirection: 'row'}}>
             <TouchableOpacity
               onPress={() => {
-                props.navigation.goBack();
+                navigation.goBack();
               }}>
               <Icon name="arrow-back-outline" style={classes.back} />
             </TouchableOpacity>
@@ -184,7 +198,7 @@ const TopUp = props => {
           </TouchableOpacity>
           <View style={classes.topupmethod}>
             <Text style={classes.methodtext}>Virtual Account Number</Text>
-            <Text style={classes.methoddetailtext}>2389 081393877946</Text>
+            <Text style={classes.methoddetailtext}>{dataUser.virtual_account.match(/\d{4}(?=\d{2,3})|\d+/g).join("-")}</Text>
           </View>
         </View>
       </View>
@@ -213,9 +227,9 @@ const TopUp = props => {
                 style={classes.numberInput}
                 placeholder="0"
                 keyboardType="numeric"
-                onChangeText={p => {
-                  isValidNum(p) && setAmout(p);
-                }}
+                onChangeText={(e)=>{
+                  numericHandler(e);
+                  handleChange(e); }}
                 onPressIn={() => setErrorMessage('')}
               />
             </View>
@@ -238,7 +252,7 @@ const TopUp = props => {
           </View>
         }
         onClose={() => {
-          setAmout('')
+          setAmount('')
           setErrorMessage('')
           setShowModal(false);
           setAnimateModal(false);
@@ -252,6 +266,7 @@ const TopUp = props => {
 const mapStatetoProps = state => {
   return {
     loginReducers: state.loginReducers,
+    userReducers: state.userReducers
   };
 };
 
