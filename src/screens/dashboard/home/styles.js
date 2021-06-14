@@ -17,6 +17,13 @@ const styles = StyleSheet.create({
     borderBottomRightRadius: 20,
     backgroundColor: '#6379F4',
   },
+  avatar: {
+    backgroundColor: '#EBEEF2',
+    width: 65,
+    height: 65,
+    justifyContent: 'center',
+    borderRadius: 10,
+  },
   balanceTitle: {
     fontSize: 14,
     color: '#D0D0D0',

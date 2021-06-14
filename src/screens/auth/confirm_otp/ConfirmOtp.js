@@ -129,6 +129,7 @@ const ConfirmOtp = props => {
 
         <View style={styles.pinGroup}>
           <TextInput
+            autoCapitalize="none"
             style={styles.input}
             value={num1}
             ref={ref}
@@ -147,6 +148,7 @@ const ConfirmOtp = props => {
             disableFullscreenUI={true}
           />
           <TextInput
+            autoCapitalize="none"
             style={styles.input}
             value={num2}
             ref={ref2}
@@ -167,6 +169,7 @@ const ConfirmOtp = props => {
             disableFullscreenUI={true}
           />
           <TextInput
+            autoCapitalize="none"
             style={styles.input}
             value={num3}
             ref={ref3}
@@ -187,6 +190,7 @@ const ConfirmOtp = props => {
             disableFullscreenUI={true}
           />
           <TextInput
+            autoCapitalize="none"
             style={styles.input}
             value={num4}
             ref={ref4}
@@ -207,6 +211,7 @@ const ConfirmOtp = props => {
             disableFullscreenUI={true}
           />
           <TextInput
+            autoCapitalize="none"
             style={styles.input}
             value={num5}
             ref={ref5}
@@ -227,6 +232,7 @@ const ConfirmOtp = props => {
             disableFullscreenUI={true}
           />
           <TextInput
+            autoCapitalize="none"
             style={styles.input}
             value={num6}
             ref={ref6}
