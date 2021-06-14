@@ -1,6 +1,7 @@
 import React, {useEffect, useState, useRef} from 'react';
 import {
   View,
+  Image,
   Text,
   StatusBar,
   ScrollView,
@@ -10,9 +11,13 @@ import {Icon} from 'native-base';
 import styles from './Styles';
 import ToggleSwitch from 'toggle-switch-react-native';
 import {userLogout} from '../../services/redux/actions/Auth';
-import {connect} from 'react-redux';
+import {connect, useSelector} from 'react-redux';
+import {API_URL} from '@env';
+
+import PotoUser from '../../assets/images/example_avatar.jpg';
 
 function Profile(props) {
+  const profile = useSelector(state => state.userReducers.user);
   const [isNotifOn, setIsNotifOn] = useState(true);
   return (
     <>
@@ -22,15 +27,24 @@ function Profile(props) {
         backgroundColor="#FFF"
       />
       <View style={styles.container}>
-        <Pressable style={styles.header} onPress={()=>props.navigation.goBack()}>
+        <Pressable
+          style={styles.header}
+          onPress={() => props.navigation.goBack()}>
           <Icon name="arrow-back-outline" style={styles.back} />
         </Pressable>
 
         <ScrollView showsVerticalScrollIndicator={false}>
           <View style={styles.mainInfo}>
             <View style={styles.avatar}>
-              {/* <Image source={{uri:'Image URL'}}/> */}
-              <Icon name="person-outline" style={styles.avatarIcon} />
+              <Image
+                source={
+                  profile.data[0].avatar === null
+                    ? PotoUser
+                    : {uri: `${API_URL}${profile.data[0].avatar}`}
+                }
+                style={styles.avatar}
+              />
+              {/* <Icon name="person-outline"  /> */}
             </View>
 
             <View style={styles.editWrapper}>
@@ -38,20 +52,28 @@ function Profile(props) {
               <Text style={styles.editText}>Edit</Text>
             </View>
 
-            <Text style={styles.nameText}>Robert Chandler</Text>
-            <Text style={styles.phoneText}>+62 813-9387-7946</Text>
+            <Text style={styles.nameText}>{profile.data[0].username}</Text>
+            <Text style={styles.phoneText}>
+              {'+62' + profile.data[0].phone}
+            </Text>
           </View>
           <View style={styles.menuSection}>
-            <Pressable style={styles.menuItem} onPress={()=>props.navigation.navigate('PersonalInformation')}>
+            <Pressable
+              style={styles.menuItem}
+              onPress={() => props.navigation.navigate('PersonalInformation')}>
               <Text style={styles.menuText}>Personal Information</Text>
               <Icon name="arrow-forward-outline" style={styles.menuNext} />
             </Pressable>
 
-            <Pressable style={styles.menuItem} onPress={()=>props.navigation.navigate('ChangePassword')}>
+            <Pressable
+              style={styles.menuItem}
+              onPress={() => props.navigation.navigate('ChangePassword')}>
               <Text style={styles.menuText}>Change Password</Text>
               <Icon name="arrow-forward-outline" style={styles.menuNext} />
             </Pressable>
-            <Pressable style={styles.menuItem} onPress={()=>props.navigation.navigate('OldPin')}>
+            <Pressable
+              style={styles.menuItem}
+              onPress={() => props.navigation.navigate('OldPin')}>
               <Text style={styles.menuText}>Change PIN</Text>
               <Icon name="arrow-forward-outline" style={styles.menuNext} />
             </Pressable>
@@ -66,11 +88,11 @@ function Profile(props) {
                 onToggle={isOn => setIsNotifOn(isOn)}
               />
             </Pressable>
-            <Pressable style={styles.menuItem}
-            onPress={() => {
-              props.onLogoutHandler();
-            }}
-            >
+            <Pressable
+              style={styles.menuItem}
+              onPress={() => {
+                props.onLogoutHandler();
+              }}>
               <Text style={styles.menuText}>Logout</Text>
             </Pressable>
           </View>
@@ -79,7 +101,6 @@ function Profile(props) {
     </>
   );
 }
-
 
 const mapStatetoProps = state => ({
   loginReducers: state.loginReducers,
