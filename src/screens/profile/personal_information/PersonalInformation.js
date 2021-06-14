@@ -117,6 +117,7 @@ const PersonalInformation = props => {
           <View style={classes.inputgroup}>
             <TouchableOpacity
               style={classes.input}
+              delayLongPress={2000}
               onLongPress={() => {
                 Toast.show({
                   text: 'Name edit enabled',
@@ -131,7 +132,6 @@ const PersonalInformation = props => {
               <TextInput
                 style={classes.inputbox}
                 editable={editable.firstname}
-                onLong
                 placeholder="First Name"
                 placeholderTextColor="rgba(169, 169, 169, 0.8)"
                 value={profile.firstname}
@@ -160,6 +160,7 @@ const PersonalInformation = props => {
           <View style={classes.inputgroup}>
             <TouchableOpacity
               style={classes.input}
+              delayLongPress={2000}
               onLongPress={() => {
                 Toast.show({
                   text: 'Name edit enabled',
@@ -202,6 +203,7 @@ const PersonalInformation = props => {
           <View style={classes.inputgroup}>
             <TouchableOpacity
               style={classes.input}
+              delayLongPress={2000}
               onLongPress={() => {
                 Toast.show({
                   text: 'Email edit enabled',

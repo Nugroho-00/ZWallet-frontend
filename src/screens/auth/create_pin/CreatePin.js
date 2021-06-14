@@ -66,7 +66,7 @@ const CreatePin = props => {
     };
     axios(config)
       .then(res => {
-        navigation.navigate('PinSuccess')
+        navigation.navigate('PinSuccess', {isLogin:props.route.params.isLogin})
       })
       .catch(err => {
         console.log(err);

@@ -4,7 +4,12 @@ import {Button, Icon} from 'native-base';
 import Backdrop from '../../../components/backdrop/Backdrop';
 import styles from './Styles';
 
-const PinSuccess = ({navigation}) => {
+import {connect} from 'react-redux';
+
+const PinSuccess = (props) => {
+  const {navigation}=props
+  const {isLogin}=props.route.params
+  console.log(isLogin);
   return (
     <>
       <Backdrop />
@@ -22,8 +27,8 @@ const PinSuccess = ({navigation}) => {
         <Button style={styles.buttonOn}>
           <Text
             style={styles.textOn}
-            onPress={() => navigation.navigate('Login')}>
-            Login Now
+            onPress={() => isLogin?navigation.navigate('Home'):navigation.navigate('Login')}>
+            {isLogin?'Go to Dashboard':"Login Now"}
           </Text>
         </Button>
       </View>
@@ -31,4 +36,14 @@ const PinSuccess = ({navigation}) => {
   );
 };
 
-export default PinSuccess;
+
+const mapStatetoProps = state => {
+  return {
+    loginReducers: state.loginReducers,
+
+  };
+};
+
+const connectedPinSuccess = connect(mapStatetoProps)(PinSuccess);
+export default connectedPinSuccess;
+
