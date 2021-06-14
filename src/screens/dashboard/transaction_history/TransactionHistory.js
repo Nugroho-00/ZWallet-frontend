@@ -9,45 +9,111 @@ import {
 } from 'react-native';
 import Header from '../../../components/header/Header';
 import classes from './Styles';
-import Card from '../../../components/transaction/card/Card';
 import Ionicons from 'react-native-vector-icons/Ionicons';
+import History from '../../../components/transaction/transaction_history/history/History';
+import moment from 'moment';
+import axios from 'axios';
+import {API_URL} from '@env';
+import {useSelector} from 'react-redux';
 
 const TransactionHistory = props => {
+  const token = useSelector(state => state.loginReducers?.user?.token);
   const {navigation} = props;
+  const [thisWeek, setThisWeek] = useState(null);
+  const [thisMonth, setThisMonth] = useState(null);
+  const [filterstate, setFilter] = useState(false);
   let [modalState, setModalState] = useState(false);
 
-  const thisWeek = [
-    {
-      receiver: 'Samuel dungdung',
-      type: 'credit',
-      transaction_nominal: 50000,
-      avatar: 'alo',
-    },
-    {
-      receiver: 'Spotify',
-      type: 'subscription',
-      transaction_nominal: 49000,
-    },
-  ];
+  const currentdate = moment()
+    .year('year')
+    .month('month')
+    .date('day')
+    .add(1, 'd')
+    .format('YYYY-MM-DD');
+  const weekstartdate = moment().clone().weekday(0).format('YYYY-MM-DD');
+  const dayofweek = moment().day();
+  const endmonth = moment().subtract(dayofweek, 'd').format('YYYY-MM-DD');
+  const startmonth = moment().subtract(1, 'M').format('YYYY-MM-DD');
+  const getHistoryWeek = url => {
+    let config = {
+      method: 'GET',
+      url: url ? url : `${API_URL}/transaction`,
+      headers: {
+        Authorization: 'Bearer ' + token,
+      },
+      params: {
+        start: weekstartdate,
+        end: currentdate,
+        sort: 'date-ZA',
+        limits: 10,
+      },
+    };
+    axios(config)
+      .then(res => {
+        if (res.data.result.length > 0) {
+          console.log('res', {res});
+          setThisWeek(res.data.result);
+          return;
+        }
+        if (res.data.result.length === 0) {
+          return false;
+        }
+      })
+      .catch(err => console.log({err}));
+  };
+  const getHistoryMonth = url => {
+    let config = {
+      method: 'GET',
+      url: url ? url : `${API_URL}/transaction`,
+      headers: {
+        Authorization: 'Bearer ' + token,
+      },
+      params: {
+        start: startmonth,
+        end: endmonth,
+        sort: 'date-ZA',
+        limits: 10,
+      },
+    };
+    axios(config)
+      .then(res => {
+        if (res.data.result.length > 0) {
+          console.log('res', {res});
+          setThisMonth(res.data.result);
+          return;
+        }
+        if (res.data.result.length === 0) {
+          return false;
+        }
+      })
+      .catch(err => console.log({err}));
+  };
 
-  const thisMonth = [
-    {
-      receiver: 'Netflix',
-      type: 'subscription',
-      transaction_nominal: 80000,
-    },
-    {
-      receiver: 'Bobby',
-      type: 'debit',
-      transaction_nominal: 100000,
-    },
-    {
-      receiver: 'Bobby',
-      type: 'debit',
-      transaction_nominal: 100000,
-    },
-  ];
+  useEffect(async () => {
+    await getHistoryWeek();
+    await getHistoryMonth();
+  }, []);
 
+  console.log('endmonth', endmonth);
+  console.log('startmonth', startmonth);
+
+  // const thisMonth = [
+  //   {
+  //     receiver: 'Netflix',
+  //     type: 'subscription',
+  //     transaction_nominal: 80000,
+  //   },
+  //   {
+  //     receiver: 'Bobby',
+  //     type: 'debit',
+  //     transaction_nominal: 100000,
+  //   },
+  //   {
+  //     receiver: 'Bobby',
+  //     type: 'debit',
+  //     transaction_nominal: 100000,
+  //   },
+  // ];
   return (
     <View>
       <Modal
@@ -78,6 +144,18 @@ const TransactionHistory = props => {
                       size={24}
                       color={'rgba(30, 193, 95, 1)'}
                     />
+                  </TouchableOpacity>
+                </View>
+              </View>
+              <View style={{...classes.bytype, marginTop: '5%'}}>
+                <View
+                  style={{
+                    ...classes.bytypebtn,
+                    backgroundColor: 'white',
+                    width: 120,
+                  }}>
+                  <TouchableOpacity>
+                    <Text style={classes.bytypebtntext}>Filter by Date</Text>
                   </TouchableOpacity>
                 </View>
                 <View
@@ -139,18 +217,10 @@ const TransactionHistory = props => {
       <ScrollView>
         <Header isBack={true} title="History" navigation={navigation} />
         <View style={classes.maincontainer}>
-          <View>
-            <Text style={classes.sectionheader}>This Week</Text>
-            {thisWeek.map((item, index) => (
-              <Card data={item} key={index} />
-            ))}
-          </View>
-          <View>
-            <Text style={classes.sectionheader}>This Month</Text>
-            {thisMonth.map((item, index) => (
-              <Card data={item} key={index} />
-            ))}
-          </View>
+          <History
+            data={{thisWeek: thisWeek, thisMonth: thisMonth}}
+            // new={defaultData.thisWeek}
+          />
         </View>
       </ScrollView>
       <View style={classes.filter}>

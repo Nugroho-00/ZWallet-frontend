@@ -62,7 +62,7 @@ function HomeNavigation() {
       screenOptions={{
         cardStyle: {backgroundColor: '#FAFCFF'},
       }}
-      initialRouteName="Home">
+      initialRouteName="HomeScreen">
       <Stack.Screen name="HomeScreen" component={Home} />
       <Stack.Screen name="Profile" component={Profile} />
       <Stack.Screen name="Notification" component={Notification} />
@@ -85,7 +85,7 @@ function HomeNavigation() {
 
 const App = props => {
   // console.log(props);
-  console.log('ets', props.loginReducers.user.status);
+  // console.log('ets', props.loginReducers.user.status);
 
   return (
     <NavigationContainer onReady={() => RNBootSplash.hide({fade: true})}>

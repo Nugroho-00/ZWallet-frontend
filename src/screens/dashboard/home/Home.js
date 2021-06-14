@@ -95,7 +95,7 @@ const Home = props => {
   }, [isFocused]);
 
   const updateUserData = () => {
-    return setUserData(props.userReducers.user?.data[0]);
+    return setUserData(props.userReducers?.user?.data[0]);
   };
 
   useEffect(() => {
@@ -140,7 +140,7 @@ const Home = props => {
   const capitalizeFirstLetter = string => {
     return string.charAt(0).toUpperCase() + string.slice(1);
   };
-  console.log(props.userReducers.user.data[0]);
+  // console.log(props.userReducers.user.data[0]);
 
   useEffect(() => {
     if (props.userReducers.user?.data[0].status === 'not-verified') {

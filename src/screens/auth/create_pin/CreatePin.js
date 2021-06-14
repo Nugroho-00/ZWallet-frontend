@@ -69,7 +69,7 @@ const CreatePin = props => {
         navigation.navigate('PinSuccess', {isLogin:props.route.params.isLogin})
       })
       .catch(err => {
-        console.log(err);
+        console.log({err});
       });
   };
 
