@@ -16,6 +16,8 @@ import {connect} from 'react-redux';
 import axios from 'axios';
 import {API_URL} from '@env';
 
+import CustomModal from '../../../components/modal/CustomModal';
+
 import PushNotification from 'react-native-push-notification';
 
 const TopUp = props => {
@@ -26,6 +28,7 @@ const TopUp = props => {
   const [errorMessage, setErrorMessage] = useState('');
   const [showModal, setShowModal] = useState(false);
   const [animateModal, setAnimateModal] = useState(false);
+  const [confirmModal, setConfirmModal] = useState(false);
 
   const token = props.loginReducers.user.token;
   const dataUser = props.userReducers.user.data[0];
@@ -150,7 +153,7 @@ const TopUp = props => {
   ];
 
   return (
-    <ScrollView>
+    <>
       <View style={classes.container}>
         <StatusBar
           translucent
@@ -195,66 +198,85 @@ const TopUp = props => {
           </View>
         </View>
       </View>
-      <View style={classes.maincontainer}>
-        <Text style={classes.instructionheader}>How to Top-Up</Text>
-        {instructionData.map((item, index) => (
-          <View key={index} style={classes.instructioncontainer}>
-            <Text style={classes.step}>{item.step}</Text>
-            <Text style={classes.instructiontext}>{item.instruction}</Text>
-          </View>
-        ))}
-      </View>
 
-      <SwipeUpDownModal
-        modalVisible={showModal}
-        PressToanimate={animateModal}
-        MainContainerModal={classes.mainModal}
-        duration={300}
-        ContentModal={
-          <View style={classes.containerContent}>
-            <Text style={classes.titleModal}>Instant Top Up</Text>
-            <View style={classes.createNewSection}>
-              <Text style={classes.rupiah}>Rp</Text>
-              <TextInput
-                value={amount}
-                style={classes.numberInput}
-                placeholder="0"
-                keyboardType="numeric"
-                onChangeText={e => {
-                  numericHandler(e);
-                  handleChange(e);
-                }}
-                onPressIn={() => setErrorMessage('')}
-              />
+      <ScrollView>
+        <View style={classes.maincontainer}>
+          <Text style={classes.instructionheader}>How to Top-Up</Text>
+          {instructionData.map((item, index) => (
+            <View key={index} style={classes.instructioncontainer}>
+              <Text style={classes.step}>{item.step}</Text>
+              <Text style={classes.instructiontext}>{item.instruction}</Text>
             </View>
-            {errorMessage ? (
-              <Text style={classes.errorMessage}>{errorMessage}</Text>
-            ) : null}
-            <TouchableOpacity
-              style={isFilled ? classes.sendOn : classes.sendOff}
-              onPress={submitHandler}
-              disabled={isFilled ? false : true}>
-              <Text style={isFilled ? classes.txtTopUpOn : classes.txtTopUpOff}>
-                Top Up Now
-              </Text>
-            </TouchableOpacity>
-          </View>
-        }
-        HeaderStyle={classes.headerContent}
-        ContentModalStyle={classes.Modal}
-        HeaderContent={
-          <View style={{alignItems: 'center'}}>
-            <View style={classes.line} />
-          </View>
-        }
-        onClose={() => {
-          setAmount('');
-          setErrorMessage('');
-          setShowModal(false);
-          setAnimateModal(false);
-        }}
-      />
-    </ScrollView>
+          ))}
+        </View>
+
+        <SwipeUpDownModal
+          modalVisible={showModal}
+          PressToanimate={animateModal}
+          MainContainerModal={classes.mainModal}
+          duration={300}
+          ContentModal={
+            <View style={classes.containerContent}>
+              <Text style={classes.titleModal}>Instant Top Up</Text>
+              <View style={classes.createNewSection}>
+                <Text style={classes.rupiah}>Rp</Text>
+                <TextInput
+                  value={amount}
+                  style={classes.numberInput}
+                  placeholder="0"
+                  keyboardType="numeric"
+                  onChangeText={e => {
+                    numericHandler(e);
+                    handleChange(e);
+                  }}
+                  onPressIn={() => setErrorMessage('')}
+                />
+              </View>
+              {errorMessage ? (
+                <Text style={classes.errorMessage}>{errorMessage}</Text>
+              ) : null}
+              <TouchableOpacity
+                style={isFilled ? classes.sendOn : classes.sendOff}
+                onPress={() => setConfirmModal(true)}
+                disabled={isFilled ? false : true}>
+                <Text
+                  style={isFilled ? classes.txtTopUpOn : classes.txtTopUpOff}>
+                  Top Up Now
+                </Text>
+              </TouchableOpacity>
+            </View>
+          }
+          HeaderStyle={classes.headerContent}
+          ContentModalStyle={classes.Modal}
+          HeaderContent={
+            <View style={{alignItems: 'center'}}>
+              <View style={classes.line} />
+            </View>
+          }
+          onClose={() => {
+            setAmount('');
+            setErrorMessage('');
+            setShowModal(false);
+            setAnimateModal(false);
+          }}
+        />
+      </ScrollView>
+      {confirmModal ? (
+        <CustomModal
+          modalVisible={confirmModal}
+          title="Top Up Confirmation"
+          msg={`Are you sure you want to top up a balance of Rp${amountValue
+            .toString()
+            .replace(/\B(?=(\d{3})+(?!\d))/g, ',')}?`}
+          btnLabel3="Cancel"
+          onAction3={() => {
+            setConfirmModal(false);
+          }}
+          btnLabel4="Yes I'm sure"
+          onAction4={submitHandler}
+        />
+      ) : null}
+    </>
   );
 };
 

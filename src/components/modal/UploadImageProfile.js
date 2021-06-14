@@ -99,7 +99,7 @@ const UploadImageProfile = props => {
     }
     axios(config)
       .then(res => {
-        console.log(res);
+        // console.log(res);
         if (res.data.message === 'Data Updated') {
           Toast.show({
             text: 'Success',
@@ -108,7 +108,11 @@ const UploadImageProfile = props => {
             duration: 2000,
           });
         }
-      })
+        props.onChangeAvatar(photo)
+        return props.getUserHandler(props.loginReducers.user.token);
+      }
+      
+      )
       .catch(err => {
         console.log(err);
       });
@@ -170,7 +174,14 @@ const mapStatetoProps = state => ({
   loginReducers: state.loginReducers,
   userReducers: state.userReducers,
 });
-
-const connectedUpload = connect(mapStatetoProps)(UploadImageProfile);
+const mapDispatchToProps = dispatch => ({
+  getUserHandler: token => {
+    dispatch(getUser(token));
+  },
+});
+const connectedUpload= connect(
+  mapStatetoProps,
+  mapDispatchToProps,
+)(UploadImageProfile);
 
 export default connectedUpload;
