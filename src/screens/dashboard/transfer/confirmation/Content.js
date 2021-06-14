@@ -21,7 +21,7 @@ const Content = props => {
       <View style={styles.balanceWrapper}>
         <View style={styles.infoWrapper}>
           <Text style={styles.infoTitle}>Amount</Text>
-          <Text style={styles.infoText}>{`Rp${separator(data.amount)}`}</Text>
+          <Text style={styles.infoText}>{`Rp${separator(data.amountValue)}`}</Text>
         </View>
 
         <View style={{width: 20}} />
@@ -29,7 +29,7 @@ const Content = props => {
         <View style={styles.infoWrapper}>
           <Text style={styles.infoTitle}>Balance Left</Text>
           <Text style={styles.infoText}>{`Rp${separator(
-            balance - data.amount,
+            balance - data.amountValue,
           )}`}</Text>
         </View>
       </View>
