@@ -73,17 +73,23 @@ const styles = StyleSheet.create({
     alignItems: 'center',
     borderBottomWidth: 1,
     borderColor: 'rgba(169, 169, 169, 0.6)',
-    marginBottom: 180,
+    marginBottom: 100,
   },
   noteInput: {
     marginLeft: 15,
     fontSize: 16,
   },
 
-  btnContinue: {
+  btnContinueEnable: {
     alignItems: 'center',
     paddingVertical: 16,
     backgroundColor: '#6379F4',
+    borderRadius: 12,
+  },
+  btnContinueDisable: {
+    alignItems: 'center',
+    paddingVertical: 16,
+    backgroundColor: '#DADADA',
     borderRadius: 12,
   },
   textContinue: {
@@ -92,11 +98,19 @@ const styles = StyleSheet.create({
     fontWeight: 'bold',
     color: '#FFF',
   },
-  avatar:{
-    height:50,
-    width:50,
-    borderRadius:10
-  }
+  avatar: {
+    height: 50,
+    width: 50,
+    borderRadius: 10,
+  },
+  textWarning: {
+    marginBottom: 100,
+    fontFamily: 'NunitoSans-Regular',
+    fontSize: 16,
+    fontWeight: 'bold',
+    color: '#7C7895',
+    textAlign: 'center',
+  },
 });
 
 export default styles;
