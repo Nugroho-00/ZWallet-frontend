@@ -5,6 +5,7 @@ import {
   ScrollView,
   TouchableOpacity,
   StatusBar,
+  Image,
 } from 'react-native';
 
 import Icon from 'react-native-vector-icons/Ionicons';
@@ -91,14 +92,10 @@ const Home = props => {
 
   useEffect(() => {
     getDataUser();
-  }, []);
-
-  useEffect(() => {
-    getDataUser();
   }, [isFocused]);
 
   const updateUserData = () => {
-    return setUserData(props.userReducers.user?.data[0]);
+    return setUserData(props.userReducers?.user?.data[0]);
   };
 
   useEffect(() => {
@@ -143,7 +140,7 @@ const Home = props => {
   const capitalizeFirstLetter = string => {
     return string.charAt(0).toUpperCase() + string.slice(1);
   };
-  console.log(props.userReducers.user.data[0]);
+  // console.log(props.userReducers.user.data[0]);
 
   useEffect(() => {
     if (props.userReducers.user?.data[0].status === 'not-verified') {
@@ -162,14 +159,18 @@ const Home = props => {
         backgroundColor="#6379F4"
       />
       <View style={styles.headerWrapper}>
-        <View style={{flex: 2}}>
-          <Icon
-            name="person"
-            size={52}
-            color="#FFF"
-            onPress={() => props.navigation.navigate('Profile')}
-          />
-        </View>
+        <TouchableOpacity
+          onPress={() => props.navigation.navigate('Profile')}
+          style={{flex: 2}}>
+          {userData.avatar === null ? (
+            <Icon name="person" size={52} color="#FFF" />
+          ) : (
+            <Image
+              source={{uri: `${API_URL}${userData.avatar}`}}
+              style={styles.avatar}
+            />
+          )}
+        </TouchableOpacity>
         <View style={{flex: 6}}>
           <TouchableOpacity>
             <Text style={{...styles.balanceTitle, ...styles.font}}>
