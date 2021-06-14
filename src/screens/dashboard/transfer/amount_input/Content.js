@@ -8,7 +8,8 @@ import styles from './styles';
 import {useSelector} from 'react-redux';
 
 const Content = props => {
-  const [amount, setAmount] = useState(null);
+  const [amount, setAmount] = useState('');
+  const [amountValue, setAmountValue] = useState('');
   const [note, setNote] = useState('');
 
   const userData = useSelector(state => state.userReducers);
@@ -16,9 +17,13 @@ const Content = props => {
 
   const sendData = {
     ...props.dataReceiver,
-    amount,
+    amountValue,
     note,
   };
+  console.log(amountValue);
+
+  const addCommas = num => num.toString().replace(/\B(?=(\d{3})+(?!\d))/g, ',');
+  const removeNonNumeric = num => num.toString().replace(/[^0-9]/g, '');
 
   const separator = x => {
     return x.toString().replace(/\B(?=(\d{3})+(?!\d))/g, '.');
@@ -27,13 +32,19 @@ const Content = props => {
   return (
     <View style={styles.contentContainer}>
       <View style={styles.inputAmountWrapper}>
+        <View style={{flexDirection:'row', alignItems:'center'}}>
+        <Text style={styles.inputAmount}>Rp</Text>
         <TextInput
+          value={amount}
           style={styles.inputAmount}
           placeholder="0.00"
           placeholderTextColor="#B5BDCC"
           keyboardType="numeric"
-          onChangeText={e => setAmount(e)}
-        />
+          onChangeText={e => {
+            e.substring(0) !== '0' && setAmount(addCommas(removeNonNumeric(e)));
+            setAmountValue(parseInt(e.replace(',', '')));
+          }}
+        /></View>
         <Text style={styles.balanceText}>{`Rp${separator(
           balance,
         )} Available`}</Text>
@@ -49,7 +60,9 @@ const Content = props => {
 
       <TouchableOpacity
         style={{...styles.btnContinue, marginTop: 20, width: '100%'}}
-        disabled={amount > balance ? true : amount < 10000 ? true : false}
+        disabled={
+          amountValue > balance ? true : amountValue < 10000 ? true : false
+        }
         onPress={() =>
           props.navigation.navigate('Confirmation', {...sendData})
         }>
