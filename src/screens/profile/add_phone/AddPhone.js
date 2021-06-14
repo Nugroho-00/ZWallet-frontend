@@ -9,10 +9,47 @@ import {
 import classes from './Styles';
 import Header from '../../../components/header/Header';
 import Ionicons from 'react-native-vector-icons/Ionicons';
+import {Toast} from 'native-base';
+import {connect} from 'react-redux';
+import {API_URL} from '@env';
+import axios from 'axios';
+import {phoneValidation} from '../../../services/validation/Validation';
 
 const AddPhone = props => {
   const {navigation} = props;
+  const UpdateData = props.userReducers.user?.data[0];
   const [phone, setPhone] = useState();
+
+  const FormData = require('form-data');
+  const data = new FormData();
+  const config = {
+    method: 'PATCH',
+    url: `${API_URL}/profile/edit`,
+    headers: {
+      authorization: `Bearer ${props.loginReducers.user?.token}`,
+    },
+    data: data,
+  };
+
+  function submitHandler() {
+    data.append('phone', phone);
+
+    axios(config)
+      .then(res => {
+        console.log(res);
+        if (res.data.message === 'Data Updated') {
+          Toast.show({
+            text: 'Success',
+            type: 'success',
+            textStyle: {textAlign: 'center'},
+            duration: 2000,
+          });
+        }
+      })
+      .catch(err => {
+        console.log(err);
+      });
+  }
 
   return (
     <ScrollView>
@@ -35,7 +72,6 @@ const AddPhone = props => {
               placeholder="Enter your phone number"
               placeholderTextColor="rgba(169, 169, 169, 0.8)"
               keyboardType="phone-pad"
-              value={phone}
               onChangeText={value => {
                 setPhone(value);
               }}
@@ -48,8 +84,9 @@ const AddPhone = props => {
               ...classes.submitbtn,
               backgroundColor: 'rgba(99, 121, 244, 1)',
             }}
-            disabled={false}
-            onPress={() => {}}>
+            onPress={async () => {
+              await submitHandler();
+            }}>
             <Text style={{...classes.submitbtntext, color: 'white'}}>
               Submit
             </Text>
@@ -60,4 +97,11 @@ const AddPhone = props => {
   );
 };
 
-export default AddPhone;
+const mapStatetoProps = state => ({
+  loginReducers: state.loginReducers,
+  userReducers: state.userReducers,
+});
+
+const connectedAddPhone = connect(mapStatetoProps)(AddPhone);
+
+export default connectedAddPhone;
