@@ -9,20 +9,60 @@ import moment from 'moment';
 import {useSelector} from 'react-redux';
 import axios from 'axios';
 import {API_URL} from '@env';
+import {connect} from 'react-redux';
+
+
+import { useSocket } from '../../../../services/contexts/SocketProvider';
 
 const Content = props => {
   const [result, setResult] = useState(null);
+  const [idTransaction, setIdTransaction] = useState()
 
   const userReducer = useSelector(state => state.userReducers);
   const userData = userReducer.user.data[0];
   const loginReducers = useSelector(state => state.loginReducers);
 
   const data = props.dataReceiver;
+  console.log(data.amount,'thiss');
+
+  
+  const socket = useSocket()
+  const token = loginReducers.user.token;
+
+  console.log(data.username);
 
   console.log(data);
+  const storeNotification=(id)=>{
+    let config = {
+      method: 'POST',
+      url: `${API_URL}/notification`,
+      data: {content: `${id}#out#Transfer to ${data.username}#${data.amount}`},
+      headers: {
+        Authorization: 'Bearer ' + token,
+      },
+    };
+    axios(config)
+      .then(res => {
+        console.log(res.data);
+
+        const body = {
+          id:id,
+          sender: userData.username,
+          amount: data.amount
+        }
+        socket.emit('transfer',body, data.id,({status})=>{
+          if(status){
+            console.log(`${userData.username} joined room ${data.id}`);
+          }
+        })
+      })
+      .catch(err => {
+        console.log(err);
+      });
+  }
+
 
   const transferHandler = () => {
-    const token = loginReducers.user.token;
     let config = {
       method: 'POST',
       url: `${API_URL}/transaction/transfer`,
@@ -37,14 +77,20 @@ const Content = props => {
     };
     return axios(config)
       .then(res => {
-        console.log(res);
-        return setResult(true);
+        console.log(res.data.result);
+        setIdTransaction(res.data.result.id)
+        return setResult(true)
       })
       .catch(err => {
         console.log(err.response);
         return setResult(false);
       });
   };
+
+  if (result){
+    storeNotification(idTransaction)
+
+  }
 
   const navigateHome = () => {
     return props.navigation.navigate('HomeScreen');
@@ -151,4 +197,12 @@ const Content = props => {
   );
 };
 
-export default Content;
+const mapStatetoProps = state => {
+  return {
+    loginReducers: state.loginReducers,
+  };
+};
+
+const connectedConfirmResult = connect(mapStatetoProps)(Content);
+
+export default connectedConfirmResult;

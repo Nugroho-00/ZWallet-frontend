@@ -11,6 +11,7 @@ const Content = props => {
   const balance = userData.user.data[0].balances;
 
   const data = props.dataReceiver;
+  console.log(data);
 
   const separator = x => {
     return x.toString().replace(/\B(?=(\d{3})+(?!\d))/g, '.');
