@@ -8,11 +8,14 @@ import styles from './styles';
 import {connect} from 'react-redux';
 import axios from 'axios';
 import {API_URL} from '@env';
+import {useIsFocused} from '@react-navigation/native';
+
 
 const Content = props => {
   const [myContact, setMyContact] = useState();
   const [isAvailable, setIsAvailable] = useState(false);
   const token = props.loginReducers.user.token;
+  const isFocused = useIsFocused();
 
   const getContact = () => {
     axios
@@ -41,7 +44,7 @@ const Content = props => {
 
   useEffect(() => {
     getContact();
-  }, [props.onSearch]);
+  }, [props.onSearch, isFocused]);
 
   return (
     <View
