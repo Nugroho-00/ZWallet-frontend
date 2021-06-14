@@ -90,9 +90,7 @@ const TransactionHistory = props => {
           return false;
         }
       })
-      .catch
-      // err => console.log({err})
-      ();
+      .catch(err => console.log({err}));
   };
   const getHistoryMonth = url => {
     let config = {
@@ -120,9 +118,7 @@ const TransactionHistory = props => {
           return false;
         }
       })
-      .catch
-      // err => console.log({err})
-      ();
+      .catch(err => console.log({err}));
   };
 
   const getHistoryFilterDate = url => {
@@ -157,9 +153,7 @@ const TransactionHistory = props => {
           return null;
         }
       })
-      .catch
-      // err => console.log({err})
-      ();
+      .catch(err => console.log({err}));
   };
   const getHistoryFilterIncome = type => {
     let config = {
@@ -170,7 +164,7 @@ const TransactionHistory = props => {
       },
       params: {
         type: type,
-        // sort: 'date-ZA',
+        limits: 50,
       },
     };
     axios(config)
@@ -184,9 +178,7 @@ const TransactionHistory = props => {
           return null;
         }
       })
-      .catch
-      // err => console.log({err})
-      ();
+      .catch(err => console.log({err}));
   };
   const getHistoryFilterExpenses = type => {
     console.log('check type expenses', type);
@@ -198,7 +190,7 @@ const TransactionHistory = props => {
       },
       params: {
         type: type,
-        // sort: 'date-ZA',
+        limits: 10,
       },
     };
     axios(config)
@@ -225,9 +217,16 @@ const TransactionHistory = props => {
     await getHistoryFilterDate();
   }, [filterstate, pickedDate, filterpage]);
 
+  // const incomeHandler = () => {
+  //   const topup = getHistoryFilterIncome('topup');
+  //   const debit = getHistoryFilterIncome('debit');
+  //   const hasil = [...topup, ...debit];
+  //   return setIncome(hasil);
+  // };
+
   useEffect(async () => {
-    await getHistoryFilterIncome('debit');
     await getHistoryFilterIncome('topup');
+    await getHistoryFilterIncome('debit');
   }, [filterIncomeState]);
 
   useEffect(async () => {
@@ -421,7 +420,6 @@ const TransactionHistory = props => {
                   setFilterDateState(false);
                   setExpenses();
                   setIncome();
-                  setDate();
                   setModalState(false);
                 }}>
                 <Text
@@ -620,6 +618,7 @@ const TransactionHistory = props => {
         <TouchableOpacity
           style={classes.filterbtn}
           onPress={() => {
+            setFilter(false);
             setModalState(!modalState);
           }}>
           <Text style={classes.filterbtntext}>Filters</Text>
