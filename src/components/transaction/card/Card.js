@@ -4,6 +4,8 @@ import classes from './Styles';
 import DefaultAvatar from '../../../assets/images/default_avatar.png';
 import ExampleAvatar from '../../../assets/images/example_avatar.jpg';
 import NumberFormat from 'react-number-format';
+import axios from 'axios';
+import {API_URL} from '@env';
 
 const Card = props => {
   const {data} = props;
@@ -14,7 +16,7 @@ const Card = props => {
       return '-Rp';
     }
     if (type === 'debit' || type === 'topup') {
-      return '-Rp';
+      return '+Rp';
     }
   };
 
@@ -23,10 +25,12 @@ const Card = props => {
       <View style={classes.leftcontent}>
         <Image
           style={classes.avatar}
-          source={data.avatar ? ExampleAvatar : DefaultAvatar}
+          source={data.image ? {uri: `${API_URL}${data.image}`} : DefaultAvatar}
         />
         <View>
-          <Text style={classes.username}>{data.receiver}</Text>
+          <Text style={classes.username}>
+            {data.receiver.charAt(0).toUpperCase() + data.receiver.slice(1)}
+          </Text>
           <Text style={classes.transactiontype}>
             {data.type === 'credit'
               ? data.type === 'debit'
@@ -38,7 +42,7 @@ const Card = props => {
       </View>
       <View style={classes.rightcontent}>
         <NumberFormat
-          value={data.transaction_nominal}
+          value={data.nominal}
           displayType={'text'}
           thousandSeparator={true}
           prefix={prefix(data.type)}
@@ -47,7 +51,7 @@ const Card = props => {
               style={{
                 ...classes.amount,
                 color:
-                  data.type === 'debit'
+                  data.type === 'debit' || data.type === 'topup'
                     ? 'rgba(30, 193, 95, 1)'
                     : 'rgba(255, 91, 55, 1)',
               }}>

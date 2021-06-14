@@ -3,8 +3,9 @@ import {View, Text, TextInput, Keyboard} from 'react-native';
 import {Button} from 'native-base';
 import Backdrop from '../../../components/backdrop/Backdrop';
 import styles from './Styles';
-import {API_URL} from '@env';
+import {connect} from 'react-redux';
 import axios from 'axios';
+import {API_URL} from '@env';
 
 const ConfirmOtp = props => {
   const [isFilled, setIsFilled] = useState(false);
@@ -53,18 +54,59 @@ const ConfirmOtp = props => {
     };
   }, [num1, num2, num3, num4, num5, num6]);
 
+
+  // console.log(props.userReducers.user.data[0]);
+  useEffect(()=>{
+    if(props.route.params.type==="not-verified"){
+      let config = {
+        method: 'POST',
+        url: `${API_URL}/auth/send-otp`,
+        data: {email: props.userReducers.user.data[0].email},
+      };
+      axios(config)
+        .then(res => {
+          // console.log(res.data.result);
+        })
+        .catch(err => {
+          console.log({err});
+          if (err.response.data?.message === 'Email not found !!!') {
+            return Toast.show({
+              text: 'User is not registered, go to signup page to get started',
+              type: 'danger',
+              textStyle: {textAlign: 'center'},
+              duration: 3000,
+            });
+          }
+        });
+    }
+  },[])
+  console.log(props.route.params.type);
+  
   //   error Handling
-  const verificationHandler = e => {
+  const verificationHandler = ()=> {
+    let idUser, isLogin;
+    if(!props.route.params){
+      idUser=props.userReducers.user.data[0].id
+    } else{
+      idUser=props.route.params.id
+    }
+
+    if(props.route.params.type==='non-reset'){
+      isLogin=false
+    } else if(props.route.params.type==='not-verified') {
+      isLogin=true
+    }
+    console.log(isLogin);
     axios
       .post(`${API_URL}/auth/verify-otp`, {
         otp: [num1, num2, num3, num4, num5, num6].join(''),
-        userId: props.route.params.id,
+        userId: idUser,
       })
       .then(res => {
         console.log(res);
         // console.log('sukses');
-        if (props.route.params.type === 'non-reset') {
-          props.navigation.navigate('CreatePin', {id:  props.route.params.id});
+        if (props.route.params.type) {
+          props.navigation.navigate('CreatePin', {id:  idUser, isLogin: isLogin});
         } else {
           props.navigation.navigate('ResetPassword', {token: res.data.token});
         }
@@ -87,6 +129,7 @@ const ConfirmOtp = props => {
 
         <View style={styles.pinGroup}>
           <TextInput
+            autoCapitalize="none"
             style={styles.input}
             value={num1}
             ref={ref}
@@ -105,6 +148,7 @@ const ConfirmOtp = props => {
             disableFullscreenUI={true}
           />
           <TextInput
+            autoCapitalize="none"
             style={styles.input}
             value={num2}
             ref={ref2}
@@ -125,6 +169,7 @@ const ConfirmOtp = props => {
             disableFullscreenUI={true}
           />
           <TextInput
+            autoCapitalize="none"
             style={styles.input}
             value={num3}
             ref={ref3}
@@ -145,6 +190,7 @@ const ConfirmOtp = props => {
             disableFullscreenUI={true}
           />
           <TextInput
+            autoCapitalize="none"
             style={styles.input}
             value={num4}
             ref={ref4}
@@ -165,6 +211,7 @@ const ConfirmOtp = props => {
             disableFullscreenUI={true}
           />
           <TextInput
+            autoCapitalize="none"
             style={styles.input}
             value={num5}
             ref={ref5}
@@ -185,6 +232,7 @@ const ConfirmOtp = props => {
             disableFullscreenUI={true}
           />
           <TextInput
+            autoCapitalize="none"
             style={styles.input}
             value={num6}
             ref={ref6}
@@ -229,4 +277,12 @@ const ConfirmOtp = props => {
   );
 };
 
-export default ConfirmOtp;
+const mapStatetoProps = state => {
+  return {
+    loginReducers: state.loginReducers,
+    userReducers: state.userReducers,
+  };
+};
+
+const connectedConfirmOtp = connect(mapStatetoProps)(ConfirmOtp);
+export default connectedConfirmOtp ;
