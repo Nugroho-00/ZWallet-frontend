@@ -90,6 +90,56 @@ const styles = StyleSheet.create({
 
     elevation: 3,
   },
+  chartContainer: {
+    flexDirection: 'row',
+    justifyContent: 'space-around',
+    alignItems: 'flex-end',
+  },
+  chartItemWrapper: {
+    alignItems: 'center',
+  },
+  chartItem: {
+    flexDirection: 'row',
+    alignItems: 'flex-end',
+    marginHorizontal: 5,
+  },
+  debitChart: {
+    maxHeight: 200,
+    padding: 10,
+    backgroundColor: '#6379F4',
+    borderRadius: 15,
+    marginRight: 2,
+  },
+  creditChart: {
+    maxHeight: 200,
+    padding: 10,
+    backgroundColor: '#9DA6B5',
+    borderRadius: 15,
+  },
+  textDay: {
+    fontFamily: 'NunitoSans-Regular',
+    color: '#8F8F8F',
+  },
+  chartDescriptionWrapper: {
+    flexDirection: 'row',
+    justifyContent: 'center',
+    marginTop: 40,
+  },
+  chartDescriptionItem: {
+    flexDirection: 'row',
+    alignItems: 'center',
+    marginHorizontal: 15,
+  },
+  chartIcon: {
+    padding: 10,
+    borderRadius: 50,
+  },
+  chartDescriptionText: {
+    marginLeft: 5,
+    fontFamily: 'NunitoSans-Regular',
+    fontSize: 16,
+    color: '#8F8F8F',
+  },
 });
 
 export default styles;
