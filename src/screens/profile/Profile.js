@@ -13,6 +13,7 @@ import ToggleSwitch from 'toggle-switch-react-native';
 import {userLogout} from '../../services/redux/actions/Auth';
 import {connect, useSelector} from 'react-redux';
 import {API_URL} from '@env';
+import ImagePicker from 'react-native-image-picker';
 
 import PotoUser from '../../assets/images/example_avatar.jpg';
 
