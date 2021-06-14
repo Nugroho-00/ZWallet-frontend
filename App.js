@@ -85,6 +85,7 @@ function HomeNavigation() {
 
 const App = props => {
   // console.log(props);
+  console.log('ets', props.loginReducers.user.status);
 
   return (
     <NavigationContainer onReady={() => RNBootSplash.hide({fade: true})}>
@@ -100,13 +101,13 @@ const App = props => {
             <Stack.Screen name="SignUp" component={Signup} />
             <Stack.Screen name="SendEmail" component={SendEmail} />
             <Stack.Screen name="ResetPassword" component={ResetPassword} />
-            <Stack.Screen name="CreatePin" component={CreatePin} />
-            <Stack.Screen name="PinSuccess" component={PinSuccess} />
-            <Stack.Screen name="ConfirmOtp" component={ConfirmOtp} />
           </>
         ) : (
           <Stack.Screen name="Home" component={HomeNavigation} />
         )}
+        <Stack.Screen name="ConfirmOtp" component={ConfirmOtp} />
+        <Stack.Screen name="CreatePin" component={CreatePin} />
+        <Stack.Screen name="PinSuccess" component={PinSuccess} />
       </Stack.Navigator>
     </NavigationContainer>
   );
