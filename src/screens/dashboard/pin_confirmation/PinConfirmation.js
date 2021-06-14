@@ -102,6 +102,7 @@ function PinConfirmation(props) {
             value={num1}
             ref={ref}
             keyboardType="numeric"
+            secureTextEntry={true}
             maxLength={1}
             onChangeText={code => {
               if (code.length === 1) {
@@ -121,6 +122,7 @@ function PinConfirmation(props) {
             value={num2}
             ref={ref2}
             keyboardType="numeric"
+            secureTextEntry={true}
             maxLength={1}
             onChangeText={code => {
               if (code.length === 1) {
@@ -142,6 +144,7 @@ function PinConfirmation(props) {
             value={num3}
             ref={ref3}
             keyboardType="numeric"
+            secureTextEntry={true}
             maxLength={1}
             onChangeText={code => {
               if (code.length === 1) {
@@ -163,6 +166,7 @@ function PinConfirmation(props) {
             value={num4}
             ref={ref4}
             keyboardType="numeric"
+            secureTextEntry={true}
             maxLength={1}
             onChangeText={code => {
               if (code.length === 1) {
@@ -184,6 +188,7 @@ function PinConfirmation(props) {
             value={num5}
             ref={ref5}
             keyboardType="numeric"
+            secureTextEntry={true}
             maxLength={1}
             onChangeText={code => {
               if (code.length === 1) {
@@ -205,6 +210,7 @@ function PinConfirmation(props) {
             value={num6}
             ref={ref6}
             keyboardType="numeric"
+            secureTextEntry={true}
             maxLength={1}
             onChangeText={code => {
               if (code.length < 1) {
