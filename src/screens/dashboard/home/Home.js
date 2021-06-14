@@ -17,9 +17,8 @@ import {connect} from 'react-redux';
 import axios from 'axios';
 import {API_URL} from '@env';
 
-import { useSocket } from '../../../services/contexts/SocketProvider';
+import {useSocket} from '../../../services/contexts/SocketProvider';
 import PushNotification from 'react-native-push-notification';
-
 
 const Home = props => {
   const [userData, setUserData] = useState({});
@@ -28,15 +27,13 @@ const Home = props => {
   // console.log(historyData);
   console.log(props.userReducers.user);
 
-  
-  
-  const socket = useSocket()
+  const socket = useSocket();
 
   const channel = 'notif';
   useEffect(() => {
     PushNotification.createChannel(
       {
-        channelId: 'notif', 
+        channelId: 'notif',
         channelName: 'My Notification Channel',
       },
       created => console.log(`student createChannel returned '${created}'`), // (optional) callback returns whether the channel was created, false means it already existed.
@@ -49,51 +46,45 @@ const Home = props => {
     });
   }, []);
 
-
   useEffect(() => {
     const token = props.loginReducers.user.token;
-  
-      if (socket === undefined) {
-        return;
-      }
-      socket.on('connect', () =>
-        console.log(`connected from home page  ${socket.id}`),
-      );
 
-      socket.on("get-notif", body=>{
-        const {id, sender, amount}= body
-        PushNotification.localNotification({
-          channelId: channel,
-          title: 'Inbound transfer',
-          message: `${sender} just sent you Rp. ${amount}`,
-        });
-        let config = {
-          method: 'POST',
-          url: `${API_URL}/notification`,
-          data: {content: `${id}#in#Transfer from ${sender}#${amount}`},
-          headers: {
-            Authorization: 'Bearer ' + token,
-          },
-        };
-        axios(config)
-          .then(res => {
-            console.log(res.data.result);
-          })
-          .catch(err => {
-            console.log(err);
-          });
-      })
+    if (socket === undefined) {
+      return;
+    }
+    socket.on('connect', () =>
+      console.log(`connected from home page  ${socket.id}`),
+    );
 
-      return () => {
-        socket.off('connect');
-        socket.off('get-notif');
+    socket.on('get-notif', body => {
+      const {id, sender, amount} = body;
+      PushNotification.localNotification({
+        channelId: channel,
+        title: 'Inbound transfer',
+        message: `${sender} just sent you Rp. ${amount}`,
+      });
+      let config = {
+        method: 'POST',
+        url: `${API_URL}/notification`,
+        data: {content: `${id}#in#Transfer from ${sender}#${amount}`},
+        headers: {
+          Authorization: 'Bearer ' + token,
+        },
       };
-    }, [socket]);
-  
-  
-  
-  
-  
+      axios(config)
+        .then(res => {
+          console.log(res.data.result);
+        })
+        .catch(err => {
+          console.log(err);
+        });
+    });
+
+    return () => {
+      socket.off('connect');
+      socket.off('get-notif');
+    };
+  }, [socket]);
 
   const getDataUser = () => {
     const token = props.loginReducers.user.token;
@@ -102,7 +93,6 @@ const Home = props => {
 
   useEffect(() => {
     getDataUser();
-  
   }, []);
   useEffect(() => {
     getDataUser();
@@ -114,12 +104,12 @@ const Home = props => {
 
   useEffect(() => {
     updateUserData();
-    const {id, username}=props.userReducers.user.data[0]
-    socket.emit('my-room', id,({status})=>{
-      if(status){
+    const {id, username} = props.userReducers.user.data[0];
+    socket.emit('my-room', id, ({status}) => {
+      if (status) {
         console.log(`${username} joined room ${id}`);
       }
-    })
+    });
   }, [props.userReducers, isFocused]);
 
   const getHistoryData = () => {
@@ -130,7 +120,7 @@ const Home = props => {
       },
     };
     return axios
-      .get(`${API_URL}/transaction/?sort=amount-ZA`, config)
+      .get(`${API_URL}/transaction/?sort=date-ZA`, config)
       .then(res => {
         // console.log(res);
         return setHistoryData(res.data.result);
@@ -154,7 +144,6 @@ const Home = props => {
   const capitalizeFirstLetter = string => {
     return string.charAt(0).toUpperCase() + string.slice(1);
   };
-  
 
   return (
     <View style={styles.container}>
