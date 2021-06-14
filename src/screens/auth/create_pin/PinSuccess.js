@@ -9,7 +9,7 @@ import {getUser} from '../../../services/redux/actions/Users';
 
 const PinSuccess = props => {
   const {navigation} = props;
-  const {isLogin} = props.route.params;
+  const {isLogin, mode} = props.route.params;
   // console.log(isLogin);
 
   useEffect(() => {
@@ -19,7 +19,7 @@ const PinSuccess = props => {
 
   const nextHandler = () => {
     if (isLogin) {
-      navigation.navigate('Home', {goBack: false});
+      navigation.navigate('HomeScreen', {goBack: false});
     } else {
       navigation.navigate('Login');
     }
@@ -31,10 +31,9 @@ const PinSuccess = props => {
         <View style={styles.successIcon}>
           <Icon name="checkmark" style={styles.checkmark} />
         </View>
-        <Text style={styles.title}>PIN Successfully Created</Text>
-        <Text style={styles.content}>
-          Your PIN was successfully created and you can now access all the
-          features in Zwallet. Login to your new account and start exploring!
+        <Text style={styles.title}>{mode==='create'?'PIN Successfully Created':'PIN Successfully Changed'}</Text>
+        <Text style={styles.content}>{mode==='create'?
+          'Your PIN was successfully created and you can now access all the features in Zwallet. Login to your new account and start exploring!':'Your PIN was successfully changed. There are so many features in Zwallet. Start exploring!'}
         </Text>
 
         {/* CONFIRM BUTTON */}

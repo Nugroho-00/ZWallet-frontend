@@ -24,7 +24,7 @@ const QuickAccess = props => {
         headers: {Authorization: `Bearer ${token}`},
       })
       .then(res => {
-        if (res.data.success===false) {
+        if (res.data.success === false) {
           setIsAvailable(false);
         } else {
           setMyContact(res.data.result);
@@ -38,6 +38,8 @@ const QuickAccess = props => {
   const isValidPhone = num => {
     return !!num.match(/^[0-9]*$/);
   };
+  const removeNonNumeric = num => num.toString().replace(/[^0-9]/g, "");
+
 
   const findHandler = () => {
     if (!addNew) {
@@ -55,7 +57,9 @@ const QuickAccess = props => {
         .then(res => {
           if (res.data.success) {
             setDataReceiver(res.data.result);
-            props.navigation.navigate('AmountInput', {...dataReceiver[0]});
+            if (dataReceiver) {
+              props.navigation.navigate('AmountInput', {...dataReceiver[0]});
+            }
           } else {
             setErrorMessage('No user is associated with the phone number');
           }
@@ -74,7 +78,7 @@ const QuickAccess = props => {
           placeholder="Input phone number here"
           keyboardType="numeric"
           onChangeText={p => {
-            isValidPhone(p) && setAddNew(p);
+            p.substring(0) !== '0'&&setAddNew(removeNonNumeric(p));
           }}
           onPressIn={() => setErrorMessage('')}
         />
@@ -93,17 +97,28 @@ const QuickAccess = props => {
             <Text style={styles.quickTitleText}>Quick Access</Text>
           </View>
           <View style={styles.quickContentWrapper}>
-            {myContact && !props.onSearch &&
+            {myContact &&
+              !props.onSearch &&
               myContact.slice(0, 3).map((user, index) => (
                 <TouchableOpacity
                   style={styles.quickListWrapper}
                   key={index}
-                  onPress={() => props.navigation.navigate('AmountInput', {...user})}>
-                  {!user.avatar ? 
-                  <Icon name="person-outline" size={56} />:
-                  <Image source={{uri:`${API_URL}/${user.avatar}`}} style={styles.avatar}/>
-                  }
-                  <Text style={styles.quickName}>{user.username.length>7?user.username.slice(0,5)+'...':user.username}</Text>
+                  onPress={() =>
+                    props.navigation.navigate('AmountInput', {...user})
+                  }>
+                  {!user.avatar ? (
+                    <Icon name="person-outline" size={56} />
+                  ) : (
+                    <Image
+                      source={{uri: `${API_URL}/${user.avatar}`}}
+                      style={styles.avatar}
+                    />
+                  )}
+                  <Text style={styles.quickName}>
+                    {user.username.length > 7
+                      ? user.username.slice(0, 5) + '...'
+                      : user.username}
+                  </Text>
                   <Text style={styles.quickAmount}>{user.phone.slice(-4)}</Text>
                 </TouchableOpacity>
               ))}

@@ -39,7 +39,7 @@ const Header = props => {
       },
     };
     return axios
-      .get(`${API_URL}/transaction/?sort=amount-ZA`, config)
+      .get(`${API_URL}/transaction/?sort=date-ZA&limits=30`, config)
       .then(res => {
         // console.log(res);
         return setHistoryData(res.data.result);

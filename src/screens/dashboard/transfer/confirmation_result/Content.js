@@ -23,7 +23,7 @@ const Content = props => {
   const loginReducers = useSelector(state => state.loginReducers);
 
   const data = props.dataReceiver;
-  console.log(data.amount,'thiss');
+  console.log(data.amountValue,'thiss');
 
   
   const socket = useSocket()
@@ -36,7 +36,7 @@ const Content = props => {
     let config = {
       method: 'POST',
       url: `${API_URL}/notification`,
-      data: {content: `${id}#out#Transfer to ${data.username}#${data.amount}`},
+      data: {content: `${id}#out#Transfer to ${data.username}#${data.amountValue}`},
       headers: {
         Authorization: 'Bearer ' + token,
       },
@@ -48,7 +48,7 @@ const Content = props => {
         const body = {
           id:id,
           sender: userData.username,
-          amount: data.amount
+          amount: data.amountValue
         }
         socket.emit('transfer',body, data.id,({status})=>{
           if(status){
@@ -71,7 +71,7 @@ const Content = props => {
       },
       data: {
         receiverPhone: data.phone,
-        amount: data.amount,
+        amount: data.amountValue,
         note: data.note,
       },
     };
@@ -134,7 +134,7 @@ const Content = props => {
       <View style={styles.balanceWrapper}>
         <View style={styles.infoWrapper}>
           <Text style={styles.infoTitle}>Amount</Text>
-          <Text style={styles.infoText}>{`Rp${separator(data.amount)}`}</Text>
+          <Text style={styles.infoText}>{`Rp${separator(data.amountValue)}`}</Text>
         </View>
 
         <View style={{width: 20}} />
@@ -142,7 +142,7 @@ const Content = props => {
         <View style={styles.infoWrapper}>
           <Text style={styles.infoTitle}>Balance Left</Text>
           <Text style={styles.infoText}>{`Rp${separator(
-            userData.balances - data.amount,
+            userData.balances - data.amountValue,
           )}`}</Text>
         </View>
       </View>

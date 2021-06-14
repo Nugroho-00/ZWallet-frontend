@@ -21,9 +21,9 @@ import PushNotification from 'react-native-push-notification';
 const TopUp = props => {
   const {navigation} = props;
   const [amount, setAmount] = useState('');
-  const [amountValue, setAmountValue] = useState('')
+  const [amountValue, setAmountValue] = useState()
   const [isFilled, setIsFilled] = useState(false)
-  const [errorMessage, setErrorMessage] = useState();
+  const [errorMessage, setErrorMessage] = useState('');
   const [showModal, setShowModal] = useState(false);
   const [animateModal, setAnimateModal] = useState(false);
 
@@ -51,13 +51,13 @@ const TopUp = props => {
   }, []);
 
 
-const addCommas = num => num.toString().replace(/\B(?=(\d{3})+(?!\d))/g, ",");
-const removeNonNumeric = num => num.toString().replace(/[^0-9]/g, "");
+  const addCommas = num => num.toString().replace(/\B(?=(\d{3})+(?!\d))/g, ",");
+  const removeNonNumeric = num => num.toString().replace(/[^0-9]/g, "");
 
 
 
   const handleChange=(num)=>{
-    setAmount(addCommas(removeNonNumeric(num)))
+    num.substring(0) !== '0'&&setAmount(addCommas(removeNonNumeric(num)))
   }
 
   const numericHandler=num=>{
@@ -69,7 +69,7 @@ const removeNonNumeric = num => num.toString().replace(/[^0-9]/g, "");
     if(Number(amountValue)>=10000){
       setIsFilled(true)
       setErrorMessage('')
-    } else {
+    } else if(Number(amountValue)<=10000) {
       setIsFilled(false)
       setErrorMessage('the minimum topup amount is Rp10.000')
 
@@ -115,7 +115,6 @@ const removeNonNumeric = num => num.toString().replace(/[^0-9]/g, "");
       };
       axios(config)
         .then(res => {
-          // console.log(res.data.result.id)
           storeNotification(res.data.result.id)
         })
         .catch(err => {
