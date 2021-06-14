@@ -18,10 +18,8 @@ const Chart = () => {
     };
   });
 
-  let sumDataTransaction = [];
-
   const filterToday = historyData.filter(item => {
-    return item.date === moment().subtract(0, 'days').format('YYYY-MM-DD');
+    return item.date === moment().subtract(1, 'days').format('YYYY-MM-DD');
   });
 
   const debitToday = filterToday.filter(item => {
@@ -40,15 +38,17 @@ const Chart = () => {
     return item.nominal;
   });
 
-  if (debitTodayNominal) {
-    sumDataTransaction.push({
+  let sumTransaction = [];
+
+  if (debitTodayNominal.length > 1 && creditTodayNominal > 1) {
+    sumTransaction.push({
       day: moment().subtract(0, 'days').format('ddd'),
-      sumDebit: debitTodayNominal.reduce((a, b) => a + b),
+      sumDebit: debitTodayNominal && debitTodayNominal.reduce((a, b) => a + b),
       sumCredit: creditTodayNominal.reduce((a, b) => a + b),
     });
   }
 
-  console.log(sumDataTransaction);
+  console.log(sumTransaction, filterToday);
 
   // console.log(debitTodayNominal);
 

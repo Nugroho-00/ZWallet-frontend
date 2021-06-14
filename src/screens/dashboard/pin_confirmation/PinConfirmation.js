@@ -1,5 +1,6 @@
 import React, {useEffect, useState, useRef} from 'react';
 import {View, Text, TextInput, Keyboard} from 'react-native';
+import {Toast} from 'native-base';
 import {Button} from 'native-base';
 import styles from './Styles';
 import Header from '../../../components/header/Header';
@@ -79,6 +80,12 @@ function PinConfirmation(props) {
       })
       .catch(err => {
         console.log(err.response);
+        return Toast.show({
+          text: err.response?.data?.message,
+          type: 'warning',
+          textStyle: {textAlign: 'center'},
+          duration: 3000,
+        });
       });
   };
 
