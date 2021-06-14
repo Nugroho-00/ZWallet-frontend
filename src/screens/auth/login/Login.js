@@ -61,13 +61,22 @@ const Login = props => {
         props.loginReducers.err?.data?.message === 'Wrong email!!!' ||
         props.loginReducers.err?.data?.message === 'Wrong Password!!!'
       ) {
-        setLogin({});
-        return Toast.show({
+        Toast.show({
           text: 'Incorrect email or password',
           type: 'danger',
           textStyle: {textAlign: 'center'},
           duration: 3000,
         });
+        return setLogin({});
+      }
+      if (props.loginReducers.err?.data?.message === 'Email not found!!!') {
+        Toast.show({
+          text: 'Incorrect email or password',
+          type: 'danger',
+          textStyle: {textAlign: 'center'},
+          duration: 3000,
+        });
+        return setLogin({});
       }
       console.log(props.loginReducers.err?.data?.message);
       if (props.loginReducers.err?.data?.message === 'Network Error') {
@@ -110,6 +119,7 @@ const Login = props => {
                 style={FormStyle('form', warning.emailwarning, login.email)}
                 placeholder="Enter your e-mail"
                 placeholderTextColor="rgba(169, 169, 169, 0.8)"
+                value={login.email}
                 onChangeText={value => {
                   setWarning({...warning, emailwarning: ''});
                   setLogin({...login, email: value});
@@ -152,6 +162,7 @@ const Login = props => {
                 placeholder="Enter your password"
                 placeholderTextColor="rgba(169, 169, 169, 0.8)"
                 secureTextEntry={eye}
+                value={login.password}
                 onChangeText={value => {
                   setWarning({...warning, passwordwarning: ''});
                   setLogin({...login, password: value});
