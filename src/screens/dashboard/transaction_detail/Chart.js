@@ -15,9 +15,10 @@ const Chart = () => {
     return {
       ...item,
       date: moment(item.created_at).format('YYYY-MM-DD'),
-      day: moment(item.created_at).format('ddd'),
     };
   });
+
+  let sumDataTransaction = [];
 
   const filterToday = historyData.filter(item => {
     return item.date === moment().subtract(0, 'days').format('YYYY-MM-DD');
@@ -27,13 +28,27 @@ const Chart = () => {
     return item.type === 'debit' || item.type === 'topup';
   });
 
+  const creditToday = filterToday.filter(item => {
+    return item.type === 'credit' || item.type === 'subscription';
+  });
+
   const debitTodayNominal = debitToday.map(item => {
     return item.nominal;
   });
 
-  // if (transactionData) {
-  //   debit;
-  // }
+  const creditTodayNominal = creditToday.map(item => {
+    return item.nominal;
+  });
+
+  if (debitTodayNominal) {
+    sumDataTransaction.push({
+      day: moment().subtract(0, 'days').format('ddd'),
+      sumDebit: debitTodayNominal.reduce((a, b) => a + b),
+      sumCredit: creditTodayNominal.reduce((a, b) => a + b),
+    });
+  }
+
+  console.log(sumDataTransaction);
 
   // console.log(debitTodayNominal);
 
