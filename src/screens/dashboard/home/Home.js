@@ -1,4 +1,4 @@
-import React, {useEffect, useState} from 'react';
+import React, {useEffect, useState, useRef} from 'react';
 import {
   View,
   Text,
@@ -92,15 +92,6 @@ const Home = props => {
 
   useEffect(() => {
     getDataUser();
-    if (props.userReducers.user?.data[0].status === 'not-verified') {
-      props.navigation.navigate('ConfirmOtp', {
-        id: props.userReducers.user?.data[0].id,
-        type: 'not-verified',
-      });
-    }
-  }, []);
-  useEffect(() => {
-    getDataUser();
   }, [isFocused]);
 
   const updateUserData = () => {
@@ -149,6 +140,16 @@ const Home = props => {
   const capitalizeFirstLetter = string => {
     return string.charAt(0).toUpperCase() + string.slice(1);
   };
+  console.log(props.userReducers.user.data[0]);
+
+  useEffect(() => {
+    if (props.userReducers.user?.data[0].status === 'not-verified') {
+      props.navigation.navigate('ConfirmOtp', {
+        id: props.userReducers.user?.data[0].id,
+        type: 'not-verified',
+      });
+    }
+  }, [props.userReducers]);
 
   return (
     <View style={styles.container}>
