@@ -68,8 +68,11 @@ const removeNonNumeric = num => num.toString().replace(/[^0-9]/g, "");
   useEffect(()=>{
     if(Number(amountValue)>=10000){
       setIsFilled(true)
+      setErrorMessage('')
     } else {
       setIsFilled(false)
+      setErrorMessage('the minimum topup amount is Rp10.000')
+
     }
   },[amountValue])
 
