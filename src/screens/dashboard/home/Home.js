@@ -25,10 +25,6 @@ const Home = props => {
   const [userData, setUserData] = useState({});
   const [historyData, setHistoryData] = useState([]);
   const isFocused = useIsFocused();
-  // console.log(historyData);
-  console.log(props.userReducers.user);
-
-  
   
   const socket = useSocket()
 
@@ -92,16 +88,20 @@ const Home = props => {
   
   
   
-  
-  
 
   const getDataUser = () => {
     const token = props.loginReducers.user.token;
     return props.getUserHandler(token);
   };
 
+
+
+
   useEffect(() => {
     getDataUser();
+    if(props.userReducers.user?.data[0].status==="not-verified"){
+      props.navigation.navigate('ConfirmOtp', {id: props.userReducers.user?.data[0].id, type:'not-verified'});
+    }
   
   }, []);
   useEffect(() => {
