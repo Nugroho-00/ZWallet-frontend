@@ -27,7 +27,7 @@ const classes = StyleSheet.create({
     flexDirection: 'row',
     alignItems: 'center',
     marginHorizontal: '4%',
-    marginBottom: '10%',
+    marginBottom: '8%',
   },
   lefticon: {
     position: 'absolute',
@@ -71,6 +71,12 @@ const classes = StyleSheet.create({
     fontSize: 20,
 
   },
+  errorMessage:{
+    color:'red',
+    marginBottom:10,
+    left:15,
+    marginTop:-20
+  }
 });
 
 export default classes;

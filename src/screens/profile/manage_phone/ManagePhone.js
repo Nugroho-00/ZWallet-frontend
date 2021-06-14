@@ -1,18 +1,20 @@
-import React, {useEffect, useState} from 'react';
+import React from 'react';
 import {
   View,
   Text,
   ScrollView,
   TouchableOpacity,
-  TextInput,
 } from 'react-native';
 import classes from './Styles';
 import Header from '../../../components/header/Header';
 import Ionicons from 'react-native-vector-icons/Ionicons';
+import {connect} from 'react-redux';
 
 const ManagePhone = props => {
+
+  const data = props.userReducers.user?.data[0];
   const {navigation} = props;
-  const [phone, setPhone] = useState('87655556666');
+
   return (
     <ScrollView>
       <Header
@@ -30,14 +32,13 @@ const ManagePhone = props => {
         <View style={classes.bottomcontent}>
           <View style={classes.leftside}>
             <Text style={classes.phonetype}>Primary</Text>
-            <Text style={classes.phonenumber}>+62 {phone}</Text>
+            <Text style={classes.phonenumber}>+62 {data?.phone.replace(/\B(?=(\d{4})+(?!\d))/g, '-')}</Text>
           </View>
           <View style={classes.rightside}>
-            {/* sementara aja. ntar buatin navigasi untuk add phone ya */}
             <TouchableOpacity
               onPress={() => props.navigation.navigate('AddPhone')}>
               <Ionicons
-                name="trash-outline"
+                name="create-outline"
                 size={32}
                 color="rgba(187, 187, 190, 1)"
               />
@@ -49,4 +50,14 @@ const ManagePhone = props => {
   );
 };
 
-export default ManagePhone;
+
+const mapStatetoProps = state => {
+  return {
+    loginReducers: state.loginReducers,
+    userReducers: state.userReducers,
+  };
+};
+
+const connectedManagePhone = connect(mapStatetoProps)(ManagePhone);
+
+export default connectedManagePhone;
