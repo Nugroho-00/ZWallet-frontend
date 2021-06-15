@@ -50,6 +50,7 @@ const Content = props => {
       });
   }
 
+
   const transferHandler = () => {
     let config = {
       method: 'POST',
@@ -66,29 +67,30 @@ const Content = props => {
     return axios(config)
       .then(res => {
         console.log(res.data.result);
-        
+
+        setIdTransaction(res.data.result.id)
         const body = {
-          id:id,
+          id:userData.id,
           sender: userData.username,
           amount: data.amountValue
         }
         socket.emit('transfer',body, data.id,({status})=>{
           if(status){
             console.log(`${userData.username} joined room ${data.id}`);
-        return setResult(true)
+            return setResult(true)
 
           }
         })
-        setIdTransaction(res.data.result.id)
       })
       .catch(err => {
-        console.log("SetREsult", {err});
+        console.log(err.response);
         return setResult(false);
       });
   };
 
   if (result){
     storeNotification(idTransaction)
+            
 
   }
 
