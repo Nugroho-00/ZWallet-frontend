@@ -26,7 +26,7 @@ const Content = props => {
   const removeNonNumeric = num => num.toString().replace(/[^0-9]/g, '');
 
   const separator = x => {
-    return x.toString().replace(/\B(?=(\d{3})+(?!\d))/g, '.');
+    return x.toString().replace(/\B(?=(\d{3})+(?!\d))/g, ',');
   };
 
   return (
@@ -54,7 +54,7 @@ const Content = props => {
 
       <View>
         <Text style={styles.textWarning}>
-          The amount cannot be less than Rp10.000 or more than the balance
+          The amount cannot be less than Rp10,000 or more than the balance
         </Text>
       </View>
 

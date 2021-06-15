@@ -11,7 +11,7 @@ import {
 import Icon from 'react-native-vector-icons/Ionicons';
 import styles from './styles';
 import {userLogout} from '../../../services/redux/actions/Auth';
-import {getUser} from '../../../services/redux/actions/Users';
+import {addBalance, getUser} from '../../../services/redux/actions/Users';
 
 import {useIsFocused} from '@react-navigation/native';
 import {connect} from 'react-redux';
@@ -25,6 +25,7 @@ import DefaultAvatar from '../../../assets/images/default_avatar.png';
 
 const Home = props => {
   const [userData, setUserData] = useState({});
+  const [balance, setBalance] = useState(props.userReducers.user?.data[0].balances)
   const [historyData, setHistoryData] = useState([]);
   const isFocused = useIsFocused();
 
@@ -37,7 +38,7 @@ const Home = props => {
         channelId: 'notif',
         channelName: 'My Notification Channel',
       },
-      created => console.log(`student createChannel returned '${created}'`), // (optional) callback returns whether the channel was created, false means it already existed.
+      created => console.log(`student createChannel returned '${created}'`),
     );
   }, []);
 
@@ -59,11 +60,14 @@ const Home = props => {
 
     socket.on('get-notif', body => {
       const {id, sender, amount} = body;
+      setBalance(Number(balance)+Number(amount))
+
       PushNotification.localNotification({
         channelId: channel,
         title: 'Inbound transfer',
         message: `${sender} just sent you Rp. ${amount}`,
       });
+
       let config = {
         method: 'POST',
         url: `${API_URL}/notification`,
@@ -74,7 +78,8 @@ const Home = props => {
       };
       axios(config)
         .then(res => {
-          console.log(res.data.result);
+      console.log('balance',balance, 'amount',amount);
+          // console.log(res.data.result);
         })
         .catch(err => {
           console.log(err);
@@ -89,7 +94,8 @@ const Home = props => {
 
   const getDataUser = () => {
     const token = props.loginReducers.user.token;
-    return props.getUserHandler(token);
+    props.getUserHandler(token);
+    // props.setBalance(props.userReducers.user?.data[0].balances)
   };
 
   useEffect(() => {
@@ -97,7 +103,8 @@ const Home = props => {
   }, [isFocused]);
 
   const updateUserData = () => {
-    return setUserData(props.userReducers?.user?.data[0]);
+    setUserData(props.userReducers?.user?.data[0]);
+    setBalance(props.userReducers.user?.data[0].balances)
   };
 
   useEffect(() => {
@@ -136,8 +143,10 @@ const Home = props => {
   }, [isFocused]);
 
   const separator = x => {
-    return x.toString().replace(/\B(?=(\d{3})+(?!\d))/g, '.');
+    return x.toString().replace(/\B(?=(\d{3})+(?!\d))/g, ',');
   };
+
+  console.log();
 
   const capitalizeFirstLetter = string => {
     return string.charAt(0).toUpperCase() + string.slice(1);
@@ -180,8 +189,8 @@ const Home = props => {
             </Text>
             <Text style={{...styles.balanceCount, ...styles.font}}>
               {userData.balances
-                ? `Rp.${separator(userData.balances)}`
-                : `Rp.0`}
+                ? `Rp${separator(balance)}`
+                : `Rp0`}
             </Text>
           </TouchableOpacity>
         </View>
@@ -307,6 +316,9 @@ const mapDispatchToProps = dispatch => ({
   getUserHandler: token => {
     dispatch(getUser(token));
   },
+  setBalance: num=>{
+    dispatch(addBalance(num))
+  }
 });
 const connectedHome = connect(mapStatetoProps, mapDispatchToProps)(Home);
 export default connectedHome;

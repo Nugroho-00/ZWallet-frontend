@@ -82,7 +82,7 @@ const Content = props => {
                 </View>
                 <View style={styles.contactInfoWrapper}>
                   <Text style={styles.contactName}>{contact.username}</Text>
-                  <Text style={styles.contactPhone}>{contact.phone}</Text>
+                  <Text style={styles.contactPhone}>+62 {contact.phone.replace(/\B(?=(\d{4})+(?!\d))/g, '-')}</Text>
                 </View>
               </TouchableOpacity>
             ))

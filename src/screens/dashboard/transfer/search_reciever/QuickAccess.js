@@ -5,6 +5,7 @@ import {View, Text, TouchableOpacity, TextInput, Image} from 'react-native';
 import Icon from 'react-native-vector-icons/Ionicons';
 
 import styles from './styles';
+import Ionicons from 'react-native-vector-icons/Ionicons';
 
 import {connect} from 'react-redux';
 import axios from 'axios';
@@ -42,6 +43,7 @@ const QuickAccess = props => {
 
 
   const findHandler = () => {
+    console.log(addNew);
     if (!addNew) {
       setErrorMessage('Please fill in this field');
     } else {
@@ -72,7 +74,7 @@ const QuickAccess = props => {
   return (
     <View style={styles.quickContainer}>
       <View style={styles.createNewSection}>
-        <TextInput
+        {/* <TextInput
           value={addNew}
           style={styles.numberInput}
           placeholder="Input phone number here"
@@ -81,11 +83,28 @@ const QuickAccess = props => {
             p.substring(0) !== '0'&&setAddNew(removeNonNumeric(p));
           }}
           onPressIn={() => setErrorMessage('')}
-        />
+        /> */}
 
-        <TouchableOpacity style={styles.sendIconWrapper} onPress={findHandler}>
-          <Icon name="send-outline" style={styles.sendIcon} />
-        </TouchableOpacity>
+      <View style={styles.input}>
+            <View style={styles.lefticon}>
+              <Ionicons name="call-outline" size={24} color="#A9A9A9" />
+            </View>
+            <Text style={styles.phonetext}>+62</Text>
+            <TextInput
+              style={styles.inputboxphone}
+              placeholder="Enter your phone number"
+              placeholderTextColor="rgba(169, 169, 169, 0.8)"
+              keyboardType="phone-pad"
+              value={addNew}
+              onPressIn={() => setErrorMessage('')}
+              onChangeText={p => { p.substring(0) !== '0'&&setAddNew(removeNonNumeric(p));}}
+            />
+            <TouchableOpacity style={styles.sendIconWrapper} onPress={findHandler}>
+              <Icon name="send-outline" style={styles.sendIcon} />
+            </TouchableOpacity>
+          </View>
+
+        
       </View>
       {errorMessage ? (
         <Text style={styles.errorMessage}>{errorMessage}</Text>
