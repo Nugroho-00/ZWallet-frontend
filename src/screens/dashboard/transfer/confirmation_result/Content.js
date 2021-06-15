@@ -19,7 +19,7 @@ const Content = props => {
   const [idTransaction, setIdTransaction] = useState()
 
   const userReducer = useSelector(state => state.userReducers);
-  const userData = userReducer.user.data[0];
+  const userData = userReducer.user;
   const loginReducers = useSelector(state => state.loginReducers);
 
   const data = props.dataReceiver;
@@ -49,7 +49,6 @@ const Content = props => {
         console.log(err);
       });
   }
-
 
   const transferHandler = () => {
     let config = {
@@ -83,7 +82,7 @@ const Content = props => {
         setIdTransaction(res.data.result.id)
       })
       .catch(err => {
-        console.log(err.response);
+        console.log("SetREsult", {err});
         return setResult(false);
       });
   };

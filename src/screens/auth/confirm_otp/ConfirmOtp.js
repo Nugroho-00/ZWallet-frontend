@@ -70,10 +70,10 @@ const ConfirmOtp = props => {
   }, [num1, num2, num3, num4, num5, num6]);
 
 
-  // console.log(props.userReducers.user.data[0]);
+  // console.log(props.userReducers.user);
   useEffect(()=>{
     if(props.route.params.type==="not-verified"||props.route.params.type==="update"){
-      const emailUser = props.route.params.type==="update"?props.route.params.email.toString():props.userReducers.user.data[0].email; 
+      const emailUser = props.route.params.type==="update"?props.route.params.email.toString():props.userReducers.user.email; 
       console.log(emailUser);
       let config = {
         method: 'POST',
@@ -103,7 +103,7 @@ const ConfirmOtp = props => {
   const verificationHandler = ()=> {
     let idUser, isLogin;
     if(!props.route.params){
-      idUser=props.userReducers.user.data[0].id
+      idUser=props.userReducers.user.id
     } else{
       idUser=props.route.params.id
     }

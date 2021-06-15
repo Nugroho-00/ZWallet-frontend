@@ -25,7 +25,7 @@ import DefaultAvatar from '../../../assets/images/default_avatar.png';
 
 const Home = props => {
   const [userData, setUserData] = useState({});
-  const [balance, setBalance] = useState(props.userReducers.user?.data[0].balances)
+  const [balance, setBalance] = useState(props.userReducers.user?.balances);
   const [historyData, setHistoryData] = useState([]);
   const isFocused = useIsFocused();
 
@@ -49,7 +49,7 @@ const Home = props => {
   }, []);
 
   useEffect(() => {
-    const token = props.loginReducers.user.token;
+    const token = props.loginReducers.user?.token;
 
     if (socket === undefined) {
       return;
@@ -58,7 +58,7 @@ const Home = props => {
       console.log(`connected from home page  ${socket.id}`),
     );
 
-    const {id, username, notification} = props.userReducers.user.data[0];
+    const {id, username, notification} = props.userReducers.user;
     if(notification==='on'){
       socket.emit('my-room', id, ({status}) => {
         if (status) {
@@ -69,7 +69,7 @@ const Home = props => {
 
     socket.on('get-notif', body => {
       const {id, sender, amount} = body;
-      setBalance(Number(balance)+Number(amount))
+      setBalance(Number(balance) + Number(amount));
 
       PushNotification.localNotification({
         channelId: channel,
@@ -87,7 +87,8 @@ const Home = props => {
       };
       axios(config)
         .then(res => {
-      console.log('balance',balance, 'amount',amount);
+          console.log('balance', balance, 'amount', amount);
+          // console.log(res.data.result);
         })
         .catch(err => {
           console.log(err);
@@ -101,10 +102,10 @@ const Home = props => {
   }, [socket]);
 
   const getDataUser = () => {
-    const token = props.loginReducers.user.token;
+    const token = props.loginReducers.user?.token;
     props.getUserHandler(token);
-    props.setNotification(props.userReducers.user?.data[0].notification)
-    // props.setBalance(props.userReducers.user?.data[0].balances)
+    props.setNotification(props.userReducers.user?.notification)
+    // props.setBalance(props.userReducers.user?.balances)
   };
 
   useEffect(() => {
@@ -112,17 +113,22 @@ const Home = props => {
   }, [isFocused]);
 
   const updateUserData = () => {
-    setUserData(props.userReducers?.user?.data[0]);
-    setBalance(props.userReducers.user?.data[0].balances)
-
+    setUserData(props.userReducers?.user);
+    setBalance(props.userReducers.user.balances);
   };
 
   useEffect(() => {
     updateUserData();
+    const {id, username} = props.userReducers.user;
+    socket.emit('my-room', id, ({status}) => {
+      if (status) {
+        console.log(`${username} joined room ${id}`);
+      }
+    });
   }, [props.userReducers, isFocused]);
 
   const getHistoryData = () => {
-    const token = props.loginReducers.user.token;
+    const token = props.loginReducers.user?.token;
     let config = {
       headers: {
         Authorization: 'Bearer ' + token,
@@ -155,12 +161,12 @@ const Home = props => {
   const capitalizeFirstLetter = string => {
     return string.charAt(0).toUpperCase() + string.slice(1);
   };
-  // console.log(props.userReducers.user.data[0]);
+  // console.log(props.userReducers.user);
 
   useEffect(() => {
-    if (props.userReducers.user?.data[0].status === 'not-verified') {
+    if (props.userReducers.user?.status === 'not-verified') {
       props.navigation.navigate('ConfirmOtp', {
-        id: props.userReducers.user?.data[0].id,
+        id: props.userReducers.user?.id,
         type: 'not-verified',
       });
     }
@@ -192,9 +198,7 @@ const Home = props => {
               Balance
             </Text>
             <Text style={{...styles.balanceCount, ...styles.font}}>
-              {userData.balances
-                ? `Rp${separator(balance)}`
-                : `Rp0`}
+              {userData.balances ? `Rp${separator(balance)}` : `Rp0`}
             </Text>
           </TouchableOpacity>
         </View>
