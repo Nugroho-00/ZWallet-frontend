@@ -14,15 +14,16 @@ import axios from 'axios';
 import {API_URL} from '@env';
 import CustomModal from '../../../components/modal/CustomModal';
 
-
 const AddPhone = props => {
   const {navigation} = props;
-  const data = props.userReducers.user?.data;
-  const [phone, setPhone] = useState(data?.phone.replace(/\B(?=(\d{4})+(?!\d))/g, '-'));
-  const [phoneValue, setPhoneValue] = useState(data?.phone)
+  const data = props.userReducers.user;
+  const [phone, setPhone] = useState(
+    data?.phone.replace(/\B(?=(\d{4})+(?!\d))/g, '-'),
+  );
+  const [phoneValue, setPhoneValue] = useState(data?.phone);
   const [errorMessage, setErrorMessage] = useState('');
-  const [isFilled, setIsFilled] = useState(false)
-  const [confirmModal, setConfirmModal] = useState(false)
+  const [isFilled, setIsFilled] = useState(false);
+  const [confirmModal, setConfirmModal] = useState(false);
 
   const addCommas = num => num.toString().replace(/\B(?=(\d{4})+(?!\d))/g, '-');
   const removeNonNumeric = num => num.toString().replace(/[^0-9]/g, '');
@@ -31,38 +32,44 @@ const AddPhone = props => {
     num.substring(0) !== '0' && setPhone(addCommas(removeNonNumeric(num)));
   };
 
-  const handleValue = num =>{
-    setPhoneValue(num.toString().replace('-', ''))
-  }
+  const handleValue = num => {
+    setPhoneValue(num.toString().replace('-', ''));
+  };
   // console.log(phone);
-  const submitHandler=()=>{
+  const submitHandler = () => {
     let config = {
       method: 'PATCH',
       url: `${API_URL}/profile/edit`,
       headers: {
         authorization: `Bearer ${props.loginReducers.user?.token}`,
       },
-      data: {phone:phoneValue.replace("-","")},
+      data: {phone: phoneValue.replace('-', '')},
     };
-    axios(config).then(res=>{
-      setConfirmModal(false)
-      return props.getUserHandler(props.loginReducers.user.token)}
-    ).catch(err => console.log({err}))
-  }
+    axios(config)
+      .then(res => {
+        props.navigation.navigate('Profile');
+        props.getUserHandler(props.loginReducers.user.token);
+        setConfirmModal(false);
+        return;
+      })
+      .catch(err => console.log({err}));
+  };
 
-  useEffect(()=>{
+  useEffect(() => {
     console.log(phoneValue);
-    if(phoneValue.length>12){
-      setErrorMessage('Max phone number length is 12')
-      setIsFilled(false)
-    } else if(phoneValue.length<9){
-      setErrorMessage('Min phone number length is 10')
-      setIsFilled(false)
+    if (phoneValue.length > 12) {
+      setErrorMessage('Max phone number length is 12');
+      setIsFilled(false);
+    } else if (phoneValue.length < 9) {
+      setErrorMessage('Min phone number length is 10');
+      setIsFilled(false);
     } else {
-      setIsFilled(true)
-      setErrorMessage('')
+      setIsFilled(true);
+      setErrorMessage('');
     }
-  },[phoneValue])
+  }, [phoneValue]);
+
+  console.log(props);
   return (
     <ScrollView>
       <Header isBack={true} title="Add Phone Number" navigation={navigation} />
@@ -86,20 +93,31 @@ const AddPhone = props => {
               keyboardType="phone-pad"
               value={phone}
               onPressIn={() => setErrorMessage('')}
-              onChangeText={value => {handleChange(value); handleValue(value)}}
+              onChangeText={value => {
+                handleChange(value);
+                handleValue(value);
+              }}
             />
           </View>
-          {errorMessage?<Text style={classes.errorMessage}>{errorMessage}</Text>:null}
+          {errorMessage ? (
+            <Text style={classes.errorMessage}>{errorMessage}</Text>
+          ) : null}
         </View>
         <View>
           <TouchableOpacity
             style={{
               ...classes.submitbtn,
-              backgroundColor: isFilled ?'rgba(99, 121, 244, 1)':'rgba(218, 218, 218, 1)',
+              backgroundColor: isFilled
+                ? 'rgba(99, 121, 244, 1)'
+                : 'rgba(218, 218, 218, 1)',
             }}
             disabled={false}
-            onPress={()=>setConfirmModal(true)}>
-            <Text style={{...classes.submitbtntext, color:isFilled?'white':'rgba(136, 136, 143, 1)'}}>
+            onPress={() => setConfirmModal(true)}>
+            <Text
+              style={{
+                ...classes.submitbtntext,
+                color: isFilled ? 'white' : 'rgba(136, 136, 143, 1)',
+              }}>
               Submit
             </Text>
           </TouchableOpacity>

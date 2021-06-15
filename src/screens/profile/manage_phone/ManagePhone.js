@@ -12,7 +12,7 @@ import {connect} from 'react-redux';
 
 const ManagePhone = props => {
 
-  const data = props.userReducers.user?.data;
+  const data = props.userReducers.user;
   const {navigation} = props;
 
   return (
