@@ -75,10 +75,11 @@ const Content = props => {
         socket.emit('transfer',body, data.id,({status})=>{
           if(status){
             console.log(`${userData.username} joined room ${data.id}`);
+        return setResult(true)
+
           }
         })
         setIdTransaction(res.data.result.id)
-        return setResult(true)
       })
       .catch(err => {
         console.log("SetREsult", {err});
