@@ -1,14 +1,28 @@
 /* eslint-disable react-native/no-inline-styles */
 import React, {useState, useRef, useEffect} from 'react';
-import {View, Text, TextInput, Keyboard} from 'react-native';
+import {View, Text, TextInput, Keyboard, BackHandler} from 'react-native';
 import {Button} from 'native-base';
 import Backdrop from '../../../components/backdrop/Backdrop';
 import styles from './Styles';
 import {connect} from 'react-redux';
 import axios from 'axios';
 import {API_URL} from '@env';
+import {useFocusEffect} from '@react-navigation/native';
 
 const CreatePin = props => {
+  useFocusEffect(
+    React.useCallback(() => {
+      const onBackPress = () => {
+        return true;
+      };
+
+      BackHandler.addEventListener('hardwareBackPress', onBackPress);
+
+      return () =>
+        BackHandler.removeEventListener('hardwareBackPress', onBackPress);
+    }, []),
+  );
+
   const {navigation} = props;
   const {id} = props.route.params
   const [isFilled, setIsFilled] = useState(false);

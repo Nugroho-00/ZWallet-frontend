@@ -1,5 +1,5 @@
 import React, {useEffect, useState} from 'react';
-import {View, Text, TouchableOpacity} from 'react-native';
+import {View, Text, TouchableOpacity, Image} from 'react-native';
 
 import Icon from 'react-native-vector-icons/Ionicons';
 
@@ -8,6 +8,7 @@ import styles from './styles';
 import {useSelector} from 'react-redux';
 import axios from 'axios';
 import {API_URL} from '@env';
+import DefaultAvatar from '../../../assets/images/default_avatar.png';
 
 const TransactionHistory = props => {
   const [historyData, setHistoryData] = useState([]);
@@ -18,14 +19,16 @@ const TransactionHistory = props => {
   const getHistoryData = () => {
     const token = user.user.token;
     let config = {
+      method: 'GET',
+      url: `${API_URL}/transaction`,
       headers: {
         Authorization: 'Bearer ' + token,
       },
+      params: {sort: 'date-ZA'},
     };
-    return axios
-      .get(`${API_URL}/transaction/?sort=date-ZA`, config)
+    return axios(config)
       .then(res => {
-        // console.log(res);
+        console.log('historydata', res);
         return setHistoryData(res.data.result);
       })
       .catch(err => {
@@ -59,45 +62,66 @@ const TransactionHistory = props => {
       </View>
 
       <View>
-        {historyData.map((history, index) => (
-          <View key={index} style={styles.historyListWrapper}>
-            <View style={{flex: 2}}>
-              <Icon name="person-outline" size={56} />
-            </View>
-            <View style={{flex: 4}}>
-              <Text style={{fontSize: 16, marginBottom: 9}}>
-                {history.type === 'debit' ? history.sender : history.receiver}
-              </Text>
-              <Text style={{color: '#7A7886'}}>
-                {capitalizeFirstLetter(
-                  history.type === 'credit'
-                    ? 'Transfer'
-                    : history.type === 'debit'
-                    ? 'Transfer'
-                    : history.type,
-                )}
-              </Text>
-            </View>
-            <View style={{flex: 3}}>
-              <Text
-                style={{
-                  fontSize: 18,
-                  color:
-                    history.type === 'topup'
-                      ? '#1EC15F'
-                      : history.type === 'debit'
-                      ? '#1EC15F'
-                      : '#FF5B37',
-                }}>
-                {history.type === 'topup'
-                  ? `+Rp${separator(history.nominal)}`
-                  : history.type === 'debit'
-                  ? `+Rp${separator(history.nominal)}`
-                  : `-Rp${separator(history.nominal)}`}
-              </Text>
-            </View>
+        {historyData.length < 1 ? (
+          <View style={{alignItems: 'center', marginTop: 200}}>
+            <Text
+              style={{
+                fontFamily: 'NunitoSans-Regular',
+                fontSize: 20,
+                fontWeight: 'bold',
+                color: '#7C7895',
+              }}>
+              No transactions yet
+            </Text>
           </View>
-        ))}
+        ) : (
+          historyData.map((history, index) => (
+            <View key={index} style={styles.historyListWrapper}>
+              <View style={{flex: 2}}>
+                {history.image === null ? (
+                  <Image source={DefaultAvatar} style={styles.avatar} />
+                ) : (
+                  <Image
+                    source={{uri: `${API_URL}${history.image}`}}
+                    style={styles.avatar}
+                  />
+                )}
+              </View>
+              <View style={{flex: 4}}>
+                <Text style={{fontSize: 16, marginBottom: 9}}>
+                  {history.type === 'debit' ? history.sender : history.receiver}
+                </Text>
+                <Text style={{color: '#7A7886'}}>
+                  {capitalizeFirstLetter(
+                    history.type === 'credit'
+                      ? 'Transfer'
+                      : history.type === 'debit'
+                      ? 'Transfer'
+                      : history.type,
+                  )}
+                </Text>
+              </View>
+              <View style={{flex: 3}}>
+                <Text
+                  style={{
+                    fontSize: 18,
+                    color:
+                      history.type === 'topup'
+                        ? '#1EC15F'
+                        : history.type === 'debit'
+                        ? '#1EC15F'
+                        : '#FF5B37',
+                  }}>
+                  {history.type === 'topup'
+                    ? `+Rp${separator(history.nominal)}`
+                    : history.type === 'debit'
+                    ? `+Rp${separator(history.nominal)}`
+                    : `-Rp${separator(history.nominal)}`}
+                </Text>
+              </View>
+            </View>
+          ))
+        )}
       </View>
     </View>
   );

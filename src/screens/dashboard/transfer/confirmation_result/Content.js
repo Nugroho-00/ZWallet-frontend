@@ -19,7 +19,7 @@ const Content = props => {
   const [idTransaction, setIdTransaction] = useState()
 
   const userReducer = useSelector(state => state.userReducers);
-  const userData = userReducer.user.data[0];
+  const userData = userReducer.user;
   const loginReducers = useSelector(state => state.loginReducers);
 
   const data = props.dataReceiver;
@@ -44,23 +44,11 @@ const Content = props => {
     axios(config)
       .then(res => {
         console.log(res.data);
-
-        const body = {
-          id:id,
-          sender: userData.username,
-          amount: data.amountValue
-        }
-        socket.emit('transfer',body, data.id,({status})=>{
-          if(status){
-            console.log(`${userData.username} joined room ${data.id}`);
-          }
-        })
       })
       .catch(err => {
         console.log(err);
       });
   }
-
 
   const transferHandler = () => {
     let config = {
@@ -78,11 +66,23 @@ const Content = props => {
     return axios(config)
       .then(res => {
         console.log(res.data.result);
-        setIdTransaction(res.data.result.id)
+        
+        const body = {
+          id:id,
+          sender: userData.username,
+          amount: data.amountValue
+        }
+        socket.emit('transfer',body, data.id,({status})=>{
+          if(status){
+            console.log(`${userData.username} joined room ${data.id}`);
         return setResult(true)
+
+          }
+        })
+        setIdTransaction(res.data.result.id)
       })
       .catch(err => {
-        console.log(err.response);
+        console.log("SetREsult", {err});
         return setResult(false);
       });
   };
@@ -172,7 +172,7 @@ const Content = props => {
           <Icon name="person-outline" size={56} />
           <View style={styles.infoUserWrapper}>
             <Text style={styles.textUsername}>{userData.username}</Text>
-            <Text style={styles.textPhone}>{userData.phone}</Text>
+            <Text style={styles.textPhone}>+62 {userData.phone.replace(/\B(?=(\d{4})+(?!\d))/g, '-')}</Text>
           </View>
         </View>
 
@@ -181,7 +181,7 @@ const Content = props => {
           <Icon name="person-outline" size={56} />
           <View style={styles.infoUserWrapper}>
             <Text style={styles.textUsername}>{data.username}</Text>
-            <Text style={styles.textPhone}>{data.phone}</Text>
+            <Text style={styles.textPhone}>+62 {data.phone.replace(/\B(?=(\d{4})+(?!\d))/g, '-')}</Text>
           </View>
         </View>
       </View>

@@ -1,4 +1,4 @@
-import React, {useState} from 'react';
+import React, {useState, useEffect} from 'react';
 import {
   View,
   Image,
@@ -16,11 +16,51 @@ import {userLogout} from '../../services/redux/actions/Auth';
 import {connect, useSelector} from 'react-redux';
 import {API_URL} from '@env';
 import EditModal from '../../components/modal/UploadImageProfile';
+import CustomModal from '../../components/modal/CustomModal';
+import {useSocket} from '../../services/contexts/SocketProvider';
+import { notification} from '../../services/redux/actions/Users';
 
 function Profile(props) {
   const profile = useSelector(state => state.userReducers.user);
-  const [isNotifOn, setIsNotifOn] = useState(true);
+  const notif = useSelector(state=>state.userReducers.notification)
+  // console.log(notif);
+  const socket = useSocket()
+
+  
+
+  useEffect(()=>{},[])
+  const [isNotifOn, setIsNotifOn] = useState(notif==='on'?true:false);
+  const [notifTemp, setNotifTemp] = useState()
   const [profileModal, setProfileModal] = useState(false);
+  const [logoutModal, setLogoutModal] = useState(false);
+  const [confirmModal, setConfirmModal] = useState(false)
+  const [avatar, setAvatar] = useState(`${API_URL}${profile.avatar}`)
+
+  const avatarChange=(e)=>{
+    setAvatar(e)
+  }
+
+  const setNotifHandler=()=>{
+    setIsNotifOn(notifTemp);
+    console.log(notifTemp,'tes');
+    props.setNotification(notifTemp===false?'off':'on')
+    if(notifTemp===false){
+    socket.emit('leave',profile.id,({status})=>{
+      if(status){
+        console.log(`${profile.username} leave room ${profile.id}`);
+      }
+    })} else if(notifTemp===true) {
+      socket.emit('my-room',profile.id, ({status}) => {
+        if (status) {
+          console.log(`${profile.username} join room ${profile.id}`);
+
+        }
+      });
+    }
+
+    setConfirmModal(false)
+  }
+
   return (
     <>
       <StatusBar
@@ -39,13 +79,14 @@ function Profile(props) {
           <EditModal
             modalVisible={profileModal}
             setProfileModal={setProfileModal}
+            onChangeAvatar = {avatarChange}
           />
         </Modal>
 
         <ScrollView showsVerticalScrollIndicator={false}>
           <View style={styles.mainInfo}>
             <View style={styles.avatar}>
-              {profile.data[0].avatar === null ? (
+              {profile.avatar === null ? (
                 <Icon
                   name="person"
                   size={52}
@@ -54,7 +95,7 @@ function Profile(props) {
                 />
               ) : (
                 <Image
-                  source={{uri: `${API_URL}${profile.data[0].avatar}`}}
+                  source={{uri: avatar}}
                   style={styles.avatar}
                 />
               )}
@@ -69,9 +110,9 @@ function Profile(props) {
               <Text style={styles.editText}>Edit</Text>
             </TouchableOpacity>
 
-            <Text style={styles.nameText}>{profile.data[0].username}</Text>
+            <Text style={styles.nameText}>{profile.username}</Text>
             <Text style={styles.phoneText}>
-              {'+62' + profile.data[0].phone}
+              {'+62 ' + profile.phone.replace(/\B(?=(\d{4})+(?!\d))/g, '-')}
             </Text>
           </View>
           <View style={styles.menuSection}>
@@ -102,19 +143,44 @@ function Profile(props) {
                 onColor="#6379F4"
                 offColor="#7A7886"
                 size="medium"
-                onToggle={isOn => setIsNotifOn(isOn)}
+                onToggle={isOn => {setConfirmModal(true); setNotifTemp(isOn)}}
               />
             </Pressable>
             <Pressable
               style={styles.menuItem}
-              onPress={() => {
-                props.onLogoutHandler();
-              }}>
+              onPress={() => setLogoutModal(true)}>
               <Text style={styles.menuText}>Logout</Text>
             </Pressable>
+
+            {logoutModal ? (
+              <CustomModal
+                modalVisible={logoutModal}
+                title="Log Out"
+                msg="Are you sure want to Logout now?"
+                btnLabel3="Cancel"
+                onAction3={() => {
+                  setLogoutModal(false);
+                }}
+                btnLabel4="Yes I'm sure"
+                onAction4={() => props.onLogoutHandler()}
+              />
+            ) : null}
           </View>
         </ScrollView>
       </View>
+      {confirmModal ? (
+        <CustomModal
+          modalVisible={confirmModal}
+          title={`Turn ${notifTemp?'On':'Off'} Notification`}
+          msg={`Are you sure want to turn ${notifTemp?'on':'off'} your notification?`}
+          btnLabel3="Cancel"
+          onAction3={() => {
+            setConfirmModal(false);
+          }}
+          btnLabel4="Yes I'm sure"
+          onAction4={setNotifHandler}
+        />
+      ) : null}
     </>
   );
 }
@@ -127,6 +193,9 @@ const mapDispatchToProps = dispatch => ({
   onLogoutHandler: () => {
     dispatch(userLogout());
   },
+  setNotification: value=>{
+    dispatch(notification(value))
+  }
 });
 
 const connectedProfile = connect(mapStatetoProps, mapDispatchToProps)(Profile);

@@ -13,7 +13,7 @@ const Content = props => {
   const [note, setNote] = useState('');
 
   const userData = useSelector(state => state.userReducers);
-  const balance = userData.user.data[0].balances;
+  const balance = userData.user.balances;
 
   const sendData = {
     ...props.dataReceiver,
@@ -26,7 +26,7 @@ const Content = props => {
   const removeNonNumeric = num => num.toString().replace(/[^0-9]/g, '');
 
   const separator = x => {
-    return x.toString().replace(/\B(?=(\d{3})+(?!\d))/g, '.');
+    return x.toString().replace(/\B(?=(\d{3})+(?!\d))/g, ',');
   };
 
   return (
@@ -54,7 +54,7 @@ const Content = props => {
 
       <View>
         <Text style={styles.textWarning}>
-          The amount cannot be less than Rp10.000 or more than the balance
+          The amount cannot be less than Rp10,000 or more than the balance
         </Text>
       </View>
 

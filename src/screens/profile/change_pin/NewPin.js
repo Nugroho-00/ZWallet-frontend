@@ -7,7 +7,7 @@ import Header from '../../../components/header/Header';
 import {connect} from 'react-redux';
 import axios from 'axios';
 import {API_URL} from '@env';
-
+import CustomModal from '../../../components/modal/CustomModal';
 
 function NewPin(props) {
   const {navigation} = props;
@@ -15,6 +15,7 @@ function NewPin(props) {
   const [isEdit, setIsEdit] = useState(false);
   const [errorMessage, setErrorMessage] = useState('');
   const {oldPin} =props.route.params
+  const [confirmModal, setConfirmModal] = useState(false)
 
   const [num1, setNum1] = useState('');
   const [num2, setNum2] = useState('');
@@ -72,6 +73,7 @@ function NewPin(props) {
     };
     axios(config)
       .then(res => {
+        setConfirmModal(false)
         navigation.navigate('PinSuccess', {isLogin:true, mode:'change'})
       })
       .catch(err => {
@@ -240,13 +242,27 @@ function NewPin(props) {
               ? {...styles.buttonOn}
               : {...styles.buttonOff}
           }
-          onPress={changePinHandler}
+          onPress={()=>setConfirmModal(true)}
           disabled={isFilled ? false : true}>
           <Text style={isFilled ? styles.textOn : styles.textOff}>
             Change PIN
           </Text>
         </Button>
+
       </View>
+      {confirmModal ? (
+        <CustomModal
+          modalVisible={confirmModal}
+          title="Change PIN"
+          msg={"Are you sure you want to change your PIN?"}
+          btnLabel3="Cancel"
+          onAction3={() => {
+            setConfirmModal(false);
+          }}
+          btnLabel4="Yes I'm sure"
+          onAction4={changePinHandler}
+        />
+      ) : null}
     </>
   );
 }

@@ -1,5 +1,6 @@
 import React, {useState, useRef, useEffect} from 'react';
-import {View, Text, TextInput, Keyboard} from 'react-native';
+import {View, Text, TextInput, Keyboard, BackHandler} from 'react-native';
+import {useFocusEffect} from '@react-navigation/native';
 import {Button} from 'native-base';
 import Backdrop from '../../../components/backdrop/Backdrop';
 import styles from './Styles';
@@ -8,6 +9,20 @@ import axios from 'axios';
 import {API_URL} from '@env';
 
 const ConfirmOtp = props => {
+  useFocusEffect(
+    React.useCallback(() => {
+      const onBackPress = () => {
+        return true;
+      };
+
+      BackHandler.addEventListener('hardwareBackPress', onBackPress);
+
+      return () =>
+        BackHandler.removeEventListener('hardwareBackPress', onBackPress);
+    }, []),
+  );
+
+  
   const [isFilled, setIsFilled] = useState(false);
   const [isEdit, setIsEdit] = useState(false);
   const [errorMessage, setErrorMessage] = useState('');
@@ -55,20 +70,22 @@ const ConfirmOtp = props => {
   }, [num1, num2, num3, num4, num5, num6]);
 
 
-  // console.log(props.userReducers.user.data[0]);
+  // console.log(props.userReducers.user);
   useEffect(()=>{
-    if(props.route.params.type==="not-verified"){
+    if(props.route.params.type==="not-verified"||props.route.params.type==="update"){
+      const emailUser = props.route.params.type==="update"?props.route.params.email.toString():props.userReducers.user.email; 
+      console.log(emailUser);
       let config = {
         method: 'POST',
         url: `${API_URL}/auth/send-otp`,
-        data: {email: props.userReducers.user.data[0].email},
+        data: {email: emailUser},
       };
       axios(config)
         .then(res => {
           // console.log(res.data.result);
         })
         .catch(err => {
-          console.log({err});
+          console.log(err.response.data);
           if (err.response.data?.message === 'Email not found !!!') {
             return Toast.show({
               text: 'User is not registered, go to signup page to get started',
@@ -86,7 +103,7 @@ const ConfirmOtp = props => {
   const verificationHandler = ()=> {
     let idUser, isLogin;
     if(!props.route.params){
-      idUser=props.userReducers.user.data[0].id
+      idUser=props.userReducers.user.id
     } else{
       idUser=props.route.params.id
     }
@@ -105,7 +122,9 @@ const ConfirmOtp = props => {
       .then(res => {
         console.log(res);
         // console.log('sukses');
-        if (props.route.params.type) {
+        if (props.route.params.type==='update') {
+          props.navigation.navigate('HomeScreen');
+        } else if (props.route.params.type) {
           props.navigation.navigate('CreatePin', {id:  idUser, isLogin: isLogin});
         } else {
           props.navigation.navigate('ResetPassword', {token: res.data.token});
@@ -260,8 +279,8 @@ const ConfirmOtp = props => {
           style={
             isEdit
               ? isFilled
-                ? {...styles.buttonOn, top: 200}
-                : {...styles.buttonOff, top: 200}
+                ? {...styles.buttonOn, top: 250}
+                : {...styles.buttonOff, top: 250}
               : isFilled
               ? {...styles.buttonOn}
               : {...styles.buttonOff}

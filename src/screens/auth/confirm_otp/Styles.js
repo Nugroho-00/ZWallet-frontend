@@ -85,7 +85,7 @@ const styles = StyleSheet.create({
   },
 
   errorMessage: {
-    marginTop: 10,
+    // marginTop: ,
     color: '#EB4335',
   },
 });

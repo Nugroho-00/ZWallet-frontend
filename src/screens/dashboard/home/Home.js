@@ -11,7 +11,7 @@ import {
 import Icon from 'react-native-vector-icons/Ionicons';
 import styles from './styles';
 import {userLogout} from '../../../services/redux/actions/Auth';
-import {getUser} from '../../../services/redux/actions/Users';
+import {addBalance, getUser, notification} from '../../../services/redux/actions/Users';
 
 import {useIsFocused} from '@react-navigation/native';
 import {connect} from 'react-redux';
@@ -21,8 +21,11 @@ import {API_URL} from '@env';
 import {useSocket} from '../../../services/contexts/SocketProvider';
 import PushNotification from 'react-native-push-notification';
 
+import DefaultAvatar from '../../../assets/images/default_avatar.png';
+
 const Home = props => {
   const [userData, setUserData] = useState({});
+  const [balance, setBalance] = useState(props.userReducers.user?.balances);
   const [historyData, setHistoryData] = useState([]);
   const isFocused = useIsFocused();
 
@@ -35,7 +38,7 @@ const Home = props => {
         channelId: 'notif',
         channelName: 'My Notification Channel',
       },
-      created => console.log(`student createChannel returned '${created}'`), // (optional) callback returns whether the channel was created, false means it already existed.
+      created => console.log(`student createChannel returned '${created}'`),
     );
   }, []);
 
@@ -46,7 +49,7 @@ const Home = props => {
   }, []);
 
   useEffect(() => {
-    const token = props.loginReducers.user.token;
+    const token = props.loginReducers.user?.token;
 
     if (socket === undefined) {
       return;
@@ -55,13 +58,25 @@ const Home = props => {
       console.log(`connected from home page  ${socket.id}`),
     );
 
+    const {id, username, notification} = props.userReducers.user;
+    if(notification==='on'){
+      socket.emit('my-room', id, ({status}) => {
+        if (status) {
+          console.log(`${username} joined room ${id}`);
+        }
+      });
+    }
+
     socket.on('get-notif', body => {
       const {id, sender, amount} = body;
+      setBalance(Number(balance) + Number(amount));
+
       PushNotification.localNotification({
         channelId: channel,
         title: 'Inbound transfer',
         message: `${sender} just sent you Rp. ${amount}`,
       });
+
       let config = {
         method: 'POST',
         url: `${API_URL}/notification`,
@@ -72,7 +87,8 @@ const Home = props => {
       };
       axios(config)
         .then(res => {
-          console.log(res.data.result);
+          console.log('balance', balance, 'amount', amount);
+          // console.log(res.data.result);
         })
         .catch(err => {
           console.log(err);
@@ -86,8 +102,10 @@ const Home = props => {
   }, [socket]);
 
   const getDataUser = () => {
-    const token = props.loginReducers.user.token;
-    return props.getUserHandler(token);
+    const token = props.loginReducers.user?.token;
+    props.getUserHandler(token);
+    props.setNotification(props.userReducers.user?.notification)
+    // props.setBalance(props.userReducers.user?.balances)
   };
 
   useEffect(() => {
@@ -95,12 +113,13 @@ const Home = props => {
   }, [isFocused]);
 
   const updateUserData = () => {
-    return setUserData(props.userReducers?.user?.data[0]);
+    setUserData(props.userReducers?.user);
+    setBalance(props.userReducers.user.balances);
   };
 
   useEffect(() => {
     updateUserData();
-    const {id, username} = props.userReducers.user.data[0];
+    const {id, username} = props.userReducers.user;
     socket.emit('my-room', id, ({status}) => {
       if (status) {
         console.log(`${username} joined room ${id}`);
@@ -109,7 +128,7 @@ const Home = props => {
   }, [props.userReducers, isFocused]);
 
   const getHistoryData = () => {
-    const token = props.loginReducers.user.token;
+    const token = props.loginReducers.user?.token;
     let config = {
       headers: {
         Authorization: 'Bearer ' + token,
@@ -134,18 +153,20 @@ const Home = props => {
   }, [isFocused]);
 
   const separator = x => {
-    return x.toString().replace(/\B(?=(\d{3})+(?!\d))/g, '.');
+    return x.toString().replace(/\B(?=(\d{3})+(?!\d))/g, ',');
   };
+
+  console.log();
 
   const capitalizeFirstLetter = string => {
     return string.charAt(0).toUpperCase() + string.slice(1);
   };
-  // console.log(props.userReducers.user.data[0]);
+  // console.log(props.userReducers.user);
 
   useEffect(() => {
-    if (props.userReducers.user?.data[0].status === 'not-verified') {
+    if (props.userReducers.user?.status === 'not-verified') {
       props.navigation.navigate('ConfirmOtp', {
-        id: props.userReducers.user?.data[0].id,
+        id: props.userReducers.user?.id,
         type: 'not-verified',
       });
     }
@@ -163,7 +184,7 @@ const Home = props => {
           onPress={() => props.navigation.navigate('Profile')}
           style={{flex: 2}}>
           {userData.avatar === null ? (
-            <Icon name="person" size={52} color="#FFF" />
+            <Image source={DefaultAvatar} style={styles.avatar} />
           ) : (
             <Image
               source={{uri: `${API_URL}${userData.avatar}`}}
@@ -177,9 +198,7 @@ const Home = props => {
               Balance
             </Text>
             <Text style={{...styles.balanceCount, ...styles.font}}>
-              {userData.balances
-                ? `Rp.${separator(userData.balances)}`
-                : `Rp.0`}
+              {userData.balances ? `Rp${separator(balance)}` : `Rp0`}
             </Text>
           </TouchableOpacity>
         </View>
@@ -239,7 +258,14 @@ const Home = props => {
             historyData.map((history, index) => (
               <View key={index} style={styles.historyListWrapper}>
                 <View style={{flex: 2}}>
-                  <Icon name="person-outline" size={56} />
+                  {history.avatar === null ? (
+                    <Image source={DefaultAvatar} style={styles.avatar} />
+                  ) : (
+                    <Image
+                      source={{uri: `${API_URL}${history.image}`}}
+                      style={styles.avatar}
+                    />
+                  )}
                 </View>
                 <View style={{flex: 4}}>
                   <Text style={{fontSize: 16, marginBottom: 9}}>
@@ -298,6 +324,13 @@ const mapDispatchToProps = dispatch => ({
   getUserHandler: token => {
     dispatch(getUser(token));
   },
+  setBalance: num=>{
+    dispatch(addBalance(num))
+  },
+  setNotification: value=>{
+    dispatch(notification(value))
+  }
+
 });
 const connectedHome = connect(mapStatetoProps, mapDispatchToProps)(Home);
 export default connectedHome;

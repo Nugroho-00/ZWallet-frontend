@@ -8,7 +8,7 @@ import moment from 'moment';
 
 const Content = props => {
   const userData = useSelector(state => state.userReducers);
-  const balance = userData.user.data[0].balances;
+  const balance = userData.user.balances;
 
   const data = props.dataReceiver;
   console.log(data);

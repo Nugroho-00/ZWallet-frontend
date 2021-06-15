@@ -90,6 +90,13 @@ const styles = StyleSheet.create({
 
     elevation: 3,
   },
+  avatar: {
+    backgroundColor: '#EBEEF2',
+    width: 65,
+    height: 65,
+    justifyContent: 'center',
+    borderRadius: 10,
+  },
   chartContainer: {
     flexDirection: 'row',
     justifyContent: 'space-around',

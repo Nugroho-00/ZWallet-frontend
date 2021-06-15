@@ -37,7 +37,7 @@ const Header = (props) => {
           {/* <Icon name="person-outline" size={56} /> */}
           <View style={styles.userInfo}>
             <Text style={styles.userName}>{username}</Text>
-            <Text style={styles.userPhone}>{phone}</Text>
+            <Text style={styles.userPhone}>+62 {phone.replace(/\B(?=(\d{4})+(?!\d))/g, '-')}</Text>
           </View>
         </View>
       </View>
