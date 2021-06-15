@@ -16,7 +16,7 @@ import CustomModal from '../../../components/modal/CustomModal';
 
 const AddPhone = props => {
   const {navigation} = props;
-  const data = props.userReducers.user?.data;
+  const data = props.userReducers.user;
   const [phone, setPhone] = useState(
     data?.phone.replace(/\B(?=(\d{4})+(?!\d))/g, '-'),
   );
@@ -47,8 +47,10 @@ const AddPhone = props => {
     };
     axios(config)
       .then(res => {
+        props.navigation.navigate('Profile');
+        props.getUserHandler(props.loginReducers.user.token);
         setConfirmModal(false);
-        return props.getUserHandler(props.loginReducers.user.token);
+        return;
       })
       .catch(err => console.log({err}));
   };
@@ -66,6 +68,8 @@ const AddPhone = props => {
       setErrorMessage('');
     }
   }, [phoneValue]);
+
+  console.log(props);
   return (
     <ScrollView>
       <Header isBack={true} title="Add Phone Number" navigation={navigation} />
