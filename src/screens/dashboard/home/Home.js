@@ -21,6 +21,8 @@ import {API_URL} from '@env';
 import {useSocket} from '../../../services/contexts/SocketProvider';
 import PushNotification from 'react-native-push-notification';
 
+import DefaultAvatar from '../../../assets/images/default_avatar.png';
+
 const Home = props => {
   const [userData, setUserData] = useState({});
   const [historyData, setHistoryData] = useState([]);
@@ -163,7 +165,7 @@ const Home = props => {
           onPress={() => props.navigation.navigate('Profile')}
           style={{flex: 2}}>
           {userData.avatar === null ? (
-            <Icon name="person" size={52} color="#FFF" />
+            <Image source={DefaultAvatar} style={styles.avatar} />
           ) : (
             <Image
               source={{uri: `${API_URL}${userData.avatar}`}}
@@ -239,7 +241,14 @@ const Home = props => {
             historyData.map((history, index) => (
               <View key={index} style={styles.historyListWrapper}>
                 <View style={{flex: 2}}>
-                  <Icon name="person-outline" size={56} />
+                  {history.avatar === null ? (
+                    <Image source={DefaultAvatar} style={styles.avatar} />
+                  ) : (
+                    <Image
+                      source={{uri: `${API_URL}${history.image}`}}
+                      style={styles.avatar}
+                    />
+                  )}
                 </View>
                 <View style={{flex: 4}}>
                   <Text style={{fontSize: 16, marginBottom: 9}}>
