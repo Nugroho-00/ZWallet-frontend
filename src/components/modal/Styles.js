@@ -18,14 +18,14 @@ const styles = StyleSheet.create({
     alignItems: 'center',
   },
   header: {
-    fontFamily: 'Kanit-Medium',
-    fontSize: 28,
-    color: '#5784BA',
+    fontFamily: 'NunitoSans-Bold',
+    fontSize: 26,
+    color: 'rgba(99, 121, 244, 1)',
   },
   profilepicture: {
     height: 140,
     width: 140,
-    borderRadius: 100,
+    borderRadius: 10,
     marginVertical: '5%',
   },
   btngroup: {
@@ -44,7 +44,7 @@ const styles = StyleSheet.create({
     alignItems: 'center',
     width: '100%',
     borderRadius: 10,
-    backgroundColor: '#5784BA',
+    backgroundColor: 'rgba(99, 121, 244, 1)',
   },
   btnsecondary: {
     paddingVertical: 12,
@@ -52,17 +52,17 @@ const styles = StyleSheet.create({
     alignItems: 'center',
     width: '100%',
     borderRadius: 10,
-    backgroundColor: 'rgba(0, 13, 79, 0.08)',
+    backgroundColor: 'rgba(218, 218, 218, 1)',
   },
   btntextprimary: {
-    fontFamily: 'Kanit-SemiBold',
-    fontSize: 18,
+    fontFamily: 'NunitoSans-SemiBold',
+    fontSize: 16,
     color: 'white',
   },
   btntextsecondary: {
-    fontFamily: 'Kanit-SemiBold',
-    fontSize: 18,
-    color: 'rgba(1, 6, 32, 1)',
+    fontFamily: 'NunitoSans-SemiBold',
+    fontSize: 16,
+    color: 'rgba(136, 136, 143, 1)',
   },
   inputgroup: {
     marginTop: 0,
