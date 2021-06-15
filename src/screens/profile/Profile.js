@@ -112,7 +112,7 @@ function Profile(props) {
 
             <Text style={styles.nameText}>{profile.username}</Text>
             <Text style={styles.phoneText}>
-              {'+62 ' + profile.phone.replace(/\B(?=(\d{4})+(?!\d))/g, '-')}
+              {'+62 ' + profile.phone?.replace(/\B(?=(\d{4})+(?!\d))/g, '-')}
             </Text>
           </View>
           <View style={styles.menuSection}>

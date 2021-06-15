@@ -230,8 +230,8 @@ const TransactionHistory = props => {
   }, [filterIncomeState]);
 
   useEffect(async () => {
-    await getHistoryFilterExpenses('credit');
     await getHistoryFilterExpenses('subscription');
+    await getHistoryFilterExpenses('credit');
   }, [filterExpensesState]);
 
   // console.log('startdate', pickedDate.startDate);

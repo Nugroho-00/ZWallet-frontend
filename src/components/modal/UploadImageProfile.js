@@ -127,7 +127,7 @@ const UploadImageProfile = props => {
       <View style={classes.container}>
         <Text style={classes.header}>Edit Picture Profile</Text>
         <ImageBackground
-          imageStyle={{borderRadius: 100}}
+          imageStyle={{borderRadius: 10}}
           style={classes.profilepicture}
           source={{uri: photo}}
         />
