@@ -1,13 +1,26 @@
 import React, {useEffect} from 'react';
-import {View, Text} from 'react-native';
+import {View, Text, BackHandler} from 'react-native';
 import {Button, Icon} from 'native-base';
 import Backdrop from '../../../components/backdrop/Backdrop';
 import styles from './Styles';
 
 import {connect} from 'react-redux';
 import {getUser} from '../../../services/redux/actions/Users';
+import {useFocusEffect} from '@react-navigation/native';
 
 const PinSuccess = props => {
+  useFocusEffect(
+    React.useCallback(() => {
+      const onBackPress = () => {
+        return true;
+      };
+
+      BackHandler.addEventListener('hardwareBackPress', onBackPress);
+
+      return () =>
+        BackHandler.removeEventListener('hardwareBackPress', onBackPress);
+    }, []),
+  );
   const {navigation} = props;
   const {isLogin, mode} = props.route.params;
   // console.log(isLogin);
