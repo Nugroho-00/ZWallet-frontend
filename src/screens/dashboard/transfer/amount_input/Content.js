@@ -13,7 +13,7 @@ const Content = props => {
   const [note, setNote] = useState('');
 
   const userData = useSelector(state => state.userReducers);
-  const balance = userData.user.data[0].balances;
+  const balance = userData.user.balances;
 
   const sendData = {
     ...props.dataReceiver,

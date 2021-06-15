@@ -34,7 +34,7 @@ function Profile(props) {
   const [profileModal, setProfileModal] = useState(false);
   const [logoutModal, setLogoutModal] = useState(false);
   const [confirmModal, setConfirmModal] = useState(false)
-  const [avatar, setAvatar] = useState(`${API_URL}${profile.data[0].avatar}`)
+  const [avatar, setAvatar] = useState(`${API_URL}${profile.avatar}`)
 
   const avatarChange=(e)=>{
     setAvatar(e)
@@ -45,14 +45,14 @@ function Profile(props) {
     console.log(notifTemp,'tes');
     props.setNotification(notifTemp===false?'off':'on')
     if(notifTemp===false){
-    socket.emit('leave',profile.data[0].id,({status})=>{
+    socket.emit('leave',profile.id,({status})=>{
       if(status){
-        console.log(`${profile.data[0].username} leave room ${profile.data[0].id}`);
+        console.log(`${profile.username} leave room ${profile.id}`);
       }
     })} else if(notifTemp===true) {
-      socket.emit('my-room',profile.data[0].id, ({status}) => {
+      socket.emit('my-room',profile.id, ({status}) => {
         if (status) {
-          console.log(`${profile.data[0].username} join room ${profile.data[0].id}`);
+          console.log(`${profile.username} join room ${profile.id}`);
 
         }
       });
@@ -86,7 +86,7 @@ function Profile(props) {
         <ScrollView showsVerticalScrollIndicator={false}>
           <View style={styles.mainInfo}>
             <View style={styles.avatar}>
-              {profile.data[0].avatar === null ? (
+              {profile.avatar === null ? (
                 <Icon
                   name="person"
                   size={52}
@@ -110,9 +110,9 @@ function Profile(props) {
               <Text style={styles.editText}>Edit</Text>
             </TouchableOpacity>
 
-            <Text style={styles.nameText}>{profile.data[0].username}</Text>
+            <Text style={styles.nameText}>{profile.username}</Text>
             <Text style={styles.phoneText}>
-              {'+62 ' + profile.data[0].phone.replace(/\B(?=(\d{4})+(?!\d))/g, '-')}
+              {'+62 ' + profile.phone.replace(/\B(?=(\d{4})+(?!\d))/g, '-')}
             </Text>
           </View>
           <View style={styles.menuSection}>

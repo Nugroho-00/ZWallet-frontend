@@ -15,7 +15,7 @@ import {connect} from 'react-redux';
 import classes from './Styles';
 
 const UploadImageProfile = props => {
-  const UpdateData = props.userReducers.user?.data;
+  const UpdateData = props.userReducers.user;
   const [photo, setPhoto] = useState(`${API_URL}${UpdateData?.avatar}`);
   const [file, setFile] = useState();
   const fadeAnim = useRef(new Animated.Value(1000)).current;
@@ -108,11 +108,9 @@ const UploadImageProfile = props => {
             duration: 2000,
           });
         }
-        props.onChangeAvatar(photo)
+        props.onChangeAvatar(photo);
         return props.getUserHandler(props.loginReducers.user.token);
-      }
-      
-      )
+      })
       .catch(err => {
         console.log(err);
       });
@@ -179,7 +177,7 @@ const mapDispatchToProps = dispatch => ({
     dispatch(getUser(token));
   },
 });
-const connectedUpload= connect(
+const connectedUpload = connect(
   mapStatetoProps,
   mapDispatchToProps,
 )(UploadImageProfile);

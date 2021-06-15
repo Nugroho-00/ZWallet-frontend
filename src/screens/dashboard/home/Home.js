@@ -58,7 +58,7 @@ const Home = props => {
       console.log(`connected from home page  ${socket.id}`),
     );
 
-    const {id, username, notification} = props.userReducers.user.data[0];
+    const {id, username, notification} = props.userReducers.user;
     if(notification==='on'){
       socket.emit('my-room', id, ({status}) => {
         if (status) {
@@ -104,8 +104,8 @@ const Home = props => {
   const getDataUser = () => {
     const token = props.loginReducers.user?.token;
     props.getUserHandler(token);
-    props.setNotification(props.userReducers.user?.data[0].notification)
-    // props.setBalance(props.userReducers.user?.data[0].balances)
+    props.setNotification(props.userReducers.user?.notification)
+    // props.setBalance(props.userReducers.user?.balances)
   };
 
   useEffect(() => {
@@ -161,7 +161,7 @@ const Home = props => {
   const capitalizeFirstLetter = string => {
     return string.charAt(0).toUpperCase() + string.slice(1);
   };
-  // console.log(props.userReducers.user.data[0]);
+  // console.log(props.userReducers.user);
 
   useEffect(() => {
     if (props.userReducers.user?.status === 'not-verified') {
