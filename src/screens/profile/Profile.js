@@ -17,14 +17,19 @@ import {connect, useSelector} from 'react-redux';
 import {API_URL} from '@env';
 import EditModal from '../../components/modal/UploadImageProfile';
 import CustomModal from '../../components/modal/CustomModal';
-import {useIsFocused} from '@react-navigation/native';
+import {useSocket} from '../../services/contexts/SocketProvider';
+import { notification} from '../../services/redux/actions/Users';
 
 function Profile(props) {
-  const isFocused = useIsFocused();
   const profile = useSelector(state => state.userReducers.user);
+  const notif = useSelector(state=>state.userReducers.notification)
+  // console.log(notif);
+  const socket = useSocket()
+
+  
 
   useEffect(()=>{},[])
-  const [isNotifOn, setIsNotifOn] = useState(true);
+  const [isNotifOn, setIsNotifOn] = useState(notif==='on'?true:false);
   const [notifTemp, setNotifTemp] = useState()
   const [profileModal, setProfileModal] = useState(false);
   const [logoutModal, setLogoutModal] = useState(false);
@@ -33,6 +38,27 @@ function Profile(props) {
 
   const avatarChange=(e)=>{
     setAvatar(e)
+  }
+
+  const setNotifHandler=()=>{
+    setIsNotifOn(notifTemp);
+    console.log(notifTemp,'tes');
+    props.setNotification(notifTemp===false?'off':'on')
+    if(notifTemp===false){
+    socket.emit('leave',profile.data[0].id,({status})=>{
+      if(status){
+        console.log(`${profile.data[0].username} leave room ${profile.data[0].id}`);
+      }
+    })} else if(notifTemp===true) {
+      socket.emit('my-room',profile.data[0].id, ({status}) => {
+        if (status) {
+          console.log(`${profile.data[0].username} join room ${profile.data[0].id}`);
+
+        }
+      });
+    }
+
+    setConfirmModal(false)
   }
 
   return (
@@ -152,7 +178,7 @@ function Profile(props) {
             setConfirmModal(false);
           }}
           btnLabel4="Yes I'm sure"
-          onAction4={()=>{setIsNotifOn(notifTemp); setConfirmModal(false)}}
+          onAction4={setNotifHandler}
         />
       ) : null}
     </>
@@ -167,6 +193,9 @@ const mapDispatchToProps = dispatch => ({
   onLogoutHandler: () => {
     dispatch(userLogout());
   },
+  setNotification: value=>{
+    dispatch(notification(value))
+  }
 });
 
 const connectedProfile = connect(mapStatetoProps, mapDispatchToProps)(Profile);

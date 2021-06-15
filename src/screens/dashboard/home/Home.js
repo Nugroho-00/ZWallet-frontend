@@ -11,7 +11,7 @@ import {
 import Icon from 'react-native-vector-icons/Ionicons';
 import styles from './styles';
 import {userLogout} from '../../../services/redux/actions/Auth';
-import {addBalance, getUser} from '../../../services/redux/actions/Users';
+import {addBalance, getUser, notification} from '../../../services/redux/actions/Users';
 
 import {useIsFocused} from '@react-navigation/native';
 import {connect} from 'react-redux';
@@ -58,6 +58,15 @@ const Home = props => {
       console.log(`connected from home page  ${socket.id}`),
     );
 
+    const {id, username, notification} = props.userReducers.user.data[0];
+    if(notification==='on'){
+      socket.emit('my-room', id, ({status}) => {
+        if (status) {
+          console.log(`${username} joined room ${id}`);
+        }
+      });
+    }
+
     socket.on('get-notif', body => {
       const {id, sender, amount} = body;
       setBalance(Number(balance)+Number(amount))
@@ -79,7 +88,6 @@ const Home = props => {
       axios(config)
         .then(res => {
       console.log('balance',balance, 'amount',amount);
-          // console.log(res.data.result);
         })
         .catch(err => {
           console.log(err);
@@ -95,6 +103,7 @@ const Home = props => {
   const getDataUser = () => {
     const token = props.loginReducers.user.token;
     props.getUserHandler(token);
+    props.setNotification(props.userReducers.user?.data[0].notification)
     // props.setBalance(props.userReducers.user?.data[0].balances)
   };
 
@@ -105,16 +114,11 @@ const Home = props => {
   const updateUserData = () => {
     setUserData(props.userReducers?.user?.data[0]);
     setBalance(props.userReducers.user?.data[0].balances)
+
   };
 
   useEffect(() => {
     updateUserData();
-    const {id, username} = props.userReducers.user.data[0];
-    socket.emit('my-room', id, ({status}) => {
-      if (status) {
-        console.log(`${username} joined room ${id}`);
-      }
-    });
   }, [props.userReducers, isFocused]);
 
   const getHistoryData = () => {
@@ -318,7 +322,11 @@ const mapDispatchToProps = dispatch => ({
   },
   setBalance: num=>{
     dispatch(addBalance(num))
+  },
+  setNotification: value=>{
+    dispatch(notification(value))
   }
+
 });
 const connectedHome = connect(mapStatetoProps, mapDispatchToProps)(Home);
 export default connectedHome;
