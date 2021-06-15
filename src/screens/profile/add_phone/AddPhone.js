@@ -17,7 +17,7 @@ import CustomModal from '../../../components/modal/CustomModal';
 
 const AddPhone = props => {
   const {navigation} = props;
-  const data = props.userReducers.user?.data[0];
+  const data = props.userReducers.user?.data;
   const [phone, setPhone] = useState(data?.phone.replace(/\B(?=(\d{4})+(?!\d))/g, '-'));
   const [phoneValue, setPhoneValue] = useState(data?.phone)
   const [errorMessage, setErrorMessage] = useState('');

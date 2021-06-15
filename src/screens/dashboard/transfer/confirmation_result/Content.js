@@ -50,7 +50,6 @@ const Content = props => {
       });
   }
 
-
   const transferHandler = () => {
     let config = {
       method: 'POST',
@@ -82,7 +81,7 @@ const Content = props => {
         return setResult(true)
       })
       .catch(err => {
-        console.log(err.response);
+        console.log("SetREsult", {err});
         return setResult(false);
       });
   };

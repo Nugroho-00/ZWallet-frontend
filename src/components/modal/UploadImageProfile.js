@@ -15,7 +15,7 @@ import {connect} from 'react-redux';
 import classes from './Styles';
 
 const UploadImageProfile = props => {
-  const UpdateData = props.userReducers.user?.data[0];
+  const UpdateData = props.userReducers.user?.data;
   const [photo, setPhoto] = useState(`${API_URL}${UpdateData?.avatar}`);
   const [file, setFile] = useState();
   const fadeAnim = useRef(new Animated.Value(1000)).current;
