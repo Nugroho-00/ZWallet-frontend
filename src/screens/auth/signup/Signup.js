@@ -49,14 +49,14 @@ const Signup = props => {
       })
       .catch(err => {
         console.log({err});
-        if (err.response.data?.message === 'Email not found !!!') {
-          return Toast.show({
-            text: 'User is not registered, go to signup page to get started',
-            type: 'danger',
-            textStyle: {textAlign: 'center'},
-            duration: 3000,
-          });
-        }
+        // if (err.response.data?.message === 'Email not found !!!') {
+        //   return Toast.show({
+        //     text: 'User is not registered, go to signup page to get started',
+        //     type: 'danger',
+        //     textStyle: {textAlign: 'center'},
+        //     duration: 3000,
+        //   });
+        // }
       });
   }
 
@@ -102,7 +102,7 @@ const Signup = props => {
         // console.log(res);
         if (res.data?.message === 'User succes registered!') {
           Toast.show({
-            text: 'Sign up success',
+            text: 'Success',
             type: 'success',
             textStyle: {textAlign: 'center'},
             duration: 3000,

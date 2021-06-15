@@ -188,10 +188,12 @@ const styles = StyleSheet.create({
     justifyContent:'center',
     width:'20%',
     backgroundColor: '#EAEDFF',
-    paddingHorizontal: 5,
+    // paddingHorizontal: 5,
     borderRadius: 12,
     marginLeft:5,
-    height:40,
+    height:50,
+    alignItems:'center',
+    // marginTop:-16
   },
   sendIcon:{
     color:'#6379F4',
@@ -210,13 +212,47 @@ const styles = StyleSheet.create({
   errorMessage:{
     color:'red',
     fontFamily: 'NunitoSans-Regular',
-    fontSize:14
+    fontSize:14,
+    marginTop:-30,
+    marginBottom:10
   },
   avatar:{
     height:50,
     width:50,
     borderRadius:10
-  }
+  },
+
+  input: {
+    flexDirection: 'row',
+    alignItems: 'center',
+    marginHorizontal: '4%',
+    marginBottom: '8%',
+    width:'100%'
+  },
+  lefticon: {
+    position: 'absolute',
+    left: 5,
+    justifyContent: 'center',
+    zIndex: 10,
+  },
+  phonetext: {
+    position: 'absolute',
+    left: 40,
+    justifyContent: 'center',
+    zIndex: 10,
+    fontFamily: 'NunitoSans-Regular',
+    fontSize: 16,
+    color: 'black',
+  },
+  inputboxphone: {
+    width: '80%',
+    paddingLeft: 80,
+    borderBottomWidth: 1.5,
+    borderBottomColor: 'rgba(169, 169, 169, 0.6)',
+    fontFamily: 'NunitoSans-Regular',
+    fontSize: 16,
+    color: 'black',
+  },
 });
 
 export default styles;

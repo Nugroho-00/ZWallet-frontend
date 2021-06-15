@@ -70,8 +70,8 @@ const classes = StyleSheet.create({
     fontSize: 14,
   },
   maincontainer: {
-    paddingBottom: '5%',
-    paddingBottom: 80,
+    // paddingBottom: '5%',
+    paddingBottom: 90,
   },
   sectionheader: {
     paddingLeft: '3%',
@@ -104,6 +104,52 @@ const classes = StyleSheet.create({
   filterbtntext: {
     fontFamily: 'NunitoSans-Bold',
     fontSize: 16,
+    color: 'white',
+  },
+  paginationsection: {
+    justifyContent: 'flex-end',
+    marginHorizontal: '5%',
+    flexDirection: 'row',
+  },
+  paginationbtndisable: {
+    width: 30,
+    height: 30,
+    backgroundColor: 'rgba(218, 218, 218, 1)',
+    borderRadius: 5,
+    justifyContent: 'center',
+    alignItems: 'center',
+    marginHorizontal: 5,
+    shadowColor: 'rgba(0,0,0,0.6)',
+    elevation: 10,
+  },
+  paginationbtn: {
+    width: 30,
+    height: 30,
+    backgroundColor: 'rgba(99, 121, 244, 1)',
+    borderRadius: 5,
+    justifyContent: 'center',
+    alignItems: 'center',
+    marginHorizontal: 5,
+    shadowColor: 'rgba(0,0,0,0.6)',
+    elevation: 10,
+  },
+  paginationbtnactive: {
+    width: 30,
+    height: 30,
+    backgroundColor: '#5784BA',
+    borderRadius: 5,
+    justifyContent: 'center',
+    alignItems: 'center',
+    marginHorizontal: 5,
+  },
+  paginationtext: {
+    fontFamily: 'Kanit-Medium',
+    fontSize: 14,
+    color: 'black',
+  },
+  paginationtextactive: {
+    fontFamily: 'Kanit-Medium',
+    fontSize: 14,
     color: 'white',
   },
 });

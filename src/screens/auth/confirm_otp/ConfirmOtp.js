@@ -57,18 +57,20 @@ const ConfirmOtp = props => {
 
   // console.log(props.userReducers.user.data[0]);
   useEffect(()=>{
-    if(props.route.params.type==="not-verified"){
+    if(props.route.params.type==="not-verified"||props.route.params.type==="update"){
+      const emailUser = props.route.params.type==="update"?props.route.params.email.toString():props.userReducers.user.data[0].email; 
+      console.log(emailUser);
       let config = {
         method: 'POST',
         url: `${API_URL}/auth/send-otp`,
-        data: {email: props.userReducers.user.data[0].email},
+        data: {email: emailUser},
       };
       axios(config)
         .then(res => {
           // console.log(res.data.result);
         })
         .catch(err => {
-          console.log({err});
+          console.log(err.response.data);
           if (err.response.data?.message === 'Email not found !!!') {
             return Toast.show({
               text: 'User is not registered, go to signup page to get started',
@@ -105,7 +107,9 @@ const ConfirmOtp = props => {
       .then(res => {
         console.log(res);
         // console.log('sukses');
-        if (props.route.params.type) {
+        if (props.route.params.type==='update') {
+          props.navigation.navigate('HomeScreen');
+        } else if (props.route.params.type) {
           props.navigation.navigate('CreatePin', {id:  idUser, isLogin: isLogin});
         } else {
           props.navigation.navigate('ResetPassword', {token: res.data.token});
@@ -260,8 +264,8 @@ const ConfirmOtp = props => {
           style={
             isEdit
               ? isFilled
-                ? {...styles.buttonOn, top: 200}
-                : {...styles.buttonOff, top: 200}
+                ? {...styles.buttonOn, top: 250}
+                : {...styles.buttonOff, top: 250}
               : isFilled
               ? {...styles.buttonOn}
               : {...styles.buttonOff}

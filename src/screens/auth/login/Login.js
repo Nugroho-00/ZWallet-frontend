@@ -89,6 +89,7 @@ const Login = props => {
       }
     }
   }, [props.loginReducers.err]);
+
   return (
     <ScrollView>
       <View style={classes.maincontainer}>
