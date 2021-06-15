@@ -1,5 +1,6 @@
 import React, {useState, useRef, useEffect} from 'react';
-import {View, Text, TextInput, Keyboard} from 'react-native';
+import {View, Text, TextInput, Keyboard, BackHandler} from 'react-native';
+import {useFocusEffect} from '@react-navigation/native';
 import {Button} from 'native-base';
 import Backdrop from '../../../components/backdrop/Backdrop';
 import styles from './Styles';
@@ -8,6 +9,20 @@ import axios from 'axios';
 import {API_URL} from '@env';
 
 const ConfirmOtp = props => {
+  useFocusEffect(
+    React.useCallback(() => {
+      const onBackPress = () => {
+        return true;
+      };
+
+      BackHandler.addEventListener('hardwareBackPress', onBackPress);
+
+      return () =>
+        BackHandler.removeEventListener('hardwareBackPress', onBackPress);
+    }, []),
+  );
+
+  
   const [isFilled, setIsFilled] = useState(false);
   const [isEdit, setIsEdit] = useState(false);
   const [errorMessage, setErrorMessage] = useState('');
