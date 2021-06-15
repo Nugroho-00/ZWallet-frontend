@@ -44,17 +44,6 @@ const Content = props => {
     axios(config)
       .then(res => {
         console.log(res.data);
-
-        const body = {
-          id:id,
-          sender: userData.username,
-          amount: data.amountValue
-        }
-        socket.emit('transfer',body, data.id,({status})=>{
-          if(status){
-            console.log(`${userData.username} joined room ${data.id}`);
-          }
-        })
       })
       .catch(err => {
         console.log(err);
@@ -78,6 +67,17 @@ const Content = props => {
     return axios(config)
       .then(res => {
         console.log(res.data.result);
+        
+        const body = {
+          id:id,
+          sender: userData.username,
+          amount: data.amountValue
+        }
+        socket.emit('transfer',body, data.id,({status})=>{
+          if(status){
+            console.log(`${userData.username} joined room ${data.id}`);
+          }
+        })
         setIdTransaction(res.data.result.id)
         return setResult(true)
       })
@@ -172,7 +172,7 @@ const Content = props => {
           <Icon name="person-outline" size={56} />
           <View style={styles.infoUserWrapper}>
             <Text style={styles.textUsername}>{userData.username}</Text>
-            <Text style={styles.textPhone}>{userData.phone}</Text>
+            <Text style={styles.textPhone}>+62 {userData.phone.replace(/\B(?=(\d{4})+(?!\d))/g, '-')}</Text>
           </View>
         </View>
 
@@ -181,7 +181,7 @@ const Content = props => {
           <Icon name="person-outline" size={56} />
           <View style={styles.infoUserWrapper}>
             <Text style={styles.textUsername}>{data.username}</Text>
-            <Text style={styles.textPhone}>{data.phone}</Text>
+            <Text style={styles.textPhone}>+62 {data.phone.replace(/\B(?=(\d{4})+(?!\d))/g, '-')}</Text>
           </View>
         </View>
       </View>

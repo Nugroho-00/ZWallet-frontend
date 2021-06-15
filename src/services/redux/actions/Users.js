@@ -22,3 +22,24 @@ export const getUser = token => {
       });
   };
 };
+
+export const addBalance = num => {
+  return {
+    type: 'ADD_BALANCE',
+    payload: num,
+  };
+};
+export const subBalance = num => {
+  return {
+    type: 'SUB_BALANCE',
+    payload: num,
+  };
+};
+
+export const notification = status => {
+  return {
+    type: 'SET_NOTIF',
+    payload: status,
+  };
+};
+
