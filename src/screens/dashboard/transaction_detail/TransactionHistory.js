@@ -19,14 +19,16 @@ const TransactionHistory = props => {
   const getHistoryData = () => {
     const token = user.user.token;
     let config = {
+      method: 'GET',
+      url: `${API_URL}/transaction`,
       headers: {
         Authorization: 'Bearer ' + token,
       },
+      params: {sort: 'date-ZA'},
     };
-    return axios
-      .get(`${API_URL}/transaction/?sort=date-ZA`, config)
+    return axios(config)
       .then(res => {
-        // console.log(res);
+        console.log('historydata', res);
         return setHistoryData(res.data.result);
       })
       .catch(err => {

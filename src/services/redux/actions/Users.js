@@ -11,10 +11,10 @@ export const getUser = token => {
     return axios
       .get(`${API_URL}/profile`, config)
       .then(res => {
-        // console.log(res);
+        console.log('redux', res);
         dispatch({
           type: 'GET_USER',
-          payload: res.data,
+          payload: res.data.data[0],
         });
       })
       .catch(err => {
@@ -42,4 +42,3 @@ export const notification = status => {
     payload: status,
   };
 };
-

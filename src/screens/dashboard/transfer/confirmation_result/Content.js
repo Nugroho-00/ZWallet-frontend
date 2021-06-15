@@ -50,7 +50,6 @@ const Content = props => {
       });
   }
 
-
   const transferHandler = () => {
     let config = {
       method: 'POST',
@@ -83,7 +82,7 @@ const Content = props => {
         setIdTransaction(res.data.result.id)
       })
       .catch(err => {
-        console.log(err.response);
+        console.log("SetREsult", {err});
         return setResult(false);
       });
   };

@@ -17,7 +17,7 @@ const Chart = () => {
       date: moment(item.created_at).format('YYYY-MM-DD'),
     };
   });
-
+  console.log('History Data', historyData);
   let sumTransaction = [];
 
   // filter today
@@ -295,6 +295,8 @@ const Chart = () => {
     getTransactionData();
   }, []);
 
+  console.log('sumtrac', sumTransaction);
+  // console.log('debit', debitTodayNominal);
   return (
     <View style={styles.chartWrapper}>
       <Text style={styles.chartTitle}>In This Week</Text>
