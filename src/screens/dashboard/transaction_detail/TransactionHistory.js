@@ -1,5 +1,5 @@
 import React, {useEffect, useState} from 'react';
-import {View, Text, TouchableOpacity} from 'react-native';
+import {View, Text, TouchableOpacity, Image} from 'react-native';
 
 import Icon from 'react-native-vector-icons/Ionicons';
 
@@ -8,6 +8,7 @@ import styles from './styles';
 import {useSelector} from 'react-redux';
 import axios from 'axios';
 import {API_URL} from '@env';
+import DefaultAvatar from '../../../assets/images/default_avatar.png';
 
 const TransactionHistory = props => {
   const [historyData, setHistoryData] = useState([]);
@@ -75,7 +76,14 @@ const TransactionHistory = props => {
           historyData.map((history, index) => (
             <View key={index} style={styles.historyListWrapper}>
               <View style={{flex: 2}}>
-                <Icon name="person-outline" size={56} />
+                {history.image === null ? (
+                  <Image source={DefaultAvatar} style={styles.avatar} />
+                ) : (
+                  <Image
+                    source={{uri: `${API_URL}${history.image}`}}
+                    style={styles.avatar}
+                  />
+                )}
               </View>
               <View style={{flex: 4}}>
                 <Text style={{fontSize: 16, marginBottom: 9}}>
