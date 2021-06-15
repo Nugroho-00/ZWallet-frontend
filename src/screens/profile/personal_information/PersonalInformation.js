@@ -25,7 +25,7 @@ const PersonalInformation = props => {
   const [confirmModal, setConfirmModal] = useState(false);
   const [isLoading, setIsLoading] = useState(false);
 
-  const data = props.userReducers.user?.data;
+  const data = props.userReducers.user;
   // const coba = data.username.split(' ');
   const [profile, setProfile] = useState({
     firstname: data?.username?.split(' ')[0],
@@ -111,7 +111,7 @@ const PersonalInformation = props => {
         setConfirmModal(false);
         if(data?.email!==profile.email){
           navigation.navigate('ConfirmOtp', {
-            id: props.userReducers.user?.data.id,
+            id: props.userReducers.user?.id,
             type: 'update',
             email:profile.email
           });

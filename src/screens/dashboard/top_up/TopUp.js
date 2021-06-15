@@ -31,7 +31,7 @@ const TopUp = props => {
   const [confirmModal, setConfirmModal] = useState(false);
 
   const token = props.loginReducers.user.token;
-  const dataUser = props.userReducers.user.data[0];
+  const dataUser = props.userReducers.user;
 console.log(dataUser.notification);
   const channel = 'notif';
   useEffect(() => {

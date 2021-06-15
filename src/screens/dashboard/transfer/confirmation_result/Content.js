@@ -19,7 +19,7 @@ const Content = props => {
   const [idTransaction, setIdTransaction] = useState()
 
   const userReducer = useSelector(state => state.userReducers);
-  const userData = userReducer.user.data[0];
+  const userData = userReducer.user;
   const loginReducers = useSelector(state => state.loginReducers);
 
   const data = props.dataReceiver;
