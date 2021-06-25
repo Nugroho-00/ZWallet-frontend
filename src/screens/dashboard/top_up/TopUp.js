@@ -199,7 +199,6 @@ console.log(dataUser.notification);
           </View>
         </View>
       </View>
-
       <ScrollView>
         <View style={classes.maincontainer}>
           <Text style={classes.instructionheader}>How to Top-Up</Text>
