@@ -32,8 +32,8 @@ const TopUp = props => {
 
   const token = props.loginReducers.user.token;
   const dataUser = props.userReducers.user;
-console.log(dataUser.notification);
   const channel = 'notif';
+  console.log(props.userReducers.notification);
   useEffect(() => {
     PushNotification.createChannel(
       {
@@ -83,12 +83,13 @@ console.log(dataUser.notification);
     };
     axios(config)
       .then(res => {
-        if(dataUser.notification==='on'){
-        PushNotification.localNotification({
-          channelId: channel,
-          title: 'Hurray! top up was successful.',
-          message: 'The balance will be added to your Zwallet account',
-        })}
+        if (props.userReducers.notification === true) {
+          PushNotification.localNotification({
+            channelId: channel,
+            title: 'Hurray! top up was successful.',
+            message: 'The balance will be added to your Zwallet account',
+          });
+        }
         navigation.navigate('HomeScreen');
       })
       .catch(err => {

@@ -60,7 +60,7 @@ const Home = props => {
       console.log(`connected from home page  ${socket.id}`),
     );
 
-    const {id, username, notification} = props.userReducers.user;
+    const {id, username} = props.userReducers.user;
 
     socket.emit('my-room', id, ({status}) => {
       if (status) {
@@ -70,10 +70,13 @@ const Home = props => {
 
     socket.on('get-notif', body => {
       const {id, sender, amount} = body;
+      if(props.userReducers.user.username===sender){return;}
+      console.log('HOOEEEE',props.userReducers.user.username, sender);
       console.log('balance', balance, 'amount', amount);
       props.getBalance(Number(amount))
+      setBalance(props.userReducers.balance)
       // setBalance(Number(balance) + Number(amount));
-      if (notification === 'on') {
+      if (props.userReducers.notification === true) {
         PushNotification.localNotification({
           channelId: channel,
           title: 'Inbound transfer',
@@ -108,7 +111,7 @@ const Home = props => {
   const getDataUser = () => {
     const token = props.loginReducers.user?.token;
     props.getUserHandler(token);
-    props.setNotification(props.userReducers.user?.notification);
+    // props.setNotification(props.userReducers.user?.notification==='on'?true:false);
   };
 
   useEffect(() => {
@@ -323,9 +326,9 @@ const mapDispatchToProps = dispatch => ({
   getBalance: num => {
     dispatch(addBalance(num));
   },
-  setNotification: value => {
-    dispatch(notification(value));
-  },
+  // setNotification: value => {
+  //   dispatch(notification(value));
+  // },
 });
 const connectedHome = connect(mapStatetoProps, mapDispatchToProps)(Home);
 export default connectedHome;
