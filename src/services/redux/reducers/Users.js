@@ -7,9 +7,11 @@ let initialState = {
 let userReducers = (state = initialState, {type, payload}) => {
   switch (type) {
     case 'GET_USER':
+      // console.log('balanced',payload.balances);
       return {
         ...state,
         user: payload,
+        balance: payload.balances,
       };
     case 'ADD_BALANCE':
       return {
@@ -17,9 +19,10 @@ let userReducers = (state = initialState, {type, payload}) => {
         balance: state.balance+Number(payload),
       };
     case 'SUB_BALANCE':
+      console.log('called',state.balance, payload);
       return {
         ...state,
-        balance: state.balance-payload,
+        balance: state.balance-Number(payload),
       };
     case 'SET_NOTIF':
       return {

@@ -49,14 +49,17 @@ function Profile(props) {
       if(status){
         console.log(`${profile.username} leave room ${profile.id}`);
       }
-    })} else if(notifTemp===true) {
-      socket.emit('my-room',profile.id, ({status}) => {
-        if (status) {
-          console.log(`${profile.username} join room ${profile.id}`);
+    })
+  } 
+  
+  // else if(notifTemp===true) {
+  //     socket.emit('my-room',profile.id, ({status}) => {
+  //       if (status) {
+  //         console.log(`${profile.username} join room ${profile.id}`);
 
-        }
-      });
-    }
+  //       }
+  //     });
+  //   }
 
     setConfirmModal(false)
   }
@@ -162,7 +165,7 @@ function Profile(props) {
                   setLogoutModal(false);
                 }}
                 btnLabel4="Yes I'm sure"
-                onAction4={() => props.onLogoutHandler()}
+                onAction4={() => {setLogoutModal(false); props.onLogoutHandler()}}
               />
             ) : null}
           </View>
