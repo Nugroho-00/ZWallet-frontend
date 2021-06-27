@@ -120,8 +120,6 @@ const ConfirmOtp = props => {
         userId: idUser,
       })
       .then(res => {
-        console.log(res);
-        // console.log('sukses');
         if (props.route.params.type==='update') {
           props.navigation.navigate('HomeScreen');
         } else if (props.route.params.type) {
@@ -131,7 +129,7 @@ const ConfirmOtp = props => {
         }
       })
       .catch(err => {
-        console.log('failed', {err});
+        console.log('failed', err.response);
         setErrorMessage('Oops. You entered the wrong OTP code');
       });
   };

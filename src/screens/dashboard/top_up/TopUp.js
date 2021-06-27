@@ -112,7 +112,7 @@ console.log(dataUser.notification);
           storeNotification(res.data.result.id);
         })
         .catch(err => {
-          console.log(err);
+          console.log(err.response);
         });
     }
   };

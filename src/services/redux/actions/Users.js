@@ -11,7 +11,7 @@ export const getUser = token => {
     return axios
       .get(`${API_URL}/profile`, config)
       .then(res => {
-        console.log('redux', res);
+        // console.log('redux', res);
         dispatch({
           type: 'GET_USER',
           payload: res.data.data[0],

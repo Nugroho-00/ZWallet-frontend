@@ -11,7 +11,11 @@ import {
 import Icon from 'react-native-vector-icons/Ionicons';
 import styles from './styles';
 import {userLogout} from '../../../services/redux/actions/Auth';
-import {addBalance, getUser, notification} from '../../../services/redux/actions/Users';
+import {
+  addBalance,
+  getUser,
+  notification,
+} from '../../../services/redux/actions/Users';
 
 import {useIsFocused} from '@react-navigation/native';
 import {connect} from 'react-redux';
@@ -25,10 +29,9 @@ import DefaultAvatar from '../../../assets/images/default_avatar.png';
 
 const Home = props => {
   const [userData, setUserData] = useState({});
-  const [balance, setBalance] = useState(props.userReducers.user?.balances);
+  const [balance, setBalance] = useState(props.userReducers.balance);
   const [historyData, setHistoryData] = useState([]);
   const isFocused = useIsFocused();
-
   const socket = useSocket();
 
   const channel = 'notif';
@@ -38,13 +41,12 @@ const Home = props => {
         channelId: 'notif',
         channelName: 'My Notification Channel',
       },
-      created => console.log(`student createChannel returned '${created}'`),
     );
   }, []);
 
   useEffect(() => {
     PushNotification.getChannels(channel_ids => {
-      console.log(channel_ids);
+      // console.log(channel_ids);
     });
   }, []);
 
@@ -59,23 +61,25 @@ const Home = props => {
     );
 
     const {id, username, notification} = props.userReducers.user;
-    if(notification==='on'){
-      socket.emit('my-room', id, ({status}) => {
-        if (status) {
-          console.log(`${username} joined room ${id}`);
-        }
-      });
-    }
+
+    socket.emit('my-room', id, ({status}) => {
+      if (status) {
+        console.log(`${username} joined room ${id}`);
+      }
+    });
 
     socket.on('get-notif', body => {
       const {id, sender, amount} = body;
-      setBalance(Number(balance) + Number(amount));
-
-      PushNotification.localNotification({
-        channelId: channel,
-        title: 'Inbound transfer',
-        message: `${sender} just sent you Rp. ${amount}`,
-      });
+      console.log('balance', balance, 'amount', amount);
+      props.getBalance(Number(amount))
+      // setBalance(Number(balance) + Number(amount));
+      if (notification === 'on') {
+        PushNotification.localNotification({
+          channelId: channel,
+          title: 'Inbound transfer',
+          message: `${sender} just sent you Rp. ${amount}`,
+        });
+      }
 
       let config = {
         method: 'POST',
@@ -87,7 +91,7 @@ const Home = props => {
       };
       axios(config)
         .then(res => {
-          console.log('balance', balance, 'amount', amount);
+          // console.log('balance', balance, 'amount', amount);
           // console.log(res.data.result);
         })
         .catch(err => {
@@ -104,8 +108,7 @@ const Home = props => {
   const getDataUser = () => {
     const token = props.loginReducers.user?.token;
     props.getUserHandler(token);
-    props.setNotification(props.userReducers.user?.notification)
-    // props.setBalance(props.userReducers.user?.balances)
+    props.setNotification(props.userReducers.user?.notification);
   };
 
   useEffect(() => {
@@ -114,17 +117,12 @@ const Home = props => {
 
   const updateUserData = () => {
     setUserData(props.userReducers?.user);
-    setBalance(props.userReducers.user.balances);
   };
 
   useEffect(() => {
     updateUserData();
-    const {id, username} = props.userReducers.user;
-    socket.emit('my-room', id, ({status}) => {
-      if (status) {
-        console.log(`${username} joined room ${id}`);
-      }
-    });
+    setBalance(props.userReducers.balance)
+
   }, [props.userReducers, isFocused]);
 
   const getHistoryData = () => {
@@ -141,7 +139,7 @@ const Home = props => {
         return setHistoryData(res.data.result);
       })
       .catch(err => {
-        console.log(err);
+        console.log(err.response.data.message);
       });
   };
 
@@ -155,8 +153,6 @@ const Home = props => {
   const separator = x => {
     return x.toString().replace(/\B(?=(\d{3})+(?!\d))/g, ',');
   };
-
-  console.log();
 
   const capitalizeFirstLetter = string => {
     return string.charAt(0).toUpperCase() + string.slice(1);
@@ -324,13 +320,12 @@ const mapDispatchToProps = dispatch => ({
   getUserHandler: token => {
     dispatch(getUser(token));
   },
-  setBalance: num=>{
-    dispatch(addBalance(num))
+  getBalance: num => {
+    dispatch(addBalance(num));
   },
-  setNotification: value=>{
-    dispatch(notification(value))
-  }
-
+  setNotification: value => {
+    dispatch(notification(value));
+  },
 });
 const connectedHome = connect(mapStatetoProps, mapDispatchToProps)(Home);
 export default connectedHome;
