@@ -121,8 +121,6 @@ const Home = props => {
 
   useEffect(() => {
     updateUserData();
-    setBalance(props.userReducers.balance)
-
   }, [props.userReducers, isFocused]);
 
   const getHistoryData = () => {
@@ -166,6 +164,8 @@ const Home = props => {
         type: 'not-verified',
       });
     }
+    setBalance(props.userReducers.balance)
+
   }, [props.userReducers]);
 
   return (
