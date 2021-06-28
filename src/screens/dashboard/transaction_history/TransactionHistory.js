@@ -167,18 +167,20 @@ const TransactionHistory = props => {
         limits: 50,
       },
     };
-    axios(config)
+    return axios(config)
       .then(res => {
         if (res.data.result.length > 0) {
           // console.log('res', {res});
-          setIncome([...filterIncome, ...res.data.result]);
+          setIncome(prevIncome => {
+            return [...prevIncome, ...res.data.result];
+          });
           return;
         }
         if (res.data.result.length === 0) {
           return null;
         }
       })
-      .catch(err => console.log({err}));
+      .catch(err => console.log('Fungsi', {err}));
   };
   const getHistoryFilterExpenses = type => {
     console.log('check type expenses', type);
@@ -193,12 +195,14 @@ const TransactionHistory = props => {
         limits: 10,
       },
     };
-    axios(config)
+    return axios(config)
       .then(res => {
         if (res.data.result.length > 0) {
           // console.log('res', {res});
           // console.log('filterExpense', {filterExpenses});
-          setExpenses([...filterExpenses, ...res.data.result]);
+          setExpenses(prevExpenses => {
+            return [...prevExpenses, ...res.data.result];
+          });
           return;
         }
         if (res.data.result.length === 0) {
@@ -224,14 +228,22 @@ const TransactionHistory = props => {
   //   return setIncome(hasil);
   // };
 
-  useEffect(async () => {
-    await getHistoryFilterIncome('topup');
-    await getHistoryFilterIncome('debit');
+  useEffect(() => {
+    const getIncome = async () => {
+      await getHistoryFilterIncome('topup');
+      await getHistoryFilterIncome('debit');
+    };
+    setIncome([]);
+    getIncome();
   }, [filterIncomeState]);
 
-  useEffect(async () => {
-    await getHistoryFilterExpenses('subscription');
-    await getHistoryFilterExpenses('credit');
+  useEffect(() => {
+    const getExpenses = async () => {
+      await getHistoryFilterExpenses('subscription');
+      await getHistoryFilterExpenses('credit');
+    };
+    setExpenses([]);
+    getExpenses();
   }, [filterExpensesState]);
 
   // console.log('startdate', pickedDate.startDate);
@@ -275,7 +287,7 @@ const TransactionHistory = props => {
                 <TouchableOpacity
                   style={{...classes.bytypebtn, backgroundColor: 'white'}}
                   onPress={() => {
-                    setExpenses('');
+                    setIncome([]);
                     setExpensesState(false);
                     setIncomeState(true);
                   }}>
