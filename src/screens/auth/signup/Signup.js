@@ -119,6 +119,13 @@ const Signup = props => {
             textStyle: {textAlign: 'center'},
             duration: 3000,
           });
+        } else {
+          Toast.show({
+            text: 'Sorry. Something wrong happened!',
+            type: 'danger',
+            textStyle: {textAlign: 'center'},
+            duration: 3000,
+          });
         }
       });
   };
