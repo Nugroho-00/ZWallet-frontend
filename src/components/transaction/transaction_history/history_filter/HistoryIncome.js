@@ -6,9 +6,8 @@ import Ionicons from 'react-native-vector-icons/Ionicons';
 import moment from 'moment';
 
 const HistoryFilterIncome = props => {
-  console.log('HistoryFilterIncome', props);
   const data = props.data?.filterIncome;
-  //   console.log('formated', start);
+  console.log('HistoryFilterIncome', data);
   return (
     <>
       <View>

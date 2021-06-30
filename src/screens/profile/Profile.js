@@ -17,20 +17,17 @@ import {connect, useSelector} from 'react-redux';
 import {API_URL} from '@env';
 import EditModal from '../../components/modal/UploadImageProfile';
 import CustomModal from '../../components/modal/CustomModal';
-import {useSocket} from '../../services/contexts/SocketProvider';
 import { notification} from '../../services/redux/actions/Users';
 
 function Profile(props) {
   const profile = useSelector(state => state.userReducers.user);
   const notif = useSelector(state=>state.userReducers.notification)
-  // console.log(notif);
-  const socket = useSocket()
+  console.log('notnto',notif);
 
   
 
   useEffect(()=>{},[])
-  const [isNotifOn, setIsNotifOn] = useState(notif==='on'?true:false);
-  const [notifTemp, setNotifTemp] = useState()
+  const [isNotifOn, setIsNotifOn] = useState(notif==='true'||notif===true?true:false);
   const [profileModal, setProfileModal] = useState(false);
   const [logoutModal, setLogoutModal] = useState(false);
   const [confirmModal, setConfirmModal] = useState(false)
@@ -41,23 +38,7 @@ function Profile(props) {
   }
 
   const setNotifHandler=()=>{
-    setIsNotifOn(notifTemp);
-    console.log(notifTemp,'tes');
-    props.setNotification(notifTemp===false?'off':'on')
-    if(notifTemp===false){
-    socket.emit('leave',profile.id,({status})=>{
-      if(status){
-        console.log(`${profile.username} leave room ${profile.id}`);
-      }
-    })} else if(notifTemp===true) {
-      socket.emit('my-room',profile.id, ({status}) => {
-        if (status) {
-          console.log(`${profile.username} join room ${profile.id}`);
-
-        }
-      });
-    }
-
+    props.setNotification(isNotifOn)
     setConfirmModal(false)
   }
 
@@ -143,7 +124,7 @@ function Profile(props) {
                 onColor="#6379F4"
                 offColor="#7A7886"
                 size="medium"
-                onToggle={isOn => {setConfirmModal(true); setNotifTemp(isOn)}}
+                onToggle={isOn => {setConfirmModal(true); setIsNotifOn(isOn)}}
               />
             </Pressable>
             <Pressable
@@ -162,7 +143,7 @@ function Profile(props) {
                   setLogoutModal(false);
                 }}
                 btnLabel4="Yes I'm sure"
-                onAction4={() => props.onLogoutHandler()}
+                onAction4={() => {setLogoutModal(false); props.onLogoutHandler()}}
               />
             ) : null}
           </View>
@@ -171,8 +152,8 @@ function Profile(props) {
       {confirmModal ? (
         <CustomModal
           modalVisible={confirmModal}
-          title={`Turn ${notifTemp?'On':'Off'} Notification`}
-          msg={`Are you sure want to turn ${notifTemp?'on':'off'} your notification?`}
+          title={`Turn ${isNotifOn?'On':'Off'} Notification`}
+          msg={`Are you sure want to turn ${isNotifOn?'on':'off'} your notification?`}
           btnLabel3="Cancel"
           onAction3={() => {
             setConfirmModal(false);

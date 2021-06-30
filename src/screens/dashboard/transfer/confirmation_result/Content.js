@@ -10,7 +10,9 @@ import {useSelector} from 'react-redux';
 import axios from 'axios';
 import {API_URL} from '@env';
 import {connect} from 'react-redux';
-
+import {
+  subBalance,
+} from '../../../../services/redux/actions/Users';
 
 import { useSocket } from '../../../../services/contexts/SocketProvider';
 
@@ -29,9 +31,9 @@ const Content = props => {
   const socket = useSocket()
   const token = loginReducers.user.token;
 
-  console.log(data.username);
+  // console.log(data.username);
 
-  console.log(data);
+  // console.log(data);
   const storeNotification=(id)=>{
     let config = {
       method: 'POST',
@@ -66,8 +68,9 @@ const Content = props => {
     };
     return axios(config)
       .then(res => {
-        console.log(res.data.result);
-
+        // console.log('okkkk');
+        // console.log(res.data.result);
+        setResult(true)
         setIdTransaction(res.data.result.id)
         const body = {
           id:userData.id,
@@ -77,13 +80,15 @@ const Content = props => {
         socket.emit('transfer',body, data.id,({status})=>{
           if(status){
             console.log(`${userData.username} joined room ${data.id}`);
-            return setResult(true)
+            // return setResult(true)
 
           }
         })
       })
       .catch(err => {
-        console.log(err.response);
+        // console.log('wew');
+
+        console.log(err.response.data.message);
         return setResult(false);
       });
   };
@@ -95,6 +100,7 @@ const Content = props => {
   }
 
   const navigateHome = () => {
+    props.newBalance(data.amountValue)
     return props.navigation.navigate('HomeScreen');
   };
 
@@ -190,7 +196,9 @@ const Content = props => {
 
       <TouchableOpacity
         style={styles.btnContinue}
-        onPress={result === true ? navigateHome : transferHandler}>
+        // onPress={result === true ? navigateHome : transferHandler}
+        onPress={navigateHome}
+        >
         <Text style={styles.textContinue}>
           {result === true ? 'Back to Home' : 'Try Again'}
         </Text>
@@ -204,7 +212,13 @@ const mapStatetoProps = state => {
     loginReducers: state.loginReducers,
   };
 };
+const mapDispatchToProps = dispatch => ({
+  newBalance: num => {
+    dispatch(subBalance(num));
+  },
 
-const connectedConfirmResult = connect(mapStatetoProps)(Content);
+});
+
+const connectedConfirmResult = connect(mapStatetoProps, mapDispatchToProps)(Content);
 
 export default connectedConfirmResult;

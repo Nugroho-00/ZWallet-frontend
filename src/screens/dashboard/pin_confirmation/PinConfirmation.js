@@ -74,6 +74,7 @@ function PinConfirmation(props) {
         pin: joinPin,
       },
     };
+    console.log(joinPin);
     return axios(config)
       .then(res => {
         return props.navigation.navigate('ConfirmationResult', {...data});
